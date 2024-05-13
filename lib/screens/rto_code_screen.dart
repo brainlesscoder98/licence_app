@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
 
-class RoadSignScreen extends StatelessWidget {
-  RoadSignScreen({Key? key}) : super(key: key);
+class RtoCodeScreen extends StatelessWidget {
+  RtoCodeScreen({Key? key}) : super(key: key);
 
   final List<Map<String, String>> signboards = [
     {
@@ -48,6 +48,7 @@ class RoadSignScreen extends StatelessWidget {
     },
     // Add more signboard data as needed
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,13 +58,14 @@ class RoadSignScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-               Colors.blue.withOpacity(0.3),// Start color
-               Colors.white, // End color
+              Colors.blue.withOpacity(0.3),// Start color
+              Colors.white, // End color
             ],
             begin: Alignment.topCenter, // Gradient start position
             end: Alignment.bottomCenter, // Gradient end position
             stops: [0.0, 0.3], // Gradient stops
           ),
+
 
         ),
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
@@ -72,7 +74,7 @@ class RoadSignScreen extends StatelessWidget {
             AppBar(
               automaticallyImplyLeading: true,
               backgroundColor: Colors.transparent,
-              title:Text( "Road Sign",style: GoogleFonts.poppins(fontSize: 15,fontWeight: FontWeight.w500),),
+              title:Text( "RTO CODE",style: GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w500),),
             ),
             Container(
               height: AppConstants().mediaSize.height-128,
@@ -81,12 +83,13 @@ class RoadSignScreen extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 itemCount: signboards.length,
                 itemBuilder: (context, index) {
-                  final roadSign = signboards[index];
+                  final signboard = signboards[index];
                   return CCard(
-                    imageUrl: roadSign['imageUrl']!,
-                    name: roadSign['name']!,
-                    description: roadSign['description']!,
-                    index: index,color: Colors.blue.withOpacity(0.3),
+                    imageUrl: signboard['imageUrl']!,
+                    name: signboard['name']!,
+                    description: signboard['description']!,
+                    index: index,
+                    color: Colors.black,
                   );
                 },
               ),

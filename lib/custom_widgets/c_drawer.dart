@@ -14,8 +14,16 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
            DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.green,
+            decoration:  BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.withOpacity(0.3),// Start color
+                  Colors.white, // End color
+                ],
+                begin: Alignment.topLeft, // Gradient start position
+                end: Alignment.bottomRight, // Gradient end position
+                stops: [0.0, 1], // Gradient stops
+              ),
             ),
             child: Row(
               children: [
