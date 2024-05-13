@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
 
-class HandSignScreen extends StatelessWidget {
-  HandSignScreen({Key? key}) : super(key: key);
+class RtoCodeScreen extends StatelessWidget {
+  RtoCodeScreen({Key? key}) : super(key: key);
 
   final List<Map<String, String>> signboards = [
     {
@@ -58,7 +58,7 @@ class HandSignScreen extends StatelessWidget {
         backgroundColor: Colors.black,
         // leading: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,),
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new_outlined,color: Colors.white,), onPressed: () { Get.back(); },),
-        title:Text( "Hand Sign",style: GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.white),),
+        title:Text( "RTO CODE",style: GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w500,color: Colors.white),),
       ),
       body: Container(
 

@@ -14,8 +14,16 @@ class SideDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
            DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.green,
+            decoration:  BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.blue.withOpacity(0.3),// Start color
+                  Colors.white, // End color
+                ],
+                begin: Alignment.topLeft, // Gradient start position
+                end: Alignment.bottomRight, // Gradient end position
+                stops: [0.0, 1], // Gradient stops
+              ),
             ),
             child: Row(
               children: [
@@ -24,7 +32,7 @@ class SideDrawer extends StatelessWidget {
                   height: 90,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.white70
+                    color: Colors.white
                   ),
                 ),
                 const HGap(width: 10),
@@ -90,7 +98,8 @@ class SideDrawer extends StatelessWidget {
               Get.snackbar('Item 2', 'Item 2 tapped');
             },
             trailing: const Icon(Icons.arrow_circle_right_rounded),
-          ),ListTile(
+          ),
+          ListTile(
             title:  Text('Add Licence Item', style: GoogleFonts.poppins(
               color: Colors.black,
               fontSize: 15,
@@ -100,7 +109,8 @@ class SideDrawer extends StatelessWidget {
               Get.snackbar('Item 2', 'Item 2 tapped');
             },
             trailing: const Icon(Icons.arrow_circle_right_rounded),
-          ),ListTile(
+          ),
+          ListTile(
             title:  Text('About Us', style: GoogleFonts.poppins(
               color: Colors.black,
               fontSize: 15,
@@ -110,7 +120,8 @@ class SideDrawer extends StatelessWidget {
               Get.snackbar('Item 2', 'Item 2 tapped');
             },
             trailing: const Icon(Icons.arrow_circle_right_rounded),
-          ),ListTile(
+          ),
+          ListTile(
             title:  Text('Privacy Policy', style: GoogleFonts.poppins(
               color: Colors.black,
               fontSize: 15,
@@ -120,7 +131,8 @@ class SideDrawer extends StatelessWidget {
               Get.snackbar('Item 2', 'Item 2 tapped');
             },
             trailing: const Icon(Icons.arrow_circle_right_rounded),
-          ),ListTile(
+          ),
+          ListTile(
             title:  Text('Logout', style: GoogleFonts.poppins(
               color: Colors.black,
               fontSize: 15,

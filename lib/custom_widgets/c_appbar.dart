@@ -9,11 +9,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('Custom AppBar',style: TextStyle(color: Colors.black),),
+      title: Text('Custom AppBar',style: TextStyle(color: Colors.white),),
       centerTitle: true,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       leading: IconButton(
-        icon: Icon(Icons.menu,color: Colors.black),
+        icon: Icon(Icons.menu,color: Colors.white),
         onPressed: (){
           Scaffold.of(context).openDrawer();
         },
@@ -27,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         //   },
         // ),
         IconButton(
-          icon: Icon(Icons.settings,color: Colors.black),
+          icon: Icon(Icons.settings,color: Colors.white),
           onPressed: () {
             // Handle settings action
             Get.snackbar('Settings', 'Settings button pressed');
