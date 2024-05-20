@@ -1,8 +1,9 @@
+// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../controller/translator_controller.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
-import 'package:licence_app/main.dart';
 import 'package:licence_app/screens/hand_sign_screen.dart';
 import 'package:licence_app/screens/questions_screen.dart';
 import 'package:licence_app/screens/road_sign_screen.dart';
@@ -20,6 +21,9 @@ import 'how_to_apply.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
+
+  final TranslationController translationController = Get.put(TranslationController());
+
   final List<String> items = [
     'Question',
     'Sign Board',
@@ -30,6 +34,7 @@ class HomeScreen extends StatelessWidget {
     'RTO-code',
     'How to apply'
   ];
+
   final List<String> itemsImages = [
     'assets/images/questions.jpg',
     'assets/images/sign_board.jpg',
@@ -40,6 +45,7 @@ class HomeScreen extends StatelessWidget {
     'assets/images/rto_code.jpg',
     'assets/images/apply.jpg',
   ];
+
   List<Color> itemsColor = [
     Colors.amber,
     Colors.black,
@@ -51,16 +57,59 @@ class HomeScreen extends StatelessWidget {
     Colors.blueGrey,
   ];
 
+  void translateStaticData(String targetLanguage) {
+    var texts = {
+      'Question': 'Question',
+      'Sign Board': 'Sign Board',
+      'Hand Sign': 'Hand Sign',
+      'Road sign': 'Road sign',
+      'Pre-test': 'Pre-test',
+      'Timer-test': 'Timer-test',
+      'RTO-code': 'RTO-code',
+      'How to apply': 'How to apply'
+    };
+    translationController.translateTexts(texts, targetLanguage);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        actions: [
+          PopupMenuButton<String>(
+            color: Colors.white,iconColor: Colors.white,
+            onSelected: (String value) {
+              translateStaticData(value);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  value: 'en',
+                  child: Text('English'),
+                ),
+                PopupMenuItem(
+                  value: 'hi',
+                  child: Text('हिन्दी'),
+                ),
+                PopupMenuItem(
+                  value: 'ml',
+                  child: Text('മലയാളം'),
+                ),
+                // Add more languages here
+              ];
+            },
+          ),
+        ],
+      ),
       drawer: const SideDrawer(),
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.black,),
+            color: Colors.black,
+          ),
           child: ListView(
             children: [
               MainBanner(),
@@ -80,40 +129,29 @@ class HomeScreen extends StatelessWidget {
                       // Perform individual routing based on the tapped item
                       switch (index) {
                         case 0:
-                          // Navigate to Question screen
-
                           Get.to(QuestionsScreen());
                           break;
                         case 1:
-                          // Navigate to SignBoard screen
                           Get.to(SignBoardScreen());
                           break;
                         case 2:
-                          // Navigate to HandSign screen
                           Get.to(HandSignScreen());
                           break;
                         case 3:
-                          // Navigate to HandSign screen
                           Get.to(RoadSignScreen());
                           break;
                         case 4:
-                          // Navigate to HandSign screen
                           Get.to(PreTestScreen());
                           break;
                         case 5:
-                          // Navigate to HandSign screen
                           Get.to(TimerTestScreen());
                           break;
                         case 6:
-                          // Navigate to HandSign screen
                           Get.to(RtoCodeScreen());
                           break;
                         case 7:
-                          // Navigate to HandSign screen
-                          // Get.to(MyAppTest());
                           Get.to(HowToApplyScreen());
                           break;
-                        // Add cases for other items as needed
                         default:
                           break;
                       }
@@ -130,8 +168,7 @@ class HomeScreen extends StatelessWidget {
                           image: DecorationImage(
                             image: AssetImage(
                                 itemsImages[index]), // Provide your image path
-                            fit: BoxFit
-                                .cover, // Adjust the image fit as per your requirement
+                            fit: BoxFit.cover, // Adjust the image fit as per your requirement
                           ),
                         ),
                         child: Column(
@@ -145,24 +182,24 @@ class HomeScreen extends StatelessWidget {
                               child: Card(
                                 elevation: 5,
                                 shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20.0)),
+                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                 ),
                                 child: Container(
                                   width: AppConstants().mediaSize.width * 0.3,
                                   height: 40,
-                                  // margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 10),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
                                     color: itemsColor[index],
                                   ),
                                   padding: const EdgeInsets.all(5),
                                   child: Center(
-                                    child: Text(
-                                      items[index],
-                                      style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color:Colors.white ),
-                                      textAlign: TextAlign.center,
-                                    ),
+                                    child: Obx(() {
+                                      return Text(
+                                        translationController.getTranslated(items[index]),
+                                        style: GoogleFonts.poppins(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
+                                        textAlign: TextAlign.center,
+                                      );
+                                    }),
                                   ),
                                 ),
                               ),

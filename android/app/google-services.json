@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "173490396619",
+    "firebase_url": "https://kerala-psc-papers.firebaseio.com",
+    "project_id": "kerala-psc-papers",
+    "storage_bucket": "kerala-psc-papers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:173490396619:android:a8acd3b548912098c7aa4e",
+        "android_client_info": {
+          "package_name": "com.licence.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "173490396619-jr8af5m06mt5au6l9rmhgmmd5qti97tn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJJvmdm5pvtOGsfLpqOoKmUzXfLm_fLwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "173490396619-jr8af5m06mt5au6l9rmhgmmd5qti97tn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

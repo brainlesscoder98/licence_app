@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:licence_app/screens/home_screen.dart';
 
-void main() {
+void main() async {
+  // Ensure Flutter framework is fully initialized before interacting with any plugin.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp();
+
+  // Run the Flutter application
   runApp(MyApp());
 }
 
@@ -16,46 +24,5 @@ class MyApp extends StatelessWidget {
       ),
       home: HomeScreen(),
     );
-  }
-}
-
-class MyAppHome extends StatelessWidget {
-  final countController = Get.put(CounterController());
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('GetX Example'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GetBuilder<CounterController>(
-              builder: (controller) {
-                return Text(
-                  'Counter: ${controller.count}',
-                  style: TextStyle(fontSize: 20),
-                );
-              },
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => countController.increment(),
-              child: Text('Increment'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CounterController extends GetxController {
-  var count = 0.obs;
-
-  void increment() {
-    count++;
   }
 }
