@@ -11,6 +11,24 @@ class FirebaseService {
         return {
           'name': doc['name'] as String,
           'description': doc['description'] as String,
+          'imageUrl': doc['imageUrl'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching signboards: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchHandSigns() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('handsigns').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'title': doc['title'] as String,
+          'description': doc['description'] as String,
+          'imageUrl': doc['imageUrl'] as String,
         };
       }).toList();
     } catch (e) {

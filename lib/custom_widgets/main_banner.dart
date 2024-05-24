@@ -16,7 +16,7 @@ class MainBanner extends StatelessWidget {
     return Center(
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 300.0,
+          height: 150.0,
           autoPlay: true,
           enlargeCenterPage: true,
           aspectRatio: 16/9,
@@ -24,7 +24,7 @@ class MainBanner extends StatelessWidget {
           autoPlayAnimationDuration: Duration(milliseconds: 800),
           autoPlayCurve: Curves.fastOutSlowIn,
           enableInfiniteScroll: true,
-          viewportFraction: 0.8,
+          viewportFraction: 1,
         ),
         items: imageUrls.map((url) {
           return Builder(
