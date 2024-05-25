@@ -9,8 +9,8 @@ import '../custom_widgets/c_questions.dart';
 
 class QuestionsScreen extends StatelessWidget {
   final SignboardController signboardController = Get.put(SignboardController());
-  Future<void> _refreshData() async {
-    await signboardController.fetchData(); // Example: fetching data again
+    Future<void> _refreshData() async {
+      await signboardController.fetchData(); // Example: fetching data again
   }
   @override
   Widget build(BuildContext context) {

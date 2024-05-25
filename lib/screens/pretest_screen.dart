@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
+import 'package:licence_app/controller/pretest_controller.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
 
 import '../controller/questions_controller.dart';
 
 class PreTestScreen extends StatelessWidget {
-  final QuestionController questionController = Get.put(QuestionController());
-
-  void showValidationMessage() {
+  final PreTestController preTestController = Get.put(PreTestController());
+  Future<void> _refreshData() async {
+    await preTestController.fetchData();
+  }
+    void showValidationMessage() {
     Get.snackbar(
       "Validation",
       "Select answer to continue",
@@ -35,13 +38,13 @@ class PreTestScreen extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () {
-            questionController.resetQuiz();
+            // preTestController.resetQuiz();
             Get.back();
           },
         ),
         actions: [
           Obx(() {
-            return (questionController.isCompleted.value)?const HGap(width: 0):Row(
+            return (preTestController.isCompleted.value)?const HGap(width: 0):Row(
               children: [
                 Container(
                   width:60,
@@ -51,7 +54,7 @@ class PreTestScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   child: Center(
                     child: Text(
-                      '${questionController.correctAnswersCount}',
+                      '${preTestController.correctAnswersCount}',
                       style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -68,7 +71,7 @@ class PreTestScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   child: Center(
                     child: Text(
-                      '${questionController.wrongAnswersCount}',
+                      '${preTestController.wrongAnswersCount}',
                       style: GoogleFonts.poppins(
                           fontSize: 18,
                           fontWeight: FontWeight.w500,
@@ -82,7 +85,7 @@ class PreTestScreen extends StatelessWidget {
         ],
         title: Obx(() {
           return Text(
-            questionController.isCompleted.value
+            preTestController.isCompleted.value
                 ? "Pre-Test Completed"
                 : "Pre-Test Screen",
             style: GoogleFonts.poppins(
@@ -91,10 +94,10 @@ class PreTestScreen extends StatelessWidget {
         }),
       ),
       body: Obx(() {
-        if (questionController.isCompleted.value) {
+        if (preTestController.isCompleted.value) {
           return Stack(
             children: [
-              questionController.getResultMessage() == 'Pass'
+              preTestController.getResultMessage() == 'Pass'
                   ? Align(
                 alignment: Alignment.topCenter,
                 child: Image.asset(
@@ -109,11 +112,11 @@ class PreTestScreen extends StatelessWidget {
                 children: [
                   SizedBox(height: 20),
                   Text(
-                    questionController.getResultMessage(),
+                    preTestController.getResultMessage(),
                     style: GoogleFonts.poppins(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: questionController.getResultMessage() == 'Pass'
+                        color: preTestController.getResultMessage() == 'Pass'
                             ? Colors.green
                             : Colors.red),
                   ),
@@ -129,7 +132,7 @@ class PreTestScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20)),
                         child: Center(
                           child: Text(
-                            'Correct: ${questionController.correctAnswersCount}',
+                            'Correct: ${preTestController.correctAnswersCount}',
                             style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -145,7 +148,7 @@ class PreTestScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20)),
                         child: Center(
                           child: Text(
-                            'Wrong: ${questionController.wrongAnswersCount}',
+                            'Wrong: ${preTestController.wrongAnswersCount}',
                             style: GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
@@ -158,9 +161,9 @@ class PreTestScreen extends StatelessWidget {
                   SizedBox(height: 20),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: questionController.questions.length,
+                      itemCount: preTestController.pretest.length,
                       itemBuilder: (context, index) {
-                        final question = questionController.questions[index];
+                        final question = preTestController.pretest[index];
                         return Container(
                           margin: EdgeInsets.symmetric(
                               vertical: 10, horizontal: 15),
@@ -173,7 +176,7 @@ class PreTestScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '${index + 1}: ${question.questionText}',
+                                '${index + 1}: ${question['question']}',
                                 style: GoogleFonts.poppins(
                                     fontSize: 18, color: Colors.white),
                               ),
@@ -187,11 +190,10 @@ class PreTestScreen extends StatelessWidget {
                                   borderRadius:
                                   BorderRadius.circular(10),
                                 ),
-                                child: Text(
-                                  question.answers[
-                                  question.correctAnswerIndex],
+                                child: Text(question['answer'].toString(),
+                                  // preTestController.question.correctAnswerIndex,
                                   style: GoogleFonts.poppins(
-                                      fontSize: 16, color: Colors.black),
+                                      fontSize: 16, color: Colors.white),
                                 ),
                               ),
                             ],
@@ -202,7 +204,7 @@ class PreTestScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      questionController.resetQuiz();
+                      preTestController.resetQuiz();
                     },
                     child: Container(
                       width: AppConstants().mediaSize.width,
@@ -228,7 +230,8 @@ class PreTestScreen extends StatelessWidget {
               ),
             ],
           );
-        } else {
+        }
+        else {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,7 +240,7 @@ class PreTestScreen extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
-                  '${questionController.currentQuestionIndex.value + 1}: ${questionController.questions[questionController.currentQuestionIndex.value].questionText}',
+                  '${preTestController.currentQuestionIndex.value + 1}: ${preTestController.pretest[preTestController.currentQuestionIndex.value]['question']}',
                   style: GoogleFonts.poppins(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -246,54 +249,77 @@ class PreTestScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              ...questionController
-                  .questions[questionController.currentQuestionIndex.value]
-                  .answers
-                  .asMap()
-                  .entries
-                  .map((entry) {
-                int idx = entry.key;
-                String answer = entry.value;
-                Color buttonColor;
-
-                if (questionController.selectedAnswerIndex.value == null) {
-                  buttonColor = Colors.white;
-                } else if (idx ==
-                    questionController
-                        .questions[
-                    questionController.currentQuestionIndex.value]
-                        .correctAnswerIndex) {
-                  buttonColor = Colors.green;
-                } else if (idx ==
-                    questionController.selectedAnswerIndex.value) {
-                  buttonColor = Colors.red;
-                } else {
-                  buttonColor = Colors.white;
-                }
-
-                return GestureDetector(
-                  onTap: questionController.selectedAnswerIndex.value == null
-                      ? () {
-                    questionController.checkAnswer(idx);
-                  }
-                      : null,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: buttonColor),
-                    child: Text(
-                      answer,
-                      style: GoogleFonts.poppins(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
+              ///Option1
+              GestureDetector(
+                onTap: (){
+                  preTestController.checkAnswer(preTestController.pretest[preTestController.currentQuestionIndex.value]['option_one'].toString(), preTestController.currentQuestionIndex.value, preTestController.pretest[preTestController.currentQuestionIndex.value]['answer'].toString());
+                },
+                child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          // color: buttonColor
+                          color: Colors.grey
+                      ),
+                      child: Text(
+                        preTestController.pretest[preTestController.currentQuestionIndex.value]['option_one'].toString(),
+                        style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+              ),
+              SizedBox(height: 20),
+              ///Option 2
+              GestureDetector(
+                onTap: (){
+                  preTestController.checkAnswer(preTestController.pretest[preTestController.currentQuestionIndex.value]['option_two'].toString(), preTestController.currentQuestionIndex.value, preTestController.pretest[preTestController.currentQuestionIndex.value]['answer'].toString());
+                },
+                child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          // color: buttonColor
+                          color: Colors.grey
+                      ),
+                      child: Text(
+                        preTestController.pretest[preTestController.currentQuestionIndex.value]['option_two'].toString(),
+                        style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
+              ),
+              SizedBox(height: 20),
+              ///Option three
+              GestureDetector(
+                onTap: (){
+                  preTestController.checkAnswer(preTestController.pretest[preTestController.currentQuestionIndex.value]['option_three'].toString(), preTestController.currentQuestionIndex.value, preTestController.pretest[preTestController.currentQuestionIndex.value]['answer'].toString());
+                },
+                child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          // color: buttonColor
+                          color: Colors.grey
+                      ),
+                      child: Text(
+                        preTestController.pretest[preTestController.currentQuestionIndex.value]['option_three'].toString(),
+                        style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black),
+                      ),
+                    ),
+              ),
               SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,7 +327,7 @@ class PreTestScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      questionController.resetQuiz();
+                      preTestController.resetQuiz();
                       Get.back();
                     },
                     child: Container(
@@ -324,11 +350,11 @@ class PreTestScreen extends StatelessWidget {
                   const HGap(width: 15),
                   GestureDetector(
                     onTap: () {
-                      if (questionController.selectedAnswerIndex.value ==
+                      if (preTestController.selectedAnswerIndex.value ==
                           null) {
                         showValidationMessage();
                       } else {
-                        questionController.nextQuestion();
+                        preTestController.nextQuestion();
                       }
                     },
                     child: Container(

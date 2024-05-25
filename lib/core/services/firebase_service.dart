@@ -54,6 +54,7 @@ class FirebaseService {
       return [];
     }
   }
+
   Future<List<Map<String, String>>> fetchHowToApply() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('howtoapply').get();
@@ -113,6 +114,25 @@ class FirebaseService {
       }).toList();
     } catch (e) {
       print('Error fetching subBanner: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchPreTestQuestions() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('pretest').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'question': doc['question'] as String,
+          'answer': doc['answer'] as String,
+          'option_one': doc['option_one'] as String,
+          'option_two': doc['option_two'] as String,
+          'option_three': doc['option_three'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching pretest questions: $e');
       return [];
     }
   }
