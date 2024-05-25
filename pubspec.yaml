@@ -21,6 +21,7 @@ dependencies:
   translator: ^1.0.0
   firebase_core: ^2.31.0
   cloud_firestore: ^4.17.3
+  loading_animation_widget: ^1.2.1
 
 dev_dependencies:
   flutter_test:

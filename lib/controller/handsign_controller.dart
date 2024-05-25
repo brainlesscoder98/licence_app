@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import '../core/services/firebase_service.dart';
 
@@ -7,12 +6,13 @@ class HandSignController extends GetxController {
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    fetchHandSigns();
+   await fetchData(); // Changed from fetchHandSigns to fetchData
   }
 
-  void fetchHandSigns() async {
+  // Renamed fetchHandSigns to fetchData
+  Future<void> fetchData() async {
     var data = await _firebaseService.fetchHandSigns();
     handSigns.value = data;
   }

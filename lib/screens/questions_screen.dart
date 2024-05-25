@@ -2,13 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../app_constants/app_constants.dart';
 import '../controller/signboard_controller.dart';
 import '../custom_widgets/c_questions.dart';
 
 class QuestionsScreen extends StatelessWidget {
   final SignboardController signboardController = Get.put(SignboardController());
-
+  Future<void> _refreshData() async {
+    await signboardController.fetchData(); // Example: fetching data again
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,19 +49,24 @@ class QuestionsScreen extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(() {
           if (signboardController.signboards.isEmpty) {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: LoadingAnimationWidget.flickr(
+              size: 50, leftDotColor: Colors.blue, rightDotColor: Colors.red,
+            ));
           }
-          return ListView.builder(
-            itemCount: signboardController.signboards.length,
-            itemBuilder: (context, index) {
-              final signboard = signboardController.signboards[index];
-              return CQuestions(
-                name: signboard['name']!,
-                description: signboard['description']!,
-                index: index,
-                color: Colors.white,
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: _refreshData,
+            child: ListView.builder(
+              itemCount: signboardController.signboards.length,
+              itemBuilder: (context, index) {
+                final signboard = signboardController.signboards[index];
+                return CQuestions(
+                  name: signboard['name']!,
+                  description: signboard['description']!,
+                  index: index,
+                  color: Colors.white,
+                );
+              },
+            ),
           );
         }),
       ),

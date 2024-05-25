@@ -23,6 +23,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchHandSigns() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('handsigns').get();
+      print("Apicalls ::: handsigns");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -32,7 +33,71 @@ class FirebaseService {
         };
       }).toList();
     } catch (e) {
-      print('Error fetching signboards: $e');
+      print('Error fetching handSigns: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchRoadSigns() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('roadsigns').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'title': doc['title'] as String,
+          'description': doc['description'] as String,
+          'imageUrl': doc['imageUrl'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching roadSigns: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchRtoCodes() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('rtocodes').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'title': doc['title'] as String,
+          'description': doc['description'] as String,
+          'imageUrl': doc['imageUrl'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching rtocodes: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchMainBanner() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('mainbanner').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'imageUrl': doc['imageUrl'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching mainBanner: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchSubBanner() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('subbanner').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'imageUrl': doc['imageUrl'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching subBanner: $e');
       return [];
     }
   }
