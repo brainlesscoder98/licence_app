@@ -54,6 +54,21 @@ class FirebaseService {
       return [];
     }
   }
+  Future<List<Map<String, String>>> fetchHowToApply() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('howtoapply').get();
+      return snapshot.docs.map((doc) {
+        // Ensure values are cast to String
+        return {
+          'title': doc['title'] as String,
+          'sub_title': doc['sub_title'] as String,
+        };
+      }).toList();
+    } catch (e) {
+      print('Error fetching howto apply: $e');
+      return [];
+    }
+  }
 
   Future<List<Map<String, String>>> fetchRtoCodes() async {
     try {
