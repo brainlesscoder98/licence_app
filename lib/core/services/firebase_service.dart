@@ -6,6 +6,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchSignboards() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('signboards').get();
+      print("Apicalls ::: signboards");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -41,6 +42,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchRoadSigns() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('roadsigns').get();
+      print("Apicalls ::: roadsigns");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -58,6 +60,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchHowToApply() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('howtoapply').get();
+      print("Apicalls ::: howtoapply");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -74,6 +77,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchRtoCodes() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('rtocodes').get();
+      print("Apicalls ::: rtocodes");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -91,6 +95,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchMainBanner() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('mainbanner').get();
+      print("Apicalls ::: mainbanner");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -106,6 +111,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchSubBanner() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('subbanner').get();
+      print("Apicalls ::: subbanner");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {
@@ -121,6 +127,7 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchPreTestQuestions() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('pretest').get();
+      print("Apicalls ::: pretest");
       return snapshot.docs.map((doc) {
         // Ensure values are cast to String
         return {

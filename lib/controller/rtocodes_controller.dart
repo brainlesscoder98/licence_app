@@ -13,7 +13,7 @@ class RTOCodesController extends GetxController {
   }
 
   Future<void> fetchData() async {
-    var data = await _firebaseService.fetchRoadSigns();
+    var data = await _firebaseService.fetchRtoCodes();
     rtoCodes.value = data;
   }
 }

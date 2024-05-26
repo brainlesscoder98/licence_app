@@ -8,10 +8,10 @@ class BannerController extends GetxController {
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
-  void onInit() async {
+  void onInit()  {
     super.onInit();
-    await fetchMainBanner();
-    await fetchSubBanner();
+     fetchMainBanner();
+     fetchSubBanner();
   }
 
   Future<void> fetchMainBanner() async {
