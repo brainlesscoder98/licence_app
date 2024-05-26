@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
+import 'package:licence_app/main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../controller/signboard_controller.dart';
@@ -15,6 +16,7 @@ class SignBoardScreen extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    print("Selected App Language is ::: ${appStorage.read(AppConstants().appLang)}");
     return Scaffold(
       appBar:AppBar(
         automaticallyImplyLeading: true,
@@ -48,10 +50,21 @@ class SignBoardScreen extends StatelessWidget {
                 itemCount: signboardController.signboards.length,
                 itemBuilder: (context, index) {
                   final signboard = signboardController.signboards[index];
+                  String name = '';
+                  String description = '';
+                  switch (appStorage.read(AppConstants().appLang.toString())){
+                    case 'ml':
+                      name = signboard['name_ml'] ?? signboard['name'].toString();
+                      description = signboard['description_ml'] ??  signboard['description'].toString();
+                      break;
+                    default:
+                      name = signboard['name']!;
+                      description = signboard['description']!;
+                  }
                   return CCard(
                     imageUrl: signboard['imageUrl']!,
-                    name: signboard['name']!,
-                    description: signboard['description']!,
+                    name: name,
+                    description: description,
                     index: index,
                     color: Colors.white,
                   );

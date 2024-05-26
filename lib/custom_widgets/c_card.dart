@@ -66,19 +66,27 @@ class CCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800),
+                  Container(
+                    width: AppConstants().mediaSize.width*0.55,
+                    child: Text(
+                      name,
+                      maxLines: 3,
+                      style: GoogleFonts.poppins(
+                          fontSize: 15,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800),
+                    ),
                   ),
-                  Text(
-                    description,
-                    style: GoogleFonts.poppins(
-                        fontSize: 12,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400),
+                  SizedBox(
+                    width: AppConstants().mediaSize.width*0.55,
+                    child: Text(
+                      description,
+                      maxLines: 3,
+                      style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400),
+                    ),
                   )
                 ],
               ),

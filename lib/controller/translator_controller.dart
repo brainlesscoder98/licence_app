@@ -13,14 +13,6 @@ class TranslationController extends GetxController {
     }
   }
 
-  Future<void> translateDynamicTexts(List<Map<String, String>> items, String targetLanguage) async {
-    for (var item in items) {
-      var translatedName = await _translationService.translate(item['name']!, targetLanguage);
-      var translatedDescription = await _translationService.translate(item['description']!, targetLanguage);
-      translatedTexts[item['name']!] = translatedName;
-      translatedTexts[item['description']!] = translatedDescription;
-    }
-  }
 
   String getTranslated(String key) {
     return translatedTexts[key] ?? key;

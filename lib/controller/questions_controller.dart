@@ -8,28 +8,9 @@ class QuestionController extends GetxController {
   var wrongAnswersCount = 0.obs;
   var selectedAnswerIndex = Rxn<int>();
   var isCompleted = false.obs;
-
-  var pretest = <Map<String, String>>[].obs;
   final FirebaseService _firebaseService = FirebaseService();
+  var pretest = <Map<String, String>>[].obs;
 
-
-  // void checkAnswer(int selectedIndex) {
-  //   selectedAnswerIndex.value = selectedIndex;
-  //   if (selectedIndex == questions[currentQuestionIndex.value].correctAnswerIndex) {
-  //     correctAnswersCount++;
-  //   } else {
-  //     wrongAnswersCount++;
-  //   }
-  // }
-
-  // void nextQuestion() {
-  //   if (currentQuestionIndex < questions.length - 1) {
-  //     currentQuestionIndex++;
-  //     selectedAnswerIndex.value = null; // Reset the selected answer for the next question
-  //   } else {
-  //     isCompleted.value = true;
-  //   }
-  // }
 
   void resetQuiz() {
     currentQuestionIndex.value = 0;
@@ -38,11 +19,6 @@ class QuestionController extends GetxController {
     selectedAnswerIndex.value = null;
     isCompleted.value = false;
   }
-
-  // String getResultMessage() {
-  //   double correctPercentage = (correctAnswersCount.value / questions.length) * 100;
-  //   return correctPercentage >= 60 ? 'Pass' : 'Fail';
-  // }
 }
 
 class Question {

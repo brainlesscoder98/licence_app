@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
 import 'package:licence_app/controller/handsign_controller.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
+import 'package:licence_app/main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class HandSignScreen extends StatelessWidget {
@@ -59,10 +60,21 @@ class HandSignScreen extends StatelessWidget {
                 itemCount: handSignController.handSigns.length,
                 itemBuilder: (context, index) {
                   final handSign = handSignController.handSigns[index];
+                  String name = '';
+                  String description = '';
+                  switch (appStorage.read(AppConstants().appLang.toString())){
+                    case 'ml':
+                      name = handSign['title_ml'] ?? handSign['title'].toString();
+                      description = handSign['description_ml'] ??  handSign['description'].toString();
+                      break;
+                    default:
+                      name = handSign['title']!;
+                      description = handSign['description']!;
+                  }
                   return CCard(
                     imageUrl: handSign['imageUrl']!,
-                    name: handSign['title']!,
-                    description: handSign['description']!,
+                    name: name,
+                    description: description,
                     index: index,
                     color: Colors.white,
                   );

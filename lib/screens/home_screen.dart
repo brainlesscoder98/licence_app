@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:licence_app/main.dart';
+import '../controller/home_controller.dart';
 import '../controller/translator_controller.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
 import 'package:licence_app/screens/hand_sign_screen.dart';
@@ -20,8 +22,7 @@ import '../custom_widgets/middle_banner.dart';
 import 'how_to_apply.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-
+  final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController = Get.put(TranslationController());
 
   final List<String> items = [
@@ -78,29 +79,28 @@ class HomeScreen extends StatelessWidget {
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.black,
         actions: [
-          PopupMenuButton<String>(
-            color: Colors.white,iconColor: Colors.white,
-            onSelected: (String value) {
-              translateStaticData(value);
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  value: 'en',
-                  child: Text('English'),
-                ),
-                PopupMenuItem(
-                  value: 'hi',
-                  child: Text('हिन्दी'),
-                ),
-                PopupMenuItem(
-                  value: 'ml',
-                  child: Text('മലയാളം'),
-                ),
-                // Add more languages here
-              ];
-            },
-          ),
+          Obx(() {
+            if (homeController.languages.isEmpty) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return PopupMenuButton<String>(
+              color: Colors.white, iconColor: Colors.white,
+              onSelected: (String value) {
+                translateStaticData(value);
+                print('App Language :: $value');
+                appStorage.write(AppConstants().appLang, value);
+                homeController.update();
+              },
+              itemBuilder: (BuildContext context) {
+                return homeController.languages.map((language) {
+                  return PopupMenuItem(
+                    value: language['short_name']!,
+                    child: Text(language['title']!),
+                  );
+                }).toList();
+              },
+            );
+          }),
         ],
       ),
       drawer: const SideDrawer(),

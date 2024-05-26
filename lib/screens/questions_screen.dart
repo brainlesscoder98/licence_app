@@ -1,17 +1,21 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:licence_app/controller/translator_controller.dart';
+import 'package:licence_app/controller/signboard_controller.dart';
+import 'package:licence_app/custom_widgets/c_gap.dart';
+import 'package:licence_app/app_constants/app_constants.dart';
+import 'package:licence_app/custom_widgets/c_questions.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../app_constants/app_constants.dart';
-import '../controller/signboard_controller.dart';
-import '../custom_widgets/c_questions.dart';
 
 class QuestionsScreen extends StatelessWidget {
   final SignboardController signboardController = Get.put(SignboardController());
-    Future<void> _refreshData() async {
-      await signboardController.fetchData(); // Example: fetching data again
+  final TranslationController translationController = Get.put(TranslationController());
+
+  Future<void> _refreshData() async {
+    await signboardController.fetchData(); // Example: fetching data again
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +26,18 @@ class QuestionsScreen extends StatelessWidget {
           icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
           onPressed: () { Get.back(); },
         ),
-        title: Text(
-          "Questions",
-          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
-        ),
+        title: Obx(() {
+          return Text(
+            translationController.getTranslated('Questions'),
+            style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
+          );
+        }),
         actions: [
           PopupMenuButton<String>(
             color: Colors.white,
             iconColor: Colors.white,
             onSelected: (String value) {
-              // Handle language selection
+
             },
             itemBuilder: (BuildContext context) {
               return [
