@@ -7,6 +7,8 @@ import 'package:licence_app/custom_widgets/c_card.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../main.dart';
+
 class HowToApplyScreen extends StatelessWidget {
   final HowtoApplyController howtoApplyController = Get.put(HowtoApplyController());
   Future<void> _refreshData() async {
@@ -47,15 +49,17 @@ class HowToApplyScreen extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 itemCount: howtoApplyController.notes.length,
                 itemBuilder: (context, index) {
-                  final notes = howtoApplyController.notes[index];
+                  final howtoapply = howtoApplyController.notes[index];
+                  String title = _getLocalizedTitle(howtoapply);
+                  String subTitle = _getLocalizedDescription(howtoapply);
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const VGap(height: 15),
-                      Text( notes['title'].toString(),style: GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w700,color: Colors.white,),textAlign: TextAlign.left),
+                      Text(title.toString(),style: GoogleFonts.poppins(fontSize: 18,fontWeight: FontWeight.w700,color: Colors.white,),textAlign: TextAlign.left),
                       const VGap(height: 5),
-                      Text( notes['sub_title'].toString(),style: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.white,),textAlign: TextAlign.left),
+                      Text(subTitle.toString(),style: GoogleFonts.poppins(fontSize: 12,fontWeight: FontWeight.w500,color: Colors.white,),textAlign: TextAlign.left),
 
                     ],
                   );
@@ -66,5 +70,30 @@ class HowToApplyScreen extends StatelessWidget {
         }),
       )
     );
+  }
+  String _getLocalizedTitle(Map<String, String> howtoapply) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return howtoapply['title_ml'] ?? howtoapply['title'].toString();
+      case 'hi':
+        return howtoapply['title_hi'] ?? howtoapply['title'].toString();
+      case 'ta':
+        return howtoapply['title_ta'] ?? howtoapply['title'].toString();
+      default:
+        return howtoapply['title']!;
+    }
+  }
+
+  String _getLocalizedDescription(Map<String, String> howtoapply) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return howtoapply['sub_title_ml'] ?? howtoapply['sub_title'].toString();
+      case 'hi':
+        return howtoapply['sub_title_hi'] ?? howtoapply['sub_title'].toString();
+      case 'ta':
+        return howtoapply['sub_title_ta'] ?? howtoapply['sub_title'].toString();
+      default:
+        return howtoapply['sub_title']!;
+    }
   }
 }

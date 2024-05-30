@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../core/services/firebase_service.dart';
 
 class PreTestController extends GetxController {
@@ -9,8 +7,7 @@ class PreTestController extends GetxController {
   var wrongAnswersCount = 0.obs;
   var selectedAnswerIndex = Rxn<String>();
   var isCompleted = false.obs;
-  Color? buttonColor ;
-  var pretest = <Map<String, String>>[].obs;
+  var pretest = <Map<String, dynamic>>[].obs;
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
@@ -23,14 +20,15 @@ class PreTestController extends GetxController {
     var data = await _firebaseService.fetchPreTestQuestions();
     pretest.value = data;
   }
-  void checkAnswer(String selectedAnswer,int index,String correctAnswer) {
+
+  void checkAnswer(String selectedAnswer, String correctAnswer) {
     selectedAnswerIndex.value = selectedAnswer;
-    if (selectedAnswer == correctAnswer ) {
+    if (selectedAnswer == correctAnswer) {
       correctAnswersCount++;
-      print("selected answer is correct");
+      print("Selected answer is correct");
     } else {
       wrongAnswersCount++;
-      print("selected answer is wrong");
+      print("Selected answer is wrong");
     }
   }
 
@@ -55,16 +53,4 @@ class PreTestController extends GetxController {
     double correctPercentage = (correctAnswersCount.value / pretest.length) * 100;
     return correctPercentage >= 60 ? 'Pass' : 'Fail';
   }
-}
-
-class Question {
-  final String questionText;
-  final List<String> answers;
-  final int correctAnswerIndex;
-
-  Question({
-    required this.questionText,
-    required this.answers,
-    required this.correctAnswerIndex,
-  });
 }

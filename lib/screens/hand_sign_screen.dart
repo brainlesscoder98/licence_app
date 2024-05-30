@@ -60,20 +60,12 @@ class HandSignScreen extends StatelessWidget {
                 itemCount: handSignController.handSigns.length,
                 itemBuilder: (context, index) {
                   final handSign = handSignController.handSigns[index];
-                  String name = '';
-                  String description = '';
-                  switch (appStorage.read(AppConstants().appLang.toString())){
-                    case 'ml':
-                      name = handSign['title_ml'] ?? handSign['title'].toString();
-                      description = handSign['description_ml'] ??  handSign['description'].toString();
-                      break;
-                    default:
-                      name = handSign['title']!;
-                      description = handSign['description']!;
-                  }
+                  String title = _getLocalizedTitle(handSign);
+                  String description = _getLocalizedDescription(handSign);
+
                   return CCard(
                     imageUrl: handSign['imageUrl']!,
-                    name: name,
+                    name: title,
                     description: description,
                     index: index,
                     color: Colors.white,
@@ -85,5 +77,30 @@ class HandSignScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  String _getLocalizedTitle(Map<String, String> handsign) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return handsign['title_ml'] ?? handsign['title'].toString();
+      case 'hi':
+        return handsign['title_hi'] ?? handsign['title'].toString();
+      case 'ta':
+        return handsign['title_ta'] ?? handsign['title'].toString();
+      default:
+        return handsign['title']!;
+    }
+  }
+
+  String _getLocalizedDescription(Map<String, String> handsign) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return handsign['description_ml'] ?? handsign['description'].toString();
+      case 'hi':
+        return handsign['description_hi'] ?? handsign['description'].toString();
+      case 'ta':
+        return handsign['description_ta'] ?? handsign['description'].toString();
+      default:
+        return handsign['description']!;
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:licence_app/controller/rtocodes_controller.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../main.dart';
+
 class RtoCodeScreen extends StatelessWidget {
   final RTOCodesController rtoCodesController = Get.put(RTOCodesController());
   Future<void> _refreshData() async {
@@ -44,11 +46,14 @@ class RtoCodeScreen extends StatelessWidget {
                 physics: AlwaysScrollableScrollPhysics(),
                 itemCount: rtoCodesController.rtoCodes.length,
                 itemBuilder: (context, index) {
-                  final roadSign = rtoCodesController.rtoCodes[index];
+                  final rtocodes = rtoCodesController.rtoCodes[index];
+                  String title = _getLocalizedTitle(rtocodes);
+                  String description = _getLocalizedDescription(rtocodes);
+
                   return CCard(
-                    imageUrl: roadSign['imageUrl']!,
-                    name: roadSign['title']!,
-                    description: roadSign['description']!,
+                    imageUrl: rtocodes['imageUrl']!,
+                    name: title,
+                    description: description,
                     index: index,
                     color: Colors.white,
                   );
@@ -59,5 +64,30 @@ class RtoCodeScreen extends StatelessWidget {
         }),
       )
     );
+  }
+  String _getLocalizedTitle(Map<String, String> rtocode) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return rtocode['title_ml'] ?? rtocode['title'].toString();
+      case 'hi':
+        return rtocode['title_hi'] ?? rtocode['title'].toString();
+      case 'ta':
+        return rtocode['title_ta'] ?? rtocode['title'].toString();
+      default:
+        return rtocode['title']!;
+    }
+  }
+
+  String _getLocalizedDescription(Map<String, String> rtocode) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return rtocode['description_ml'] ?? rtocode['description'].toString();
+      case 'hi':
+        return rtocode['description_hi'] ?? rtocode['description'].toString();
+      case 'ta':
+        return rtocode['description_ta'] ?? rtocode['description'].toString();
+      default:
+        return rtocode['description']!;
+    }
   }
 }

@@ -6,6 +6,8 @@ import 'package:licence_app/controller/roadsign_controller.dart';
 import 'package:licence_app/custom_widgets/c_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../main.dart';
+
 class RoadSignScreen extends StatelessWidget {
   final RoadSignController roadSignController = Get.put(RoadSignController());
   Future<void> _refreshData() async {
@@ -46,10 +48,13 @@ class RoadSignScreen extends StatelessWidget {
                 itemCount: roadSignController.roadSigns.length,
                 itemBuilder: (context, index) {
                   final roadSign = roadSignController.roadSigns[index];
+                  String title = _getLocalizedTitle(roadSign);
+                  String description = _getLocalizedDescription(roadSign);
+
                   return CCard(
                     imageUrl: roadSign['imageUrl']!,
-                    name: roadSign['title']!,
-                    description: roadSign['description']!,
+                    name: title,
+                    description: description,
                     index: index,
                     color: Colors.white,
                   );
@@ -60,5 +65,30 @@ class RoadSignScreen extends StatelessWidget {
         }),
       )
     );
+  }
+  String _getLocalizedTitle(Map<String, String> roadsign) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return roadsign['title_ml'] ?? roadsign['title'].toString();
+      case 'hi':
+        return roadsign['title_hi'] ?? roadsign['title'].toString();
+      case 'ta':
+        return roadsign['title_ta'] ?? roadsign['title'].toString();
+      default:
+        return roadsign['title']!;
+    }
+  }
+
+  String _getLocalizedDescription(Map<String, String> roadsign) {
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return roadsign['description_ml'] ?? roadsign['description'].toString();
+      case 'hi':
+        return roadsign['description_hi'] ?? roadsign['description'].toString();
+      case 'ta':
+        return roadsign['description_ta'] ?? roadsign['description'].toString();
+      default:
+        return roadsign['description']!;
+    }
   }
 }

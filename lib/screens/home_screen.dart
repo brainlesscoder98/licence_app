@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/main.dart';
+import 'package:licence_app/screens/pre_questions.dart';
 import '../controller/home_controller.dart';
 import '../controller/translator_controller.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
@@ -144,7 +145,8 @@ class HomeScreen extends StatelessWidget {
                           Get.to(PreTestScreen());
                           break;
                         case 5:
-                          Get.to(TimerTestScreen());
+                          Get.to(PreQuestionScreen());
+                          // Get.to(TimerTestScreen());
                           break;
                         case 6:
                           Get.to(RtoCodeScreen());
