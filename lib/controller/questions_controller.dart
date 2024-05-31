@@ -1,34 +1,62 @@
 import 'package:get/get.dart';
 
+import '../app_constants/app_constants.dart';
 import '../core/services/firebase_service.dart';
+import '../main.dart';
 
 class QuestionController extends GetxController {
-  var currentQuestionIndex = 0.obs;
-  var correctAnswersCount = 0.obs;
-  var wrongAnswersCount = 0.obs;
-  var selectedAnswerIndex = Rxn<int>();
-  var isCompleted = false.obs;
   final FirebaseService _firebaseService = FirebaseService();
-  var pretest = <Map<String, String>>[].obs;
+  var questions = <Map<String, dynamic>>[].obs;
 
+  @override
+  void onInit() {
+    super.onInit();
+    fetchData();
+  }
 
-  void resetQuiz() {
-    currentQuestionIndex.value = 0;
-    correctAnswersCount.value = 0;
-    wrongAnswersCount.value = 0;
-    selectedAnswerIndex.value = null;
-    isCompleted.value = false;
+  Future<void> fetchData() async {
+    var data = await _firebaseService.fetchPreTestQuestions();
+    questions.value = data;
+  }
+
+  String getLocalizedQuestion(Map<String, dynamic> questionData) {
+    String question = questionData['question']?.toString() ?? 'No question';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return questionData['question_ml']?.toString() ?? question;
+      case 'hi':
+        return questionData['question_hi']?.toString() ?? question;
+      case 'ta':
+        return questionData['question_ta']?.toString() ?? question;
+      default:
+        return question;
+    }
+  }
+  String getLocalizedAnswer(Map<String, dynamic> answerData) {
+    String answerOne = answerData['answer_one']?.toString() ?? 'No option';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return answerData['answer_one_ml']?.toString() ?? answerOne;
+      case 'hi':
+        return answerData['answer_one_hi']?.toString() ?? answerOne;
+      case 'ta':
+        return answerData['answer_one_ta']?.toString() ?? answerOne;
+      default:
+        return answerOne;
+    }
+  }
+  String getLocalizedCorrectAnswer(Map<String, dynamic> answerData) {
+    String answerOne = answerData['answer']?.toString() ?? 'No option';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return answerData['answer_ml']?.toString() ?? answerOne;
+      case 'hi':
+        return answerData['answer_hi']?.toString() ?? answerOne;
+      case 'ta':
+        return answerData['answer_ta']?.toString() ?? answerOne;
+      default:
+        return answerOne;
+    }
   }
 }
 
-class Question {
-  final String questionText;
-  final List<String> answers;
-  final int correctAnswerIndex;
-
-  Question({
-    required this.questionText,
-    required this.answers,
-    required this.correctAnswerIndex,
-  });
-}

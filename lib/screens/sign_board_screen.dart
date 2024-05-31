@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
+import '../controller/home_controller.dart';
 import '../controller/signboard_controller.dart';
 import '../custom_widgets/c_card.dart';
 import '../app_constants/app_constants.dart';
@@ -10,6 +11,7 @@ import '../main.dart';
 
 class SignBoardScreen extends StatelessWidget {
   final SignboardController signboardController = Get.put(SignboardController());
+  final HomeController homeController = Get.put(HomeController());
 
   Future<void> _refreshData() async {
     await signboardController.fetchData();
@@ -29,6 +31,31 @@ class SignBoardScreen extends StatelessWidget {
             Get.back();
           },
         ),
+        actions: [
+          Obx(() {
+            if (homeController.languages.isEmpty) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return PopupMenuButton<String>(
+              color: Colors.white,
+              iconColor: Colors.white,
+              onSelected: (String value) {
+                // translateStaticData(value);
+                print('App Language :: $value');
+                appStorage.write(AppConstants().appLang, value);
+                signboardController.onInit();
+              },
+              itemBuilder: (BuildContext context) {
+                return homeController.languages.map((language) {
+                  return PopupMenuItem(
+                    value: language['short_name']!,
+                    child: Text(language['title']!),
+                  );
+                }).toList();
+              },
+            );
+          }),
+        ],
         title: Text(
           "Sign Board",
           style: GoogleFonts.poppins(

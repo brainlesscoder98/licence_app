@@ -69,7 +69,6 @@ class PreQuestionController extends GetxController {
         return question;
     }
   }
-
   String getLocalizedAnswer(Map<String, dynamic> answerData) {
     String answerOne = answerData['answer_one']?.toString() ?? 'No option';
     switch (appStorage.read(AppConstants().appLang.toString())) {
