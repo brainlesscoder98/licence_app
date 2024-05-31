@@ -1,12 +1,15 @@
 import 'package:get/get.dart';
+import 'package:licence_app/main.dart';
 import '../app_constants/app_constants.dart';
 import '../core/services/firebase_service.dart';
-import '../main.dart';
 
-class PreQuestionsController extends GetxController {
-  var pretest = <Map<String, dynamic>>[].obs;
-  var selectedAnswers = <int, int>{}.obs;
+class PreQuestionController extends GetxController {
   var currentQuestionIndex = 0.obs;
+  var correctAnswersCount = 0.obs;
+  var wrongAnswersCount = 0.obs;
+  var selectedAnswerIndex = Rxn<int>();
+  var isCompleted = false.obs;
+  var pretest = <Map<String, dynamic>>[].obs;
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
@@ -20,22 +23,37 @@ class PreQuestionsController extends GetxController {
     pretest.value = data;
   }
 
-  void selectAnswer(int questionIndex, int answerIndex) {
-    selectedAnswers[questionIndex] = answerIndex;
-    update();
-  }
-
-  void moveToNextQuestion() {
-    if (currentQuestionIndex < pretest.length - 1) {
-      currentQuestionIndex++;
-      // Reset selected answer for the next question
-      selectedAnswers.remove(currentQuestionIndex);
-      update();
+  void checkAnswer(int selectedAnswerIndex, bool correctAnswer) {
+    this.selectedAnswerIndex.value = selectedAnswerIndex;
+    if (correctAnswer) {
+      correctAnswersCount++;
+      print("Selected answer is correct");
+    } else {
+      wrongAnswersCount++;
+      print("Selected answer is wrong");
     }
   }
 
-  bool isCorrectAnswer(int questionIndex) {
-    return selectedAnswers[questionIndex] == pretest[questionIndex]['correct_answer'];
+  void nextQuestion() {
+    if (currentQuestionIndex.value < pretest.length - 1) {
+      currentQuestionIndex++;
+      selectedAnswerIndex.value = null; // Reset the selected answer for the next question
+    } else {
+      isCompleted.value = true;
+    }
+  }
+
+  void resetQuiz() {
+    currentQuestionIndex.value = 0;
+    correctAnswersCount.value = 0;
+    wrongAnswersCount.value = 0;
+    selectedAnswerIndex.value = null;
+    isCompleted.value = false;
+  }
+
+  String getResultMessage() {
+    double correctPercentage = (correctAnswersCount.value / pretest.length) * 100;
+    return correctPercentage >= 60 ? 'Pass' : 'Fail';
   }
 
   String getLocalizedQuestion(Map<String, dynamic> questionData) {
@@ -61,6 +79,19 @@ class PreQuestionsController extends GetxController {
         return answerData['answer_one_hi']?.toString() ?? answerOne;
       case 'ta':
         return answerData['answer_one_ta']?.toString() ?? answerOne;
+      default:
+        return answerOne;
+    }
+  }
+  String getLocalizedCorrectAnswer(Map<String, dynamic> answerData) {
+    String answerOne = answerData['answer']?.toString() ?? 'No option';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return answerData['answer_ml']?.toString() ?? answerOne;
+      case 'hi':
+        return answerData['answer_hi']?.toString() ?? answerOne;
+      case 'ta':
+        return answerData['answer_ta']?.toString() ?? answerOne;
       default:
         return answerOne;
     }

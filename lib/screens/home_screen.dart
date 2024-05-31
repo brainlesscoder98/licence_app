@@ -12,11 +12,7 @@ import 'package:licence_app/screens/questions_screen.dart';
 import 'package:licence_app/screens/road_sign_screen.dart';
 import 'package:licence_app/screens/rto_code_screen.dart';
 import 'package:licence_app/screens/sign_board_screen.dart';
-import 'package:licence_app/screens/pretest_screen.dart';
-import 'package:licence_app/screens/testing_screen.dart';
-import 'package:licence_app/screens/timer_test_screen.dart';
 import '../app_constants/app_constants.dart';
-import '../custom_widgets/c_appbar.dart';
 import '../custom_widgets/main_banner.dart';
 import '../custom_widgets/c_drawer.dart';
 import '../custom_widgets/middle_banner.dart';
@@ -142,7 +138,7 @@ class HomeScreen extends StatelessWidget {
                           Get.to(RoadSignScreen());
                           break;
                         case 4:
-                          Get.to(PreTestScreen());
+                          // Get.to(PreTestScreen());
                           break;
                         case 5:
                           Get.to(PreQuestionScreen());
