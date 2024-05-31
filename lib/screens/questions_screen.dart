@@ -79,7 +79,6 @@ class QuestionsScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final resultQuestionText = questionController.getLocalizedQuestion(questionController.questions[index]);
                 final resultAnswerText = questionController.getLocalizedCorrectAnswer(questionController.questions[index]);
-
                 return CQuestions(
                   name: resultQuestionText,
                   description: resultAnswerText,

@@ -32,6 +32,32 @@ class QuestionController extends GetxController {
         return question;
     }
   }
+  String getLocalizedQuestionText(Map<String, dynamic> questionData) {
+    String question = questionData['question_text']?.toString() ?? 'No question';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return questionData['question_text_ml']?.toString() ?? question;
+      case 'hi':
+        return questionData['question_text_hi']?.toString() ?? question;
+      case 'ta':
+        return questionData['question_text_ta']?.toString() ?? question;
+      default:
+        return question;
+    }
+  }
+  String getLocalizedAnswerText(Map<String, dynamic> questionData) {
+    String question = questionData['answer_text']?.toString() ?? 'No question';
+    switch (appStorage.read(AppConstants().appLang.toString())) {
+      case 'ml':
+        return questionData['answer_text_ml']?.toString() ?? question;
+      case 'hi':
+        return questionData['answer_text_hi']?.toString() ?? question;
+      case 'ta':
+        return questionData['answer_text_ta']?.toString() ?? question;
+      default:
+        return question;
+    }
+  }
   String getLocalizedAnswer(Map<String, dynamic> answerData) {
     String answerOne = answerData['answer_one']?.toString() ?? 'No option';
     switch (appStorage.read(AppConstants().appLang.toString())) {

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:licence_app/app_constants/app_constants.dart';
 import 'package:licence_app/custom_widgets/c_gap.dart';
 
+import '../controller/questions_controller.dart';
+
 class CQuestions extends StatelessWidget {
+  final QuestionController questionController = Get.put(QuestionController());
 
   final String name;
   final String description;
   final int index;
   final Color color;
 
-  const CQuestions({
+   CQuestions({
     Key? key,
     required this.name,
     required this.description,
@@ -20,6 +24,9 @@ class CQuestions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final queText = questionController.getLocalizedQuestionText(questionController.questions[index]);
+    final ansText = questionController.getLocalizedAnswerText(questionController.questions[index]);
+
     return Container(
         width: AppConstants().mediaSize.width,
         margin: EdgeInsets.symmetric(vertical: 10),
@@ -36,7 +43,7 @@ class CQuestions extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '${index+1}. Question\n',
+                    text: '${index+1}. $queText\n',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -60,7 +67,7 @@ class CQuestions extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Answer:\n',
+                    text: '$ansText:\n',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
