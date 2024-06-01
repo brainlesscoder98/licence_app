@@ -31,6 +31,10 @@ class FirebaseService {
     return _fetchCollection('languages');
   }
 
+  Future<List<Map<String, String>>> fetchHomeItems() async {
+    return _fetchCollection('homeitems');
+  }
+
   Future<List<Map<String, String>>> fetchSubBanner() async {
     return _fetchCollection('subbanner');
   }

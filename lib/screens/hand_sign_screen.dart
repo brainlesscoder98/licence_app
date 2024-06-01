@@ -8,6 +8,7 @@ import 'package:licence_app/main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../controller/home_controller.dart';
+import '../custom_widgets/c_appbar.dart';
 
 class HandSignScreen extends StatelessWidget {
   final HandSignController handSignController = Get.put(HandSignController());
@@ -20,53 +21,26 @@ class HandSignScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
-          onPressed: () {
-            Get.back();
-          },
-        ),
-        actions: [
-          Obx(() {
-            if (homeController.languages.isEmpty) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return PopupMenuButton<String>(
-              color: Colors.white,
-              iconColor: Colors.white,
-              onSelected: (String value) {
-                // translateStaticData(value);
-                print('App Language :: $value');
-                appStorage.write(AppConstants().appLang, value);
-                handSignController.onInit();
-              },
-              itemBuilder: (BuildContext context) {
-                return homeController.languages.map((language) {
-                  return PopupMenuItem(
-                    value: language['short_name']!,
-                    child: Text(language['title']!),
-                  );
-                }).toList();
-              },
-            );
-          }),
-        ],
-        title: Text(
-          "Hand Sign",
-          style: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: Colors.white,
-          ),
-        ),
+      appBar: CustomAppBar(
+        title: "Hand Sign",
+        onLanguageSelected: (String value) {
+          print('App Language :: $value');
+          appStorage.write(AppConstants().appLang, value);
+          handSignController.onInit();
+        },
       ),
       body: Container(
         height: AppConstants().mediaSize.height,
         decoration: BoxDecoration(
-          color: Colors.black,
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 0, 20, 21),
+              Color.fromARGB(255, 0, 0, 0), // Black
+              // Dark Teal
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+          ),
         ),
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(

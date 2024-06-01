@@ -41,9 +41,9 @@ class MainBanner extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20),
                       child: CachedNetworkImage(
                         imageUrl:url['imageUrl'].toString(),
-                        placeholder: (context, url) => Image.asset(
-                          'assets/images/stop_ai.jpg', // Replace with your placeholder image path
-                          fit: BoxFit.fitHeight,
+                        placeholder: (context, url) => Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/kerala-psc-papers.appspot.com/o/banners%2Fpexels-kelly-1179532-2876511.jpg?alt=media&token=eabcabf2-f01f-4db9-949d-dbc5c00045f3', // Replace with your placeholder image path
+                          fit: BoxFit.cover,
                         ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                         fit: BoxFit.cover,

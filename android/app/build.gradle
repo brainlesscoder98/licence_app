@@ -68,4 +68,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.firebase:firebase-auth'
 }

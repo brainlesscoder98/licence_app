@@ -11,7 +11,7 @@ class BannerController extends GetxController {
   void onInit()  {
     super.onInit();
      fetchMainBanner();
-     fetchSubBanner();
+
   }
 
   Future<void> fetchMainBanner() async {
@@ -19,8 +19,8 @@ class BannerController extends GetxController {
     mainBanner.value = data;
   }
 
-  Future<void>  fetchSubBanner() async {
-    var data = await _firebaseService.fetchSubBanner();
-    subBanner.value = data;
-  }
+  // Future<void>  fetchSubBanner() async {
+  //   var data = await _firebaseService.fetchSubBanner();
+  //   subBanner.value = data;
+  // }
 }
