@@ -4,8 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:licence_app/custom_widgets/c_gap.dart';
-import 'package:licence_app/screens/home_screen.dart';
+import 'package:license_master/custom_widgets/c_gap.dart';
+import 'package:license_master/screens/home_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../app_constants/app_constants.dart';

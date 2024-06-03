@@ -33,17 +33,7 @@ class SignBoardScreen extends StatelessWidget {
       ),
       body: Container(
         height: AppConstants().mediaSize.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 20, 21),
-              Color.fromARGB(255, 0, 0, 0), // Black
-              // Dark Teal
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
+        decoration:GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(() {
           if (signboardController.signboards.isEmpty) {

@@ -1,6 +1,6 @@
 // translation_controller.dart
 import 'package:get/get.dart';
-import 'package:licence_app/controller/translator_service.dart';
+import 'package:license_master/controller/translator_service.dart';
 
 class TranslationController extends GetxController {
   final TranslationService _translationService = TranslationService();

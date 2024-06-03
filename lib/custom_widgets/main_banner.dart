@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:licence_app/controller/banner_controller.dart';
+import 'package:license_master/controller/banner_controller.dart';
 
 class MainBanner extends StatelessWidget {
   final BannerController bannerController = Get.put(BannerController());

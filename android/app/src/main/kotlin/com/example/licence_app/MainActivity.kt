@@ -1,4 +1,4 @@
-package com.licence.app
+package com.licence.master
 
 import io.flutter.embedding.android.FlutterActivity
 

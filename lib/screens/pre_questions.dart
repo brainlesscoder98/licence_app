@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-import 'package:licence_app/controller/home_controller.dart';
-import 'package:licence_app/custom_widgets/c_gap.dart';
+import 'package:license_master/controller/home_controller.dart';
+import 'package:license_master/custom_widgets/c_gap.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 
@@ -38,17 +38,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
         },
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 20, 21),
-              Color.fromARGB(255, 0, 0, 0), // Black
-              // Dark Teal
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
+        decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
             if (preQuestionController.pretest.isEmpty) {

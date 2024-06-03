@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:licence_app/app_constants/app_constants.dart';
-import 'package:licence_app/controller/roadsign_controller.dart';
-import 'package:licence_app/custom_widgets/c_card.dart';
+import 'package:license_master/app_constants/app_constants.dart';
+import 'package:license_master/controller/roadsign_controller.dart';
+import 'package:license_master/custom_widgets/c_card.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../controller/home_controller.dart';
@@ -31,17 +31,7 @@ class RoadSignScreen extends StatelessWidget {
         ),
       body:Container(
         height: AppConstants().mediaSize.height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 20, 21),
-              Color.fromARGB(255, 0, 0, 0), // Black
-              // Dark Teal
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
+        decoration: GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
         child: Obx((){
           if (roadSignController.roadSigns.isEmpty) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:licence_app/controller/home_controller.dart';
-import 'package:licence_app/main.dart';
+import 'package:license_master/controller/home_controller.dart';
+import 'package:license_master/main.dart';
 
 import '../app_constants/app_constants.dart';
 
@@ -42,17 +42,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
       body: Container(
         height: Get.height,
         width: Get.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 20, 21),
-              Color.fromARGB(255, 0, 0, 0), // Black
-              // Dark Teal
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
+        decoration: GlobalDecoration.containerDecoration,
         child: Padding(
           padding: const EdgeInsets.only(top: 80),
           child: ListView.builder(
@@ -63,7 +53,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
                 onTap: (){
                   appStorage.write(AppConstants().appLang, language['short_name']!);
                   setState(() {
-
+                    homeController.onInit();
                   });
                 },
                 child: Container(

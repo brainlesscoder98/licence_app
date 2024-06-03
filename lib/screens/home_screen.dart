@@ -2,18 +2,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:licence_app/main.dart';
-import 'package:licence_app/screens/pre_questions.dart';
-import 'package:licence_app/screens/timer_test_screen.dart';
+import 'package:license_master/main.dart';
+import 'package:license_master/screens/pre_questions.dart';
+import 'package:license_master/screens/timer_test_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../controller/home_controller.dart';
 import '../controller/translator_controller.dart';
-import 'package:licence_app/custom_widgets/c_gap.dart';
-import 'package:licence_app/screens/hand_sign_screen.dart';
-import 'package:licence_app/screens/questions_screen.dart';
-import 'package:licence_app/screens/road_sign_screen.dart';
-import 'package:licence_app/screens/rto_code_screen.dart';
-import 'package:licence_app/screens/sign_board_screen.dart';
+import 'package:license_master/custom_widgets/c_gap.dart';
+import 'package:license_master/screens/hand_sign_screen.dart';
+import 'package:license_master/screens/questions_screen.dart';
+import 'package:license_master/screens/road_sign_screen.dart';
+import 'package:license_master/screens/rto_code_screen.dart';
+import 'package:license_master/screens/sign_board_screen.dart';
 import '../app_constants/app_constants.dart';
 import '../custom_widgets/main_banner.dart';
 import '../custom_widgets/c_drawer.dart';
@@ -24,28 +24,6 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
       Get.put(TranslationController());
-
-  final List<String> items = [
-    'Question',
-    'Sign Board',
-    'Hand Sign',
-    'Road sign',
-    'Pre-test',
-    'Timer-test',
-    'RTO-code',
-    'How to apply'
-  ];
-
-  final List<String> itemsImages = [
-    'assets/images/questions.jpg',
-    'assets/images/sign_board.jpg',
-    'assets/images/hand_gesture.jpg',
-    'assets/images/road.jpg',
-    'assets/images/pre_test.jpg',
-    'assets/images/timer.jpg',
-    'assets/images/rto_code.jpg',
-    'assets/images/apply.jpg',
-  ];
 
   List<Color> itemsColor = [
     Colors.amber,
@@ -79,17 +57,7 @@ class HomeScreen extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.black,
           flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 0, 20, 21),
-                  Color.fromARGB(255, 0, 0, 0), // Black
-                  // Dark Teal
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
+            decoration: GlobalDecoration.containerDecoration,
           ),
           elevation: 0,
           actions: [
@@ -98,7 +66,8 @@ class HomeScreen extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               }
               return PopupMenuButton<String>(
-                color: Colors.white,
+                color: Colors.teal,
+
                 iconColor: Colors.white,
                 onSelected: (String value) {
                   translateStaticData(value);
@@ -110,7 +79,8 @@ class HomeScreen extends StatelessWidget {
                   return homeController.languages.map((language) {
                     return PopupMenuItem(
                       value: language['short_name']!,
-                      child: Text(language['title']!),
+                      enabled: true,
+                      child: Text(language['title']!,style: GoogleFonts.poppins(fontSize:14,color:Colors.white),),
                     );
                   }).toList();
                 },
@@ -118,8 +88,8 @@ class HomeScreen extends StatelessWidget {
             }),
           ],
         ),
-        drawer: const SideDrawer(),
-        backgroundColor: Colors.white,
+        drawer:  SideDrawer(),
+        backgroundColor: Colors.black,
         body: Obx(() {
           if (homeController.homeItems.isEmpty) {
             return Center(
@@ -131,17 +101,7 @@ class HomeScreen extends StatelessWidget {
           }
           return Center(
             child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Color.fromARGB(255, 0, 20, 21),
-                    Color.fromARGB(255, 0, 0, 0), // Black
-                    Color.fromARGB(255, 0, 20, 21), // Dark Teal
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
+              decoration:GlobalDecoration.containerDecoration,
               child: ListView(
                 children: [
                   MainBanner(),

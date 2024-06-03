@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:licence_app/app_constants/app_constants.dart';
-import 'package:licence_app/custom_widgets/c_gap.dart';
+import 'package:license_master/app_constants/app_constants.dart';
+import 'package:license_master/custom_widgets/c_gap.dart';
 
 class CCard extends StatelessWidget {
   final String imageUrl;

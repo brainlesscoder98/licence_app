@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:licence_app/screens/home_screen.dart';
+import 'package:license_master/screens/home_screen.dart';
 
 import 'firebase_options.dart';
 

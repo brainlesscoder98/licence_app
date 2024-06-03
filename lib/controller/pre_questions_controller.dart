@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:licence_app/main.dart';
+import 'package:license_master/main.dart';
 import '../app_constants/app_constants.dart';
 import '../core/services/firebase_service.dart';
 

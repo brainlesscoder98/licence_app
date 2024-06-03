@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
-import 'package:licence_app/controller/home_controller.dart';
-import 'package:licence_app/custom_widgets/c_gap.dart';
+import 'package:license_master/controller/home_controller.dart';
+import 'package:license_master/custom_widgets/c_gap.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import '../app_constants/app_constants.dart';
@@ -27,7 +27,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
       appBar: CustomAppBar(
         title: timerTestController.isCompleted.value == true
             ? 'Timer-test Completed'
-            : "Timre-Test Questions",
+            : "Timer-Test Questions",
         onLanguageSelected: (String value) {
           print('App Language :: $value');
           appStorage.write(AppConstants().appLang, value);
@@ -35,17 +35,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
         },
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 0, 20, 21),
-              Color.fromARGB(255, 0, 0, 0), // Black
-              // Dark Teal
-            ],
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-          ),
-        ),
+        decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
             if (timerTestController.pretest.isEmpty) {
