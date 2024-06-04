@@ -60,7 +60,7 @@ class HandSignScreen extends StatelessWidget {
                     name: title,
                     description: description,
                     index: index,
-                    color: Colors.white,
+                    color: Colors.blue.withOpacity(0.5),
                   );
                 },
               ),

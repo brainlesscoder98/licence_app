@@ -1,5 +1,9 @@
 // home_screen.dart
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/main.dart';
@@ -24,6 +28,16 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
       Get.put(TranslationController());
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 18) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  }
 
   List<Color> itemsColor = [
     Colors.amber,
@@ -36,18 +50,123 @@ class HomeScreen extends StatelessWidget {
     Colors.blueGrey,
   ];
 
-  void translateStaticData(String targetLanguage) {
-    var texts = {
-      'Question': 'Question',
-      'Sign Board': 'Sign Board',
-      'Hand Sign': 'Hand Sign',
-      'Road sign': 'Road sign',
-      'Pre-test': 'Pre-test',
-      'Timer-test': 'Timer-test',
-      'RTO-code': 'RTO-code',
-      'How to apply': 'How to apply'
-    };
-    translationController.translateTexts(texts, targetLanguage);
+  Widget _itemContainer(
+      {required String title,
+      required String imageUrl,
+      required Color bgColor,
+      double? containerWidth}) {
+    return Container(
+      width: containerWidth ?? Get.width * 0.28,
+      height: Get.width * 0.3,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.blue.withOpacity(0.6),
+        boxShadow: [
+          BoxShadow(
+            color: bgColor.withOpacity(0.5), // Shadow color with opacity
+            spreadRadius: 2, // Spread radius
+            blurRadius: 8, // Blur radius
+            offset: Offset(1, 1), // Changes position of shadow
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Container(
+            width: containerWidth ?? Get.width * 0.28,
+            height: Get.width * 0.3,
+            decoration: BoxDecoration(
+              color:
+              Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width:(containerWidth)?? Get.width * 0.28,
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: bgColor.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                title,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    );
+  }
+
+  Widget _itemMainContainer(
+      {required String title,
+      required String imageUrl,
+      required Color bgColor,
+      double? containerWidth}) {
+    return Container(
+      width: containerWidth ?? Get.width * 0.45,
+      height: Get.width * 0.3,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: NetworkImage(imageUrl),
+          fit: BoxFit.cover,
+        ),
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.blue.withOpacity(0.6),
+        boxShadow: [
+          BoxShadow(
+            color: bgColor.withOpacity(0.5), // Shadow color with opacity
+            spreadRadius: 2, // Spread radius
+            blurRadius: 8, // Blur radius
+            offset: Offset(1, 1), // Changes position of shadow
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Container(
+            width: containerWidth ?? Get.width * 0.45,
+            height: Get.width * 0.3,
+            decoration: BoxDecoration(
+              color:
+                  Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width:(containerWidth)?? Get.width * 0.45,
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              decoration: BoxDecoration(
+                color: bgColor.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                title,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -67,10 +186,8 @@ class HomeScreen extends StatelessWidget {
               }
               return PopupMenuButton<String>(
                 color: Colors.teal,
-
                 iconColor: Colors.white,
                 onSelected: (String value) {
-                  translateStaticData(value);
                   print('App Language :: $value');
                   appStorage.write(AppConstants().appLang, value);
                   homeController.onInit();
@@ -80,7 +197,11 @@ class HomeScreen extends StatelessWidget {
                     return PopupMenuItem(
                       value: language['short_name']!,
                       enabled: true,
-                      child: Text(language['title']!,style: GoogleFonts.poppins(fontSize:14,color:Colors.white),),
+                      child: Text(
+                        language['title']!,
+                        style: GoogleFonts.poppins(
+                            fontSize: 14, color: Colors.white),
+                      ),
                     );
                   }).toList();
                 },
@@ -88,7 +209,7 @@ class HomeScreen extends StatelessWidget {
             }),
           ],
         ),
-        drawer:  SideDrawer(),
+        drawer: SideDrawer(),
         backgroundColor: Colors.black,
         body: Obx(() {
           if (homeController.homeItems.isEmpty) {
@@ -101,126 +222,105 @@ class HomeScreen extends StatelessWidget {
           }
           return Center(
             child: Container(
-              decoration:GlobalDecoration.containerDecoration,
+              decoration: GlobalDecoration.containerDecoration,
+              padding: EdgeInsets.symmetric(horizontal: 15),
               child: ListView(
                 children: [
-                  MainBanner(),
-                  GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3, // Number of columns
-                      crossAxisSpacing: 8.0, // Spacing between columns
-                      mainAxisSpacing: 8.0, // Spacing between rows
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: homeController.homeItems.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final homeitems = homeController.homeItems[index];
-                      String imageUrl = _getImageUrl(homeitems);
-                      String title = _getLocalizedTitle(homeitems);
-                      return GestureDetector(
-                        onTap: () {
-                          // Perform individual routing based on the tapped item
-                          switch (index) {
-                            case 0:
-                              Get.to(QuestionsScreen());
-                              break;
-                            case 1:
-                              Get.to(SignBoardScreen());
-                              break;
-                            case 2:
-                              Get.to(HandSignScreen());
-                              break;
-                            case 3:
-                              Get.to(RoadSignScreen());
-                              break;
-                            case 4:
-                              Get.to(PreQuestionScreen());
-                              break;
-                            case 5:
-                              Get.to(TimerTestScreen());
-                              break;
-                            case 6:
-                              Get.to(RtoCodeScreen());
-                              break;
-                            case 7:
-                              Get.to(HowToApplyScreen());
-                              break;
-                            default:
-                              break;
-                          }
-                        },
-                        child: Card(
-                          elevation: 5,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              image: DecorationImage(
-                                image: NetworkImage(imageUrl),
-                                fit: BoxFit
-                                    .cover, // Adjust the image fit as per your requirement
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const VGap(height: 40),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 10),
-                                  child: Card(
-                                    elevation: 5,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20.0)),
-                                    ),
-                                    child: Container(
-                                      width:
-                                          AppConstants().mediaSize.width * 0.3,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: itemsColor[index],
-                                      ),
-                                      padding: const EdgeInsets.all(5),
-                                      child: Center(
-                                          child: Text(
-                                        title.toString(),
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                        textAlign: TextAlign.center,
-                                      )),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  Text(
+                    getGreeting().toString(),
+                    style: GoogleFonts.poppins(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
-                  // MiddleBanner()
+                  VGap(height: 20),
+                  MainBanner(),
+                  VGap(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _itemContainer(
+                        bgColor: itemsColor[0],
+                        imageUrl: _getImageUrl(homeController.homeItems[0])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[0])
+                            .toString(),
+                      ),
+                      _itemContainer(
+                        bgColor: itemsColor[1],
+                        imageUrl: _getImageUrl(homeController.homeItems[1])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[1])
+                            .toString(),
+                      ),
+                      _itemContainer(
+                        bgColor: itemsColor[2],
+                        imageUrl: _getImageUrl(homeController.homeItems[2])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[2])
+                            .toString(),
+                      ),
+                    ],
+                  ),
+                  VGap(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _itemMainContainer(
+                        bgColor: itemsColor[4],
+                        imageUrl: _getImageUrl(homeController.homeItems[4])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[4])
+                            .toString(),
+                      ),
+                      _itemMainContainer(
+                        bgColor: itemsColor[5],
+                        imageUrl: _getImageUrl(homeController.homeItems[5])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[5])
+                            .toString(),
+                      ),
+                    ],
+                  ),
+                  VGap(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _itemContainer(
+                        bgColor: itemsColor[3],
+                        imageUrl: _getImageUrl(homeController.homeItems[3])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[3])
+                            .toString(),
+                      ),
+                      _itemContainer(
+                        bgColor: itemsColor[6],
+                        imageUrl: _getImageUrl(homeController.homeItems[6])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[6])
+                            .toString(),
+                      ),
+                      _itemContainer(
+                        bgColor: itemsColor[7],
+                        imageUrl: _getImageUrl(homeController.homeItems[7])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[7])
+                            .toString(),
+                      ),
+                    ],
+                  ),
+                  VGap(height: 20),
                 ],
               ),
             ),
           );
         }));
   }
+
   String _getImageUrl(Map<String, String> homeitems) {
     return homeitems['imageUrl'].toString();
   }
+
   String _getLocalizedTitle(Map<String, String> homeitems) {
     switch (appStorage.read(AppConstants().appLang.toString())) {
       case 'ml':

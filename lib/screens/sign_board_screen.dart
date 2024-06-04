@@ -65,7 +65,7 @@ class SignBoardScreen extends StatelessWidget {
                     name: name,
                     description: description,
                     index: index,
-                    color: Colors.white,
+                    color: Colors.blue.withOpacity(0.5),
                   );
                 },
               ),

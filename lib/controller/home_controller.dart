@@ -38,6 +38,10 @@ class HomeController extends GetxController {
     String itemIndex = itemIndexs['index']?.toString() ?? "0";
     return itemIndex;
   }
+  String isDrawerItemVisible(Map<String, dynamic> drawerItem) {
+    String visibility = drawerItem['visibility'].toString()??'';
+    return visibility;
+  }
   String getLocalizedTitle(Map<String, dynamic> drawerItems) {
     String title = drawerItems['title']?.toString() ?? 'No Title';
     switch (appStorage.read(AppConstants().appLang.toString())) {

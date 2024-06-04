@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/app_constants/app_constants.dart';
 import 'package:license_master/controller/rtocodes_controller.dart';
 import 'package:license_master/custom_widgets/c_card.dart';
+import 'package:license_master/custom_widgets/c_table.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../controller/home_controller.dart';
@@ -39,7 +40,7 @@ class RtoCodeScreen extends StatelessWidget {
             ));
           }
           return Container(
-            height: AppConstants().mediaSize.height-128,
+            height: AppConstants().mediaSize.height,
             width: AppConstants().mediaSize.width,
             child: RefreshIndicator(
               onRefresh: _refreshData,
@@ -52,12 +53,11 @@ class RtoCodeScreen extends StatelessWidget {
                   String title = _getLocalizedTitle(rtocodes);
                   String description = _getLocalizedDescription(rtocodes);
 
-                  return CCard(
-                    imageUrl: rtocodes['imageUrl']!,
+                  return CTable(
                     name: title,
-                    description: description,
+                    code: description,
                     index: index,
-                    color: Colors.white,
+                    color: Colors.blue.withOpacity(0.5),
                   );
                 },
               ),

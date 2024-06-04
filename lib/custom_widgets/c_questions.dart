@@ -31,7 +31,7 @@ class CQuestions extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.white.withOpacity(0.3)),
+          border: Border.all(color: color),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
@@ -42,7 +42,7 @@ class CQuestions extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '${index+1}. $queText\n',
+                    text: '${index+1}. $queText :\n',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -66,7 +66,7 @@ class CQuestions extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '$ansText:\n',
+                    text: '$ansText :\n',
                     style: GoogleFonts.poppins(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,

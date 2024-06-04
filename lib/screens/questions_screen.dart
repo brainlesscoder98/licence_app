@@ -53,7 +53,7 @@ class QuestionsScreen extends StatelessWidget {
                   name: resultQuestionText,
                   description: resultAnswerText,
                   index: index,
-                  color: Colors.white,
+                  color: Colors.blue.withOpacity(0.5),
                 );
               },
             ),

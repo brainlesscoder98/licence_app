@@ -38,7 +38,7 @@ class CCard extends StatelessWidget {
               // padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 // color: color.withOpacity(0.2),
-                border: Border.all(color: color.withOpacity(0.2),),
+                border: Border.all(color: color),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
