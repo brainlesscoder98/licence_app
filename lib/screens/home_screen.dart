@@ -1,6 +1,7 @@
 // home_screen.dart
 import 'dart:ffi';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -25,6 +26,7 @@ import '../custom_widgets/middle_banner.dart';
 import 'how_to_apply.dart';
 
 class HomeScreen extends StatelessWidget {
+  String? _previousImageKey;
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
       Get.put(TranslationController());
@@ -49,7 +51,13 @@ class HomeScreen extends StatelessWidget {
     const Color(0xffd268cc),
     Colors.blueGrey,
   ];
-
+  String _getUniqueImageKey(String imageUrl) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return '$imageUrl-$timestamp';
+  }
+  Future<void> _refreshData() async {
+    homeController.onInit(); // Example: fetching data again
+  }
   Widget _itemContainer(
       {required String title,
       required String imageUrl,
@@ -62,10 +70,10 @@ class HomeScreen extends StatelessWidget {
         width: containerWidth ?? Get.width * 0.28,
         height: Get.width * 0.3,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: NetworkImage(imageUrl),
+          //   fit: BoxFit.cover,
+          // ),
           borderRadius: BorderRadius.circular(10),
           color: Colors.blue.withOpacity(0.6),
           boxShadow: [
@@ -79,35 +87,66 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Stack(
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(width: containerWidth ?? Get.width * 0.28,
+                height: Get.width * 0.3,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  cacheKey: _getUniqueImageKey(imageUrl), // Create unique cache key
+                  placeholder: (context, url) =>
+                      SizedBox(width: containerWidth ?? Get.width * 0.45,
+                          height: Get.width * 0.3,child: Image.asset('assets/images/app_logo.png')),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fadeOutDuration: Duration(milliseconds: 200), // Smooth fade-out
+                  fadeInDuration: Duration(milliseconds: 200), // Smooth fade-in
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover, // Adjust fit as needed
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Container(
               width: containerWidth ?? Get.width * 0.28,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color:
-                Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width:(containerWidth)?? Get.width * 0.28,
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                width: (containerWidth) ?? Get.width * 0.28,
+                padding: EdgeInsets.symmetric(horizontal: 2, vertical: 10),
                 decoration: BoxDecoration(
                   color: bgColor.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),textAlign: TextAlign.center,
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -126,10 +165,10 @@ class HomeScreen extends StatelessWidget {
         width: containerWidth ?? Get.width * 0.45,
         height: Get.width * 0.3,
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(imageUrl),
-            fit: BoxFit.cover,
-          ),
+          // image: DecorationImage(
+          //   image: NetworkImage(imageUrl),
+          //   fit: BoxFit.cover,
+          // ),
           borderRadius: BorderRadius.circular(10),
           color: Colors.blue.withOpacity(0.6),
           boxShadow: [
@@ -143,19 +182,43 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Stack(
           children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(width: containerWidth ?? Get.width * 0.45,
+                height: Get.width * 0.3,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  cacheKey: _getUniqueImageKey(imageUrl), // Create unique cache key
+                  placeholder: (context, url) =>
+                      SizedBox(width: containerWidth ?? Get.width * 0.45,
+                          height: Get.width * 0.3,child: Image.asset('assets/images/app_logo.png',fit: BoxFit.cover,)),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  fadeOutDuration: Duration(milliseconds: 200), // Smooth fade-out
+                  fadeInDuration: Duration(milliseconds: 200), // Smooth fade-in
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.cover, // Adjust fit as needed
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             Container(
               width: containerWidth ?? Get.width * 0.45,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color:
-                    Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width:(containerWidth)?? Get.width * 0.45,
+                width: (containerWidth) ?? Get.width * 0.45,
                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
                   color: bgColor.withOpacity(0.7),
@@ -167,7 +230,8 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                  ),textAlign: TextAlign.center,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -232,117 +296,120 @@ class HomeScreen extends StatelessWidget {
             child: Container(
               decoration: GlobalDecoration.containerDecoration,
               padding: EdgeInsets.symmetric(horizontal: 15),
-              child: ListView(
-                children: [
-                  Text(
-                    getGreeting().toString(),
-                    style: GoogleFonts.poppins(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  VGap(height: 20),
-                  MainBanner(),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => QuestionsScreen());
-                        },
-                        bgColor: itemsColor[0],
-                        imageUrl: _getImageUrl(homeController.homeItems[0])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[0])
-                            .toString(),
-                      ),
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => SignBoardScreen());
-                        },
-                        bgColor: itemsColor[1],
-                        imageUrl: _getImageUrl(homeController.homeItems[1])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[1])
-                            .toString(),
-                      ),
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => HandSignScreen());
-                        },
-                        bgColor: itemsColor[2],
-                        imageUrl: _getImageUrl(homeController.homeItems[2])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[2])
-                            .toString(),
-                      ),
-                    ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => RoadSignScreen());
-                        },
-                        bgColor: itemsColor[3],
-                        imageUrl: _getImageUrl(homeController.homeItems[3])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[3])
-                            .toString(),
-                      ),
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => RtoCodeScreen());
-                        },
-                        bgColor: itemsColor[6],
-                        imageUrl: _getImageUrl(homeController.homeItems[6])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[6])
-                            .toString(),
-                      ),
-                      _itemContainer(
-                        onTap: (){
-                          Get.to(() => HowToApplyScreen());
-                        },
-                        bgColor: itemsColor[7],
-                        imageUrl: _getImageUrl(homeController.homeItems[7])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[7])
-                            .toString(),
-                      ),
-                    ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _itemMainContainer(
-                        onTap: (){
-                          Get.to(() => PreQuestionScreen());
-                        },
-                        bgColor: itemsColor[4],
-                        imageUrl: _getImageUrl(homeController.homeItems[4])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[4])
-                            .toString(),
-                      ),
-                      _itemMainContainer(
-                        onTap: (){
-                          Get.to(() => TimerTestScreen());
-                        },
-                        bgColor: itemsColor[5],
-                        imageUrl: _getImageUrl(homeController.homeItems[5])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[5])
-                            .toString(),
-                      ),
-                    ],
-                  ),
-                  VGap(height: 20),
-                ],
+              child: RefreshIndicator(
+                onRefresh: _refreshData,
+                child: ListView(
+                  children: [
+                    Text(
+                      getGreeting().toString(),
+                      style: GoogleFonts.poppins(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    VGap(height: 20),
+                    MainBanner(),
+                    VGap(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => QuestionsScreen());
+                          },
+                          bgColor: itemsColor[0],
+                          imageUrl: _getImageUrl(homeController.homeItems[0])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[0])
+                              .toString(),
+                        ),
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => SignBoardScreen());
+                          },
+                          bgColor: itemsColor[1],
+                          imageUrl: _getImageUrl(homeController.homeItems[1])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[1])
+                              .toString(),
+                        ),
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => HandSignScreen());
+                          },
+                          bgColor: itemsColor[2],
+                          imageUrl: _getImageUrl(homeController.homeItems[2])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[2])
+                              .toString(),
+                        ),
+                      ],
+                    ),
+                    VGap(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => RoadSignScreen());
+                          },
+                          bgColor: itemsColor[3],
+                          imageUrl: _getImageUrl(homeController.homeItems[3])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[3])
+                              .toString(),
+                        ),
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => RtoCodeScreen());
+                          },
+                          bgColor: itemsColor[6],
+                          imageUrl: _getImageUrl(homeController.homeItems[6])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[6])
+                              .toString(),
+                        ),
+                        _itemContainer(
+                          onTap: () {
+                            Get.to(() => HowToApplyScreen());
+                          },
+                          bgColor: itemsColor[7],
+                          imageUrl: _getImageUrl(homeController.homeItems[7])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[7])
+                              .toString(),
+                        ),
+                      ],
+                    ),
+                    VGap(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _itemMainContainer(
+                          onTap: () {
+                            Get.to(() => PreQuestionScreen());
+                          },
+                          bgColor: itemsColor[4],
+                          imageUrl: _getImageUrl(homeController.homeItems[4])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[4])
+                              .toString(),
+                        ),
+                        _itemMainContainer(
+                          onTap: () {
+                            Get.to(() => TimerTestScreen());
+                          },
+                          bgColor: itemsColor[5],
+                          imageUrl: _getImageUrl(homeController.homeItems[5])
+                              .toString(),
+                          title: _getLocalizedTitle(homeController.homeItems[5])
+                              .toString(),
+                        ),
+                      ],
+                    ),
+                    VGap(height: 20),
+                  ],
+                ),
               ),
             ),
           );
