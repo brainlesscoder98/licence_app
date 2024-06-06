@@ -42,8 +42,11 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
         child: SafeArea(
           child: Obx(() {
             if (preQuestionController.pretest.isEmpty) {
-              return Center(child: LoadingAnimationWidget.flickr(
-                size: 50, leftDotColor: Colors.blue, rightDotColor: Colors.red,
+              return Center(
+                  child: LoadingAnimationWidget.flickr(
+                size: 50,
+                leftDotColor: Colors.blue,
+                rightDotColor: Colors.red,
               ));
             }
 
@@ -139,20 +142,33 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
             Widget _result() {
               return Column(
                 children: [
-
                   Container(
-                     width: AppConstants().mediaSize.width,
-                      height:  AppConstants().mediaSize.height*0.28,
+                      width: AppConstants().mediaSize.width,
+                      height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
                         children: [
+                          preQuestionController.getResultMessage() == "Pass"
+                              ? Align(
+                              alignment: Alignment.topCenter,
+                              child: Lottie.asset(
+                                  'assets/lottie/started.json',
+                                  fit: BoxFit.fill,
+                                  repeat: true,
+                                  alignment: Alignment.center,
+                                  width: AppConstants().mediaSize.width,
+                                  height: AppConstants().mediaSize.height *
+                                      0.32))
+                              : HGap(width: 0),
                           Container(
-                            margin:EdgeInsets.only(left: 15,right: 15),
+                            margin: EdgeInsets.only(left: 15, right: 15),
                             width: AppConstants().mediaSize.width,
-                            height: AppConstants().mediaSize.height*0.25,
-
+                            height: AppConstants().mediaSize.height * 0.3,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: preQuestionController.getResultMessage() == "Pass"? Colors.green.withOpacity(0.2):Colors.red.withOpacity(0.2),
+                              color: preQuestionController.getResultMessage() ==
+                                      "Pass"
+                                  ? Colors.green.withOpacity(0.2)
+                                  : Colors.red.withOpacity(0.2),
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -174,67 +190,124 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text('Correct',style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.green,
-                                        ),),
-                                        Text(preQuestionController.correctAnswersCount.value.toString(),style: GoogleFonts.poppins(
-                                          fontSize: 55,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),),
+                                        Text(
+                                          'Correct',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                        Text(
+                                          preQuestionController
+                                              .correctAnswersCount.value
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 55,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     HGap(width: 20),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text('Wrong',style: GoogleFonts.poppins(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.red,
-                                        ),),
-                                        Text(preQuestionController.wrongAnswersCount.value.toString(),style: GoogleFonts.poppins(
-                                          fontSize: 55,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),),
+                                        Text(
+                                          'Wrong',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.red,
+                                          ),
+                                        ),
+                                        Text(
+                                          preQuestionController
+                                              .wrongAnswersCount.value
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 55,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
-                                Text("Elevate your success rate with\nmore practice",style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),textAlign: TextAlign.center,)
+                                Text(
+                                  "Elevate your success rate with\nmore practice",
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                VGap(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        preQuestionController.resetQuiz();
+                                      },
+                                      child: Container(
+                                        height: 35,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          'Practice more',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                VGap(height: 10),
                               ],
                             ),
                           ),
-                          preQuestionController.getResultMessage() == "Pass"?  Align(
-                              alignment:Alignment.topCenter,
-                              child: Lottie.asset('assets/lottie/started.json',fit: BoxFit.fill,repeat: true,alignment: Alignment.center, width: AppConstants().mediaSize.width,
-                                height: AppConstants().mediaSize.height*0.26,)): HGap(width: 0),
+
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height*0.56,
+                    height: AppConstants().mediaSize.height * 0.532,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: preQuestionController.pretest.length,
                         itemBuilder: (context, answerIndex) {
-                          final resultQuestionText = preQuestionController.getLocalizedQuestion(preQuestionController.pretest[answerIndex]);
-                          final resultAnswerText = preQuestionController.getLocalizedCorrectAnswer(preQuestionController.pretest[answerIndex]);
+                          final resultQuestionText =
+                              preQuestionController.getLocalizedQuestion(
+                                  preQuestionController.pretest[answerIndex]);
+                          final resultAnswerText =
+                              preQuestionController.getLocalizedCorrectAnswer(
+                                  preQuestionController.pretest[answerIndex]);
                           return Container(
                             width: AppConstants().mediaSize.width,
-                            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                            margin: EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 10),
+                            margin: EdgeInsets.only(
+                                bottom: 10, left: 10, right: 10),
                             decoration: BoxDecoration(
                               color: Colors.grey.withOpacity(0.5),
                               borderRadius: BorderRadius.circular(15),
@@ -242,25 +315,30 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("${answerIndex +1}. ${resultQuestionText}", style: GoogleFonts.poppins(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
-                                ),),
-                                Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  child: Text(resultAnswerText, style: GoogleFonts.poppins(
+                                Text(
+                                  "${answerIndex + 1}. ${resultQuestionText}",
+                                  style: GoogleFonts.poppins(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.white,
-                                  ),),
+                                  ),
                                 ),
-
+                                Container(
+                                  margin: EdgeInsets.only(top: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    resultAnswerText,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           );

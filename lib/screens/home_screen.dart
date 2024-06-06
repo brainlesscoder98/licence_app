@@ -283,32 +283,6 @@ class HomeScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _itemMainContainer(
-                        onTap: (){
-                          Get.to(() => PreQuestionScreen());
-                        },
-                        bgColor: itemsColor[4],
-                        imageUrl: _getImageUrl(homeController.homeItems[4])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[4])
-                            .toString(),
-                      ),
-                      _itemMainContainer(
-                        onTap: (){
-                          Get.to(() => TimerTestScreen());
-                        },
-                        bgColor: itemsColor[5],
-                        imageUrl: _getImageUrl(homeController.homeItems[5])
-                            .toString(),
-                        title: _getLocalizedTitle(homeController.homeItems[5])
-                            .toString(),
-                      ),
-                    ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
                       _itemContainer(
                         onTap: (){
                           Get.to(() => RoadSignScreen());
@@ -337,6 +311,32 @@ class HomeScreen extends StatelessWidget {
                         imageUrl: _getImageUrl(homeController.homeItems[7])
                             .toString(),
                         title: _getLocalizedTitle(homeController.homeItems[7])
+                            .toString(),
+                      ),
+                    ],
+                  ),
+                  VGap(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _itemMainContainer(
+                        onTap: (){
+                          Get.to(() => PreQuestionScreen());
+                        },
+                        bgColor: itemsColor[4],
+                        imageUrl: _getImageUrl(homeController.homeItems[4])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[4])
+                            .toString(),
+                      ),
+                      _itemMainContainer(
+                        onTap: (){
+                          Get.to(() => TimerTestScreen());
+                        },
+                        bgColor: itemsColor[5],
+                        imageUrl: _getImageUrl(homeController.homeItems[5])
+                            .toString(),
+                        title: _getLocalizedTitle(homeController.homeItems[5])
                             .toString(),
                       ),
                     ],

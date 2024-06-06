@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:license_master/controller/home_controller.dart';
@@ -17,7 +18,8 @@ class TimerTestScreen extends StatefulWidget {
 }
 
 class _TimerTestScreenState extends State<TimerTestScreen> {
-  final TimerTestController timerTestController = Get.put(TimerTestController());
+  final TimerTestController timerTestController =
+      Get.put(TimerTestController());
   final HomeController homeController = Get.put(HomeController());
 
   @override
@@ -39,17 +41,20 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
         child: SafeArea(
           child: Obx(() {
             if (timerTestController.pretest.isEmpty) {
-              return Center(child: LoadingAnimationWidget.flickr(
-                size: 50, leftDotColor: Colors.blue, rightDotColor: Colors.red,
+              return Center(
+                  child: LoadingAnimationWidget.flickr(
+                size: 50,
+                leftDotColor: Colors.blue,
+                rightDotColor: Colors.red,
               ));
             }
 
             final currentQuestionIndex =
                 timerTestController.currentQuestionIndex.value;
             final questionData =
-            timerTestController.pretest[currentQuestionIndex];
+                timerTestController.pretest[currentQuestionIndex];
             final questionText =
-            timerTestController.getLocalizedQuestion(questionData);
+                timerTestController.getLocalizedQuestion(questionData);
             final answers = questionData['answers'] ?? [];
             final selectedAnswerIndex =
                 timerTestController.selectedAnswerIndex.value;
@@ -97,8 +102,8 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                         itemCount: answers.length,
                         itemBuilder: (context, answerIndex) {
                           final answerData = answers[answerIndex];
-                          final answerText =
-                          timerTestController.getLocalizedAnswer(answerData);
+                          final answerText = timerTestController
+                              .getLocalizedAnswer(answerData);
                           final isSelected = selectedAnswerIndex == answerIndex;
                           Color containerColor = Colors.grey;
                           if (isSelected && answerData['correct'] == true) {
@@ -112,12 +117,12 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                             onTap: selectedAnswerIndex != null
                                 ? null
                                 : () {
-                              timerTestController.checkAnswer(
-                                  answerIndex, answerData['correct']);
-                              Future.delayed(Duration(seconds: 1), () {
-                                timerTestController.nextQuestion();
-                              });
-                            },
+                                    timerTestController.checkAnswer(
+                                        answerIndex, answerData['correct']);
+                                    Future.delayed(Duration(seconds: 1), () {
+                                      timerTestController.nextQuestion();
+                                    });
+                                  },
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 16),
@@ -151,17 +156,29 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                 children: [
                   Container(
                       width: AppConstants().mediaSize.width,
-                      height: AppConstants().mediaSize.height * 0.28,
+                      height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
                         children: [
+                          timerTestController.getResultMessage() == "Pass"
+                              ? Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Lottie.asset(
+                                      'assets/lottie/started.json',
+                                      fit: BoxFit.fill,
+                                      repeat: true,
+                                      alignment: Alignment.center,
+                                      width: AppConstants().mediaSize.width,
+                                      height: AppConstants().mediaSize.height *
+                                          0.32))
+                              : HGap(width: 0),
                           Container(
                             margin: EdgeInsets.only(left: 15, right: 15),
                             width: AppConstants().mediaSize.width,
-                            height: AppConstants().mediaSize.height * 0.25,
+                            height: AppConstants().mediaSize.height * 0.3,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: timerTestController.getResultMessage() ==
-                                  "Pass"
+                                      "Pass"
                                   ? Colors.green.withOpacity(0.2)
                                   : Colors.red.withOpacity(0.2),
                             ),
@@ -185,9 +202,10 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Correct',
@@ -198,8 +216,8 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                           ),
                                         ),
                                         Text(
-                                          timerTestController.correctAnswersCount
-                                              .value
+                                          timerTestController
+                                              .correctAnswersCount.value
                                               .toString(),
                                           style: GoogleFonts.poppins(
                                             fontSize: 55,
@@ -211,9 +229,10 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                     ),
                                     HGap(width: 20),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.center,
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           'Wrong',
@@ -224,8 +243,8 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                           ),
                                         ),
                                         Text(
-                                          timerTestController.wrongAnswersCount
-                                              .value
+                                          timerTestController
+                                              .wrongAnswersCount.value
                                               .toString(),
                                           style: GoogleFonts.poppins(
                                             fontSize: 55,
@@ -245,36 +264,55 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
-                                )
+                                ),
+                                VGap(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        timerTestController.resetQuiz();
+                                      },
+                                      child: Container(
+                                        height: 35,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 5),
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          'Practice more',
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                VGap(height: 10),
                               ],
                             ),
                           ),
-                          timerTestController.getResultMessage() == "Pass"
-                              ? Align(
-                              alignment: Alignment.topCenter,
-                              child: Lottie.asset('assets/lottie/started.json',
-                                  fit: BoxFit.fill,
-                                  repeat: true,
-                                  alignment: Alignment.center,
-                                  width: AppConstants().mediaSize.width,
-                                  height: AppConstants().mediaSize.height *
-                                      0.26))
-                              : HGap(width: 0),
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height * 0.56,
+                    height: AppConstants().mediaSize.height * 0.532,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: timerTestController.pretest.length,
                         itemBuilder: (context, answerIndex) {
                           final resultQuestionText =
-                          timerTestController.getLocalizedQuestion(
-                              timerTestController.pretest[answerIndex]);
+                              timerTestController.getLocalizedQuestion(
+                                  timerTestController.pretest[answerIndex]);
                           final resultAnswerText =
-                          timerTestController.getLocalizedCorrectAnswer(
-                              timerTestController.pretest[answerIndex]);
+                              timerTestController.getLocalizedCorrectAnswer(
+                                  timerTestController.pretest[answerIndex]);
                           return Container(
                             width: AppConstants().mediaSize.width,
                             padding: EdgeInsets.symmetric(

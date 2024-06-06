@@ -28,8 +28,8 @@ class CTable extends StatelessWidget {
         ),
         child: Container(
           width: AppConstants().mediaSize.width,
-          height: 90,
-          margin: EdgeInsets.symmetric(vertical: 10),
+          height: 65,
+          margin: EdgeInsets.symmetric(vertical: 5),
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             // color: color.withOpacity(0.2),
@@ -40,8 +40,8 @@ class CTable extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: AppConstants().mediaSize.width*0.15,
-                height: 60,
+                width: 45,
+                height: 45,
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(0.5),
                   borderRadius: BorderRadius.circular(10),
