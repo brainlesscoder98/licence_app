@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 import 'package:license_master/controller/home_controller.dart';
@@ -9,7 +7,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import '../app_constants/app_constants.dart';
 import '../controller/timer_test_controller.dart';
-import '../custom_widgets/c_appbar.dart';
 import '../main.dart';
 
 class TimerTestScreen extends StatefulWidget {
@@ -26,15 +23,52 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar(
-        title: timerTestController.isCompleted.value == true
-            ? 'Timer-test Completed'
-            : "Timer-Test Questions",
-        onLanguageSelected: (String value) {
-          print('App Language :: $value');
-          appStorage.write(AppConstants().appLang, value);
-          timerTestController.onInit();
-        },
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+        backgroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+          onPressed: () {
+            homeController.onInit();
+            Get.back();
+
+          },
+        ),
+        flexibleSpace: Container(
+          decoration:GlobalDecoration.containerDecoration,
+        ),
+        elevation: 0,
+        actions: [
+          Obx(() {
+            if (homeController.languages.isEmpty) {
+              return SizedBox();
+            }
+            return PopupMenuButton<String>(
+              color: Colors.white,
+              iconColor: Colors.white,
+              onSelected: (String value) {
+                print('App Language :: $value');
+                appStorage.write(AppConstants().appLang, value);
+                timerTestController.onInit();
+              },
+              itemBuilder: (BuildContext context) {
+                return homeController.languages.map((language) {
+                  return PopupMenuItem(
+                    value: language['short_name']!,
+                    child: Text(language['title']!),
+                  );
+                }).toList();
+              },
+            );
+          }),
+        ],
+        title: Obx(() => Text(timerTestController.isCompleted.value == true
+            ? 'Timer-Test Completed'
+            : "Timer-Test Questions",style: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
+        ),)),
       ),
       body: Container(
         decoration: GlobalDecoration.containerDecoration,
@@ -156,7 +190,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                 children: [
                   Container(
                       width: AppConstants().mediaSize.width,
-                      height: AppConstants().mediaSize.height * 0.32,
+                      // height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
                         children: [
                           timerTestController.getResultMessage() == "Pass"
@@ -169,12 +203,12 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                       alignment: Alignment.center,
                                       width: AppConstants().mediaSize.width,
                                       height: AppConstants().mediaSize.height *
-                                          0.32))
+                                          0.36))
                               : HGap(width: 0),
                           Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
+                            margin: EdgeInsets.only(left: 15, right: 15,bottom: 15),
                             width: AppConstants().mediaSize.width,
-                            height: AppConstants().mediaSize.height * 0.3,
+                            height: AppConstants().mediaSize.height * 0.35,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: timerTestController.getResultMessage() ==
@@ -301,7 +335,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height * 0.532,
+                    height: AppConstants().mediaSize.height * 0.525,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),

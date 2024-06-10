@@ -80,6 +80,7 @@ class TimerTestController extends GetxController {
   String getResultMessage() {
     double correctPercentage = (correctAnswersCount.value / pretest.length) * 100;
     return correctPercentage >= 60 ? 'Pass' : 'Fail';
+
   }
 
   String getLocalizedQuestion(Map<String, dynamic> questionData) {

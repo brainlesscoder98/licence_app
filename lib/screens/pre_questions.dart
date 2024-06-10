@@ -27,16 +27,53 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: CustomAppBar(
-        title: preQuestionController.isCompleted.value == true
-            ? 'Pre-test Completed'
-            : "Pre-Test Questions",
-        onLanguageSelected: (String value) {
-          print('App Language :: $value');
-          appStorage.write(AppConstants().appLang, value);
-          preQuestionController.onInit();
+      appBar:AppBar(
+      automaticallyImplyLeading: true,
+      backgroundColor: Colors.black,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+        onPressed: () {
+          homeController.onInit();
+          Get.back();
+
         },
       ),
+      flexibleSpace: Container(
+        decoration:GlobalDecoration.containerDecoration,
+      ),
+      elevation: 0,
+      actions: [
+        Obx(() {
+          if (homeController.languages.isEmpty) {
+            return SizedBox();
+          }
+          return PopupMenuButton<String>(
+            color: Colors.white,
+            iconColor: Colors.white,
+            onSelected: (String value) {
+              print('App Language :: $value');
+              appStorage.write(AppConstants().appLang, value);
+              preQuestionController.onInit();
+            },
+            itemBuilder: (BuildContext context) {
+              return homeController.languages.map((language) {
+                return PopupMenuItem(
+                  value: language['short_name']!,
+                  child: Text(language['title']!),
+                );
+              }).toList();
+            },
+          );
+        }),
+      ],
+      title: Obx(() => Text(preQuestionController.isCompleted.value == true
+          ? 'Pre-Test Completed'
+          : "Pre-Test Questions",style: GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),)),
+    ),
       body: Container(
         decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
@@ -144,7 +181,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                 children: [
                   Container(
                       width: AppConstants().mediaSize.width,
-                      height: AppConstants().mediaSize.height * 0.32,
+                      // height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
                         children: [
                           preQuestionController.getResultMessage() == "Pass"
@@ -157,12 +194,12 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                                   alignment: Alignment.center,
                                   width: AppConstants().mediaSize.width,
                                   height: AppConstants().mediaSize.height *
-                                      0.32))
+                                      0.36))
                               : HGap(width: 0),
                           Container(
-                            margin: EdgeInsets.only(left: 15, right: 15),
+                            margin: EdgeInsets.only(left: 15, right: 15,bottom: 15),
                             width: AppConstants().mediaSize.width,
-                            height: AppConstants().mediaSize.height * 0.3,
+                            height: AppConstants().mediaSize.height * 0.35,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: preQuestionController.getResultMessage() ==
@@ -290,7 +327,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height * 0.532,
+                    height: AppConstants().mediaSize.height * 0.525,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
