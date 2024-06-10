@@ -18,6 +18,9 @@ class FirebaseService {
   Future<List<Map<String, String>>> fetchHowToApply() async {
     return _fetchCollection('howtoapply');
   }
+  Future<List<Map<String, String>>> fetchAboutUs() async {
+    return _fetchCollection('aboutus');
+  }
 
   Future<List<Map<String, String>>> fetchRtoCodes() async {
     return _fetchCollection('rtocodes');

@@ -42,6 +42,10 @@ class HomeController extends GetxController {
     String visibility = drawerItem['visibility'].toString()??'';
     return visibility;
   }
+  String getRedirectionLink(Map<String, dynamic> redirectionLink){
+    String link = redirectionLink['redirection_link']?.toString() ?? '';
+    return link;
+  }
   String getLocalizedTitle(Map<String, dynamic> drawerItems) {
     String title = drawerItems['title']?.toString() ?? 'No Title';
     switch (appStorage.read(AppConstants().appLang.toString())) {
