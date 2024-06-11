@@ -3,9 +3,9 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
-        android:label="licence_master"
+        android:label="License Master"
         android:name="${applicationName}"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
