@@ -10,11 +10,30 @@ class QuestionsBulkUploadPage extends StatefulWidget {
 }
 
 class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
+  File? selectedFile;
+  bool isUploading = false;
+  double uploadProgress = 0.0;
+
   void bulkUploadData(File file) async {
+    setState(() {
+      isUploading = true;
+      uploadProgress = 0.0;
+    });
+
     try {
       // Read the Excel file
       var bytes = file.readAsBytesSync();
       var excel = Excel.decodeBytes(bytes);
+      int totalRows = 0;
+      int processedRows = 0;
+
+      // Calculate the total number of rows for progress calculation
+      for (var table in excel.tables.keys) {
+        var sheet = excel.tables[table];
+        if (sheet != null) {
+          totalRows += sheet.maxRows - 1; // excluding the header row
+        }
+      }
 
       // Parse and upload the data to Firestore
       for (var table in excel.tables.keys) {
@@ -99,13 +118,23 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
             };
 
             // Upload questionData to Firestore
-            await FirebaseFirestore.instance.collection('roadsigns').add(questionData);
+            await FirebaseFirestore.instance.collection('questions').add(questionData);
+
+            // Update progress
+            processedRows++;
+            setState(() {
+              uploadProgress = processedRows / totalRows;
+            });
           }
         }
       }
       print("Data uploaded successfully");
     } catch (e) {
       print("Error during bulk upload: $e");
+    } finally {
+      setState(() {
+        isUploading = false;
+      });
     }
   }
 
@@ -116,8 +145,9 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
     );
 
     if (result != null) {
-      File file = File(result.files.single.path!);
-      bulkUploadData(file);
+      setState(() {
+        selectedFile = File(result.files.single.path!);
+      });
     } else {
       // User canceled the picker
     }
@@ -128,9 +158,41 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
     return Scaffold(
       appBar: AppBar(title: Text('Firestore Bulk Upload')),
       body: Center(
-        child: ElevatedButton(
-          onPressed: pickFile,
-          child: Text('Pick and Upload Excel File'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            selectedFile != null
+                ? Text('Selected File: ${selectedFile!.path.split('/').last}')
+                : Text('No file selected'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: pickFile,
+              child: Text('Pick Excel File'),
+            ),
+            SizedBox(height: 20),
+            selectedFile != null
+                ? ElevatedButton(
+              onPressed: isUploading
+                  ? null
+                  : () {
+                if (selectedFile != null) {
+                  bulkUploadData(selectedFile!);
+                }
+              },
+              child: Text(isUploading ? 'Uploading...' : 'Upload File'),
+            )
+                : Container(),
+            SizedBox(height: 20),
+            isUploading
+                ? Column(
+              children: [
+                CircularProgressIndicator(value: uploadProgress),
+                SizedBox(height: 10),
+                Text('Upload Progress: ${(uploadProgress * 100).toStringAsFixed(2)}%'),
+              ],
+            )
+                : Container(),
+          ],
         ),
       ),
     );
