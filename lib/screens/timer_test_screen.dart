@@ -74,7 +74,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
         decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
-            if (timerTestController.pretest.isEmpty) {
+            if (timerTestController.filteredQuestions.isEmpty) {
               return Center(
                   child: LoadingAnimationWidget.flickr(
                 size: 50,
@@ -86,7 +86,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
             final currentQuestionIndex =
                 timerTestController.currentQuestionIndex.value;
             final questionData =
-                timerTestController.pretest[currentQuestionIndex];
+                timerTestController.filteredQuestions[currentQuestionIndex];
             final questionText =
                 timerTestController.getLocalizedQuestion(questionData);
             final answers = questionData['answers'] ?? [];
@@ -339,14 +339,14 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: timerTestController.pretest.length,
+                        itemCount: timerTestController.filteredQuestions.length,
                         itemBuilder: (context, answerIndex) {
                           final resultQuestionText =
                               timerTestController.getLocalizedQuestion(
-                                  timerTestController.pretest[answerIndex]);
+                                  timerTestController.filteredQuestions[answerIndex]);
                           final resultAnswerText =
                               timerTestController.getLocalizedCorrectAnswer(
-                                  timerTestController.pretest[answerIndex]);
+                                  timerTestController.filteredQuestions[answerIndex]);
                           return Container(
                             width: AppConstants().mediaSize.width,
                             padding: EdgeInsets.symmetric(

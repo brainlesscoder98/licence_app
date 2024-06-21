@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/custom_widgets/c_gap.dart';
 import 'package:license_master/screens/about_us.dart';
 import 'package:license_master/screens/auth/login_auth.dart';
+import 'package:license_master/screens/bulk_upload/questions_upload.dart';
 import 'package:license_master/screens/home_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../app_constants/app_constants.dart';
@@ -38,14 +40,19 @@ class SideDrawer extends StatelessWidget {
             decoration: GlobalDecoration.containerDecoration,
             child: Row(
               children: [
-                Container(
-                  width: 90,
-                  height: 90,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/app_logo.png')),
-                    color: Colors.white,
+                GestureDetector(
+                  onTap:(){
+                    Get.to(() => QuestionsBulkUploadPage());
+                  },
+                  child: Container(
+                    width: 90,
+                    height: 90,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/app_logo.png')),
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const HGap(width: 10),

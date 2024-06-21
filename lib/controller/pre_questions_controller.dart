@@ -10,6 +10,8 @@ class PreQuestionController extends GetxController {
   var selectedAnswerIndex = Rxn<int>();
   var isCompleted = false.obs;
   var pretest = <Map<String, dynamic>>[].obs;
+  var filteredQuestions = <Map<String, dynamic>>[].obs;
+  var filteredQuestionsCount = 0.obs;
   final FirebaseService _firebaseService = FirebaseService();
 
   @override
@@ -21,6 +23,8 @@ class PreQuestionController extends GetxController {
   Future<void> fetchData() async {
     var data = await _firebaseService.fetchPreTestQuestions();
     pretest.value = data;
+    filteredQuestions.value = data.where((q) => q['question_type'] == 1).toList();
+    filteredQuestionsCount.value = filteredQuestions.length;
   }
 
   void checkAnswer(int selectedAnswerIndex, bool correctAnswer) {
@@ -35,7 +39,7 @@ class PreQuestionController extends GetxController {
   }
 
   void nextQuestion() {
-    if (currentQuestionIndex.value < pretest.length - 1) {
+    if (currentQuestionIndex.value < filteredQuestions.length - 1) {
       currentQuestionIndex++;
       selectedAnswerIndex.value = null; // Reset the selected answer for the next question
     } else {
@@ -52,7 +56,7 @@ class PreQuestionController extends GetxController {
   }
 
   String getResultMessage() {
-    double correctPercentage = (correctAnswersCount.value / pretest.length) * 100;
+    double correctPercentage = (correctAnswersCount.value / filteredQuestions.length) * 100;
     return correctPercentage >= 60 ? 'Pass' : 'Fail';
   }
 

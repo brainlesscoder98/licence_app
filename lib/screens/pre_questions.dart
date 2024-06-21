@@ -78,7 +78,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
         decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
-            if (preQuestionController.pretest.isEmpty) {
+            if (preQuestionController.filteredQuestions.isEmpty) {
               return Center(
                   child: LoadingAnimationWidget.flickr(
                 size: 50,
@@ -90,12 +90,9 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
             final currentQuestionIndex =
                 preQuestionController.currentQuestionIndex.value;
             final questionData =
-                preQuestionController.pretest[currentQuestionIndex];
+                preQuestionController.filteredQuestions[currentQuestionIndex];
             final questionText =
                 preQuestionController.getLocalizedQuestion(questionData);
-
-            final answerText =
-                preQuestionController.getLocalizedCorrectAnswer(questionData);
             final answers = questionData['answers'] ?? [];
             final selectedAnswerIndex =
                 preQuestionController.selectedAnswerIndex.value;
@@ -331,14 +328,14 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: preQuestionController.pretest.length,
+                        itemCount: preQuestionController.filteredQuestions.length,
                         itemBuilder: (context, answerIndex) {
                           final resultQuestionText =
                               preQuestionController.getLocalizedQuestion(
-                                  preQuestionController.pretest[answerIndex]);
+                                  preQuestionController.filteredQuestions[answerIndex]);
                           final resultAnswerText =
                               preQuestionController.getLocalizedCorrectAnswer(
-                                  preQuestionController.pretest[answerIndex]);
+                                  preQuestionController.filteredQuestions[answerIndex]);
                           return Container(
                             width: AppConstants().mediaSize.width,
                             padding: EdgeInsets.symmetric(
