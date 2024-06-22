@@ -15,14 +15,6 @@ import '../screens/languages.dart';
 
 class SideDrawer extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
-  // Future<void> _launchURL(String url) async {
-  //   if (await canLaunch(url)) {
-  //     await launch(url);
-  //   } else {
-  //     Get.snackbar("Error", "Could not launch $url", backgroundColor: Colors.red, colorText: Colors.white);
-  //     throw 'Could not launch $url';
-  //   }
-  // }
   Future<void> _launchURL(String url) async {
     final Uri _url = Uri.parse(url);
     if (!await launchUrl(_url)) {

@@ -24,6 +24,7 @@ class QuestionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Questions",
         onLanguageSelected: (String value) {
@@ -34,7 +35,7 @@ class QuestionsScreen extends StatelessWidget {
       ),
       body: Container(
         height: AppConstants().mediaSize.height,
-        decoration: GlobalDecoration.containerDecoration,
+        // decoration: GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(() {
           if (questionController.questions.isEmpty) {

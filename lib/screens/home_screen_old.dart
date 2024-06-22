@@ -1,7 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/screens/hand_sign_screen.dart';
@@ -71,54 +69,159 @@ class HomeScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: containerWidth ?? Get.width * 0.45,
-        height: 120,
-        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        width: containerWidth ?? Get.width * 0.28,
+        height: Get.width * 0.3,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color:appPrimaryColor,
+          color: Colors.blue.withOpacity(0.6),
+          boxShadow: [
+            BoxShadow(
+              color: bgColor.withOpacity(0.5), // Shadow color with opacity
+              spreadRadius: 2, // Spread radius
+              blurRadius: 8, // Blur radius
+              offset: Offset(1, 1), // Changes position of shadow
+            ),
+          ],
         ),
-        child: Align(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: 50,height: 50,
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: appPrimaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0,2), // changes position of shadow
-                      ),
-                    ],
-                    shape: BoxShape.circle),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                    child: placeHolder),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                width: containerWidth ?? Get.width * 0.28,
+                height: Get.width * 0.3,
+                child: placeHolder,
 
               ),
-              VGap(height: 10),
-              Container(
-                width: (containerWidth) ?? Get.width * 0.45,
-                child: Text(
-                  title,
-                  maxLines: 2,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.start,
+            ),
+            Container(
+              width: containerWidth ?? Get.width * 0.28,
+              height: Get.width * 0.3,
+              decoration: BoxDecoration(
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: (containerWidth) ?? Get.width * 0.28,
+                padding: EdgeInsets.symmetric(horizontal: 2, vertical: 10),
+                decoration: BoxDecoration(
+                  color: bgColor.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      maxLines: 2,
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _itemMainContainer({
+    required String title,
+    required String imageUrl,
+    required Color bgColor,
+    required VoidCallback onTap,
+    double? containerWidth,
+    required Widget placeHolder,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: containerWidth ?? Get.width * 0.45,
+        height: Get.width * 0.3,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.blue.withOpacity(0.6),
+          boxShadow: [
+            BoxShadow(
+              color: bgColor.withOpacity(0.5), // Shadow color with opacity
+              spreadRadius: 2, // Spread radius
+              blurRadius: 8, // Blur radius
+              offset: Offset(1, 1), // Changes position of shadow
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(
+                width: containerWidth ?? Get.width * 0.45,
+                height: Get.width * 0.3,
+                child:placeHolder
+                // CachedNetworkImage(
+                //   imageUrl: imageUrl,
+                //   cacheKey: imageUrl, // Use URL as cache key
+                //   placeholder: (context, url) => SizedBox(
+                //     width: containerWidth ?? Get.width * 0.45,
+                //     height: Get.width * 0.3,
+                //     child: placeHolder
+                //   ),
+                //   errorWidget: (context, url, error) => Icon(Icons.error),
+                //   fadeOutDuration:
+                //       Duration(milliseconds: 1), // Smooth fade-out
+                //   fadeInDuration: Duration(milliseconds: 200), // Smooth fade-in
+                //   imageBuilder: (context, imageProvider) => Container(
+                //     decoration: BoxDecoration(
+                //       image: DecorationImage(
+                //         image: imageProvider,
+                //         fit: BoxFit.cover, // Adjust fit as needed
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ),
+            ),
+            Container(
+              width: containerWidth ?? Get.width * 0.45,
+              height: Get.width * 0.3,
+              decoration: BoxDecoration(
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: (containerWidth) ?? Get.width * 0.45,
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: bgColor.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  title,
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -140,7 +243,7 @@ class HomeScreen extends StatelessWidget {
       //       width: 60,height: 60,
       //       margin: EdgeInsets.symmetric(horizontal: 10),
       //       decoration: BoxDecoration(
-      //           color: appPrimaryColor,
+      //           color: Color(0xff151A1F),
       //           shape: BoxShape.circle),
       //       child: IconButton(
       //
@@ -160,7 +263,7 @@ class HomeScreen extends StatelessWidget {
       //         width: 60,height: 60,
       //         margin: EdgeInsets.symmetric(horizontal: 10),
       //         decoration: BoxDecoration(
-      //             color: appPrimaryColor,
+      //             color: Color(0xff151A1F),
       //             shape: BoxShape.circle),
       //         child: PopupMenuButton<String>(
       //           color: Colors.teal,
@@ -190,73 +293,6 @@ class HomeScreen extends StatelessWidget {
       //     }),
       //   ],
       // ),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: SafeArea(
-          child: Container(
-            width: Get.width,
-            height: 80,
-            color: Colors.transparent,
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Builder(
-                  builder: (context) => Container(
-                    width: 60,height: 60,
-                    decoration: BoxDecoration(
-                        color: appPrimaryColor,
-                        shape: BoxShape.circle),
-                    child: IconButton(
-
-                      icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer(); // Open the drawer
-                      },
-                    ),
-                  ),
-                ),
-                Obx(() {
-                  if (homeController.languages.isEmpty) {
-                    return Center(child: SizedBox());
-                  }
-                  return Container(
-                    width: 60,height: 60,
-                    decoration: BoxDecoration(
-                        color: appPrimaryColor,
-                        shape: BoxShape.circle),
-                    child: PopupMenuButton<String>(
-                      color: Colors.teal,
-                      iconColor: Colors.white,
-                      onSelected: (String value) {
-                        print('App Language :: $value');
-                        appStorage.write(AppConstants().appLang, value);
-                        homeController.onInit();
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return homeController.languages.map((language) {
-                          return PopupMenuItem(
-                            value: language['short_name']!,
-                            enabled: true,
-                            child: Text(
-                              language['title']!,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  );
-                }),
-              ],
-            ),
-          ),
-        ),
-      ),
       drawer: SideDrawer(),
       backgroundColor: Colors.black,
       body: Obx(() {
@@ -271,13 +307,73 @@ class HomeScreen extends StatelessWidget {
         }
         return Center(
           child: Container(
-            color: Colors.black,
+            decoration: GlobalDecoration.containerDecoration,
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: RefreshIndicator(
               onRefresh: _refreshData,
               child: ListView(
                 children: [
+                  Container(
+                    width: Get.width,
+                    height: 80,
+                    color: Colors.transparent,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Builder(
+                          builder: (context) => Container(
+                            width: 60,height: 60,
+                            decoration: BoxDecoration(
+                                color: Color(0xff151A1F),
+                                shape: BoxShape.circle),
+                            child: IconButton(
 
+                              icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer(); // Open the drawer
+                              },
+                            ),
+                          ),
+                        ),
+                        Obx(() {
+                          if (homeController.languages.isEmpty) {
+                            return Center(child: SizedBox());
+                          }
+                          return Container(
+                            width: 60,height: 60,
+                            decoration: BoxDecoration(
+                                color: Color(0xff151A1F),
+                                shape: BoxShape.circle),
+                            child: PopupMenuButton<String>(
+                              color: Colors.teal,
+                              iconColor: Colors.white,
+                              onSelected: (String value) {
+                                print('App Language :: $value');
+                                appStorage.write(AppConstants().appLang, value);
+                                homeController.onInit();
+                              },
+                              itemBuilder: (BuildContext context) {
+                                return homeController.languages.map((language) {
+                                  return PopupMenuItem(
+                                    value: language['short_name']!,
+                                    enabled: true,
+                                    child: Text(
+                                      language['title']!,
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                            ),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
                   Text(
                     getGreeting(),
                     style: GoogleFonts.poppins(
@@ -310,37 +406,30 @@ class HomeScreen extends StatelessWidget {
                         placeHolder: Image.asset(itemsImages[1], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[1]),
                       ),
+                      _itemContainer(
+                        onTap: () {
+                          Get.to(() => HandSignScreen());
+                        },
+                        bgColor: itemsColor[2],
+                        imageUrl: _getImageUrl(homeController.homeItems[2]),
+                        placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover),
+                        title: _getLocalizedTitle(homeController.homeItems[2]),
+                      ),
                     ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _itemContainer(
-                          onTap: () {
-                            Get.to(() => HandSignScreen());
-                          },
-                          bgColor: itemsColor[2],
-                          imageUrl: _getImageUrl(homeController.homeItems[2]),
-                          placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover),
-                          title: _getLocalizedTitle(homeController.homeItems[2]),
-                        ),
-                        _itemContainer(
-                          onTap: () {
-                            Get.to(() => RoadSignScreen());
-                          },
-                          bgColor: itemsColor[3],
-                          imageUrl: _getImageUrl(homeController.homeItems[3]),
-                          placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover),
-                          title: _getLocalizedTitle(homeController.homeItems[3]),
-                        ),
-                        ]
                   ),
                   VGap(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
+                      _itemContainer(
+                        onTap: () {
+                          Get.to(() => RoadSignScreen());
+                        },
+                        bgColor: itemsColor[3],
+                        imageUrl: _getImageUrl(homeController.homeItems[3]),
+                        placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover),
+                        title: _getLocalizedTitle(homeController.homeItems[3]),
+                      ),
                       _itemContainer(
                         onTap: () {
                           Get.to(() => RtoCodeScreen());
@@ -359,30 +448,28 @@ class HomeScreen extends StatelessWidget {
                         placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[7]),
                       ),
-
                     ],
                   ),
                   VGap(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-
-                      _itemContainer(
+                      _itemMainContainer(
                         onTap: () {
                           Get.to(() => PreQuestionScreen());
                         },
                         bgColor: itemsColor[4],
                         imageUrl: _getImageUrl(homeController.homeItems[4]),
-                        placeHolder:Image.asset(itemsImages[4], fit: BoxFit.cover),
+                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[4]),
                       ),
-                      _itemContainer(
+                      _itemMainContainer(
                         onTap: () {
                           Get.to(() => TimerTestScreen());
                         },
                         bgColor: itemsColor[5],
                         imageUrl: _getImageUrl(homeController.homeItems[5]),
-                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover),
+                        placeHolder:Image.asset(itemsImages[5], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[5]),
                       ),
                     ],

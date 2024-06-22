@@ -27,55 +27,63 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar:AppBar(
-      automaticallyImplyLeading: true,
-      backgroundColor: Colors.black,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
-        onPressed: () {
-          homeController.onInit();
-          Get.back();
-
-        },
-      ),
-      flexibleSpace: Container(
-        decoration:GlobalDecoration.containerDecoration,
-      ),
-      elevation: 0,
-      actions: [
-        Obx(() {
-          if (homeController.languages.isEmpty) {
-            return SizedBox();
-          }
-          return PopupMenuButton<String>(
-            color: Colors.white,
-            iconColor: Colors.white,
-            onSelected: (String value) {
-              print('App Language :: $value');
-              appStorage.write(AppConstants().appLang, value);
-              preQuestionController.onInit();
-            },
-            itemBuilder: (BuildContext context) {
-              return homeController.languages.map((language) {
-                return PopupMenuItem(
-                  value: language['short_name']!,
-                  child: Text(language['title']!),
-                );
-              }).toList();
-            },
-          );
-        }),
-      ],
-      title: Obx(() => Text(preQuestionController.isCompleted.value == true
-          ? 'Pre-Test Completed'
-          : "Pre-Test Questions",style: GoogleFonts.poppins(
-        fontSize: 18,
-        fontWeight: FontWeight.w500,
-        color: Colors.white,
-      ),)),
+    //   appBar:AppBar(
+    //   automaticallyImplyLeading: true,
+    //   backgroundColor: Colors.black,
+    //   leading: IconButton(
+    //     icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+    //     onPressed: () {
+    //       homeController.onInit();
+    //       Get.back();
+    //
+    //     },
+    //   ),
+    //   flexibleSpace: Container(
+    //     decoration:GlobalDecoration.containerDecoration,
+    //   ),
+    //   elevation: 0,
+    //   actions: [
+    //     Obx(() {
+    //       if (homeController.languages.isEmpty) {
+    //         return SizedBox();
+    //       }
+    //       return PopupMenuButton<String>(
+    //         color: Colors.white,
+    //         iconColor: Colors.white,
+    //         onSelected: (String value) {
+    //           print('App Language :: $value');
+    //           appStorage.write(AppConstants().appLang, value);
+    //           preQuestionController.onInit();
+    //         },
+    //         itemBuilder: (BuildContext context) {
+    //           return homeController.languages.map((language) {
+    //             return PopupMenuItem(
+    //               value: language['short_name']!,
+    //               child: Text(language['title']!),
+    //             );
+    //           }).toList();
+    //         },
+    //       );
+    //     }),
+    //   ],
+    //   title: Obx(() => Text(preQuestionController.isCompleted.value == true
+    //       ? 'Pre-Test Completed'
+    //       : "Pre-Test Questions",style: GoogleFonts.poppins(
+    // //     fontSize: 18,
+    // //     fontWeight: FontWeight.w500,
+    // //     color: Colors.white,
+    // //   ),)),
+    // ),
+      appBar: CustomAppBar(
+      title: "Pre-Test",
+      onLanguageSelected: (String value) {
+        print('App Language :: $value');
+        appStorage.write(AppConstants().appLang, value);
+        preQuestionController.onInit();
+      },
     ),
       body: Container(
-        decoration: GlobalDecoration.containerDecoration,
+        // decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
             if (preQuestionController.filteredQuestions.isEmpty) {
@@ -102,7 +110,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                 padding: EdgeInsets.all(15.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey[850],
+                    color: appPrimaryColor,
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(
@@ -195,6 +203,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                 children: [
                   Container(
                       width: AppConstants().mediaSize.width,
+                      padding: EdgeInsets.only(top: 20),
                       // height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
                         children: [
@@ -341,7 +350,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height * 0.525,
+                    height: AppConstants().mediaSize.height * 0.5,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),
@@ -360,7 +369,7 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                             margin: EdgeInsets.only(
                                 bottom: 10, left: 10, right: 10),
                             decoration: BoxDecoration(
-                              color: Colors.grey.withOpacity(0.5),
+                              color:appPrimaryColor,
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Column(

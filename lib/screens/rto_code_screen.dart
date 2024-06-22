@@ -21,6 +21,7 @@ class RtoCodeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
         appBar: CustomAppBar(
           title: "RTO Code",
           onLanguageSelected: (String value) {
@@ -31,7 +32,7 @@ class RtoCodeScreen extends StatelessWidget {
         ),
       body: Container(
         height: AppConstants().mediaSize.height,
-        decoration: GlobalDecoration.containerDecoration,
+        // decoration: GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
         child: Obx((){
           if (rtoCodesController.rtoCodes.isEmpty) {

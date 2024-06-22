@@ -23,6 +23,7 @@ class SignBoardScreen extends StatelessWidget {
     print("Selected App Language is ::: ${appStorage.read(AppConstants().appLang)}");
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Sign Board",
         onLanguageSelected: (String value) {
@@ -33,7 +34,7 @@ class SignBoardScreen extends StatelessWidget {
       ),
       body: Container(
         height: AppConstants().mediaSize.height,
-        decoration:GlobalDecoration.containerDecoration,
+        // decoration:GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(() {
           if (signboardController.signboards.isEmpty) {

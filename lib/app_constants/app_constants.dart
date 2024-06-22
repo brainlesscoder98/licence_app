@@ -8,6 +8,7 @@ class AppConstants{
   final String appLang = "en";
   final String isLoggedIn = "0";
 }
+final appPrimaryColor = Color(0xff171D22);
 class GlobalDecoration {
   static  BoxDecoration containerDecoration = BoxDecoration(
     gradient: LinearGradient(
