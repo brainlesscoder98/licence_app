@@ -8,10 +8,11 @@ class TimerTestController extends GetxController {
   var currentQuestionIndex = 0.obs;
   var correctAnswersCount = 0.obs;
   var wrongAnswersCount = 0.obs;
-  var selectedAnswerIndex = Rxn<int>();
+  var selectedAnswerIndex = Rxn<String>();
   var isCompleted = false.obs;
   var timerTest = <Map<String, dynamic>>[].obs;
   var filteredQuestions = <Map<String, dynamic>>[].obs;
+  var filteredAnswers = <Map<String, dynamic>>[].obs;
   var filteredQuestionsCount = 0.obs;
   final FirebaseService _firebaseService = FirebaseService();
   Timer? timer;
@@ -26,7 +27,8 @@ class TimerTestController extends GetxController {
   Future<void> fetchData() async {
     var data = await _firebaseService.fetchPreTestQuestions();
     timerTest.value = data;
-    filteredQuestions.value = data.where((q) => q['question_type'] == 2).toList();
+    filteredQuestions.value = data.where((q) => q['question_type'] == "2").toList();
+    filteredAnswers.value = data.where((q) => q['question_type'] == "2").toList();
     filteredQuestionsCount.value = filteredQuestions.length;
     startTimer();
   }
@@ -38,16 +40,18 @@ class TimerTestController extends GetxController {
       if (secondsRemaining.value > 0) {
         secondsRemaining.value--;
       } else {
-        checkAnswer(null, false); // No answer selected, count as wrong
+        checkAnswer(null, ""); // No answer selected, count as wrong
         nextQuestion();
       }
     });
   }
 
-  void checkAnswer(int? selectedAnswerIndex, bool correctAnswer) {
+  void checkAnswer(String? selectedAnswerIndex, String? correctAnswerIndex) {
     this.selectedAnswerIndex.value = selectedAnswerIndex;
-    if (selectedAnswerIndex != null) {
-      if (correctAnswer) {
+
+    // Check if both selectedAnswerIndex and correctAnswerIndex are not null
+    if (selectedAnswerIndex != null && correctAnswerIndex != null) {
+      if (selectedAnswerIndex == correctAnswerIndex) {
         correctAnswersCount++;
         print("Selected answer is correct");
       } else {
@@ -56,10 +60,12 @@ class TimerTestController extends GetxController {
       }
     } else {
       wrongAnswersCount++;
-      print("No answer selected, count as wrong");
+      print("No answer selected or correct answer not provided, count as wrong");
     }
+
     timer?.cancel();
   }
+
 
   void nextQuestion() {
     if (currentQuestionIndex.value < filteredQuestions.length - 1) {
@@ -100,7 +106,10 @@ class TimerTestController extends GetxController {
         return question;
     }
   }
-
+  List getFilteredAnswers(List<dynamic> answers) {
+    // Assuming 'answer_type' is the field to filter answers
+    return answers.where((a) => a['question_type'] == "2").toList();
+  }
   String getLocalizedAnswer(Map<String, dynamic> answerData) {
     String answerOne = answerData['answer_one']?.toString() ?? 'No option';
     switch (appStorage.read(AppConstants().appLang.toString())) {

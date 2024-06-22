@@ -7,7 +7,7 @@ class PreQuestionController extends GetxController {
   var currentQuestionIndex = 0.obs;
   var correctAnswersCount = 0.obs;
   var wrongAnswersCount = 0.obs;
-  var selectedAnswerIndex = Rxn<int>();
+  var selectedAnswerIndex = Rxn<String>();
   var isCompleted = false.obs;
   var pretest = <Map<String, dynamic>>[].obs;
   var filteredQuestions = <Map<String, dynamic>>[].obs;
@@ -23,20 +23,28 @@ class PreQuestionController extends GetxController {
   Future<void> fetchData() async {
     var data = await _firebaseService.fetchPreTestQuestions();
     pretest.value = data;
-    filteredQuestions.value = data.where((q) => q['question_type'] == 1).toList();
+    filteredQuestions.value = data.where((q) => q['question_type'] == "1").toList();
     filteredQuestionsCount.value = filteredQuestions.length;
   }
 
-  void checkAnswer(int selectedAnswerIndex, bool correctAnswer) {
+  void checkAnswer(String? selectedAnswerIndex, String? correctAnswerIndex) {
     this.selectedAnswerIndex.value = selectedAnswerIndex;
-    if (correctAnswer) {
-      correctAnswersCount++;
-      print("Selected answer is correct");
+
+    // Check if both selectedAnswerIndex and correctAnswerIndex are not null
+    if (selectedAnswerIndex != null && correctAnswerIndex != null) {
+      if (selectedAnswerIndex == correctAnswerIndex) {
+        correctAnswersCount++;
+        print("Selected answer is correct");
+      } else {
+        wrongAnswersCount++;
+        print("Selected answer is wrong");
+      }
     } else {
       wrongAnswersCount++;
-      print("Selected answer is wrong");
+      print("No answer selected or correct answer not provided, count as wrong");
     }
   }
+
 
   void nextQuestion() {
     if (currentQuestionIndex.value < filteredQuestions.length - 1) {

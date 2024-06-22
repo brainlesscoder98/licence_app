@@ -87,15 +87,16 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
               ));
             }
 
-            final currentQuestionIndex =
-                preQuestionController.currentQuestionIndex.value;
-            final questionData =
-                preQuestionController.filteredQuestions[currentQuestionIndex];
-            final questionText =
-                preQuestionController.getLocalizedQuestion(questionData);
+            final currentQuestionIndex = preQuestionController.currentQuestionIndex.value;
+            final questionData = preQuestionController.filteredQuestions[currentQuestionIndex];
+            final questionText = preQuestionController.getLocalizedQuestion(questionData);
             final answers = questionData['answers'] ?? [];
-            final selectedAnswerIndex =
-                preQuestionController.selectedAnswerIndex.value;
+            final selectedAnswerIndex = preQuestionController.selectedAnswerIndex.value;
+            final correctAnswerIndex = questionData['correct_answer'].toString();
+            print("Correct Ans:::::::::::: index = > ${correctAnswerIndex}");
+            final questions = preQuestionController.filteredQuestions;
+            bool isLastQuestion = currentQuestionIndex == questions.length - 1;
+
             Widget _questions() {
               return Padding(
                 padding: EdgeInsets.all(15.0),
@@ -124,35 +125,28 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                         itemCount: answers.length,
                         itemBuilder: (context, answerIndex) {
                           final answerData = answers[answerIndex];
-                          final answerText = preQuestionController
-                              .getLocalizedAnswer(answerData);
-                          final isSelected = selectedAnswerIndex == answerIndex;
-                          Color containerColor = Colors.grey;
-                          if (isSelected && answerData['correct'] == true) {
-                            containerColor = Colors.green;
-                          } else if (isSelected &&
-                              answerData['correct'] == false) {
-                            containerColor = Colors.red;
-                          }
+                          final answerText =
+                          preQuestionController.getLocalizedAnswer(answerData);
 
                           return GestureDetector(
-                            onTap: selectedAnswerIndex != null
-                                ? null
-                                : () {
-                                    preQuestionController.checkAnswer(
-                                        answerIndex, answerData['correct']);
-                                    Future.delayed(Duration(seconds: 1), () {
-                                      preQuestionController.nextQuestion();
-                                    });
-                                  },
+                            onTap: () {
+                              preQuestionController.checkAnswer(answerIndex.toString(), correctAnswerIndex.toString());
+                              setState(() {
+                                preQuestionController.selectedAnswerIndex.value =
+                                    answerIndex.toString();
+                              });
+                            },
                             child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  vertical: 5, horizontal: 16),
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
+                              margin:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+                              padding:
+                              EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: containerColor,
+                                color: preQuestionController.selectedAnswerIndex.value ==
+                                    answerIndex.toString()
+                                    ? Colors.blue
+                                    : Colors.grey,
                               ),
                               child: Text(
                                 answerText,
@@ -167,6 +161,29 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
                         },
                       ),
                       VGap(height: 10),
+                      // Next Button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed: () {
+                              if (preQuestionController.selectedAnswerIndex.value == null) {
+                                 Get.snackbar("Alert", 'Select any answer to continue',backgroundColor: Colors.redAccent,colorText: Colors.white);
+                              } else {
+                                preQuestionController.nextQuestion();
+                              }
+                            },
+                            child: Text(
+                              isLastQuestion ? 'Finish' : 'Next',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),

@@ -83,17 +83,18 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
               ));
             }
 
-            final currentQuestionIndex =
-                timerTestController.currentQuestionIndex.value;
-            final questionData =
-                timerTestController.filteredQuestions[currentQuestionIndex];
-            final questionText =
-                timerTestController.getLocalizedQuestion(questionData);
+            final currentQuestionIndex = timerTestController.currentQuestionIndex.value;
+            final questionData = timerTestController.filteredQuestions[currentQuestionIndex];
+            final questionText = timerTestController.getLocalizedQuestion(questionData);
+            final correctAnswerIndex = questionData['correct_answer'].toString();
+            print("Correct Ans:::::::::::: index = > ${correctAnswerIndex}");
             final answers = questionData['answers'] ?? [];
-            final selectedAnswerIndex =
-                timerTestController.selectedAnswerIndex.value;
+            // final answers = timerTestController.getFilteredAnswers(questionData['answers'] ?? []);
+
+            final selectedAnswerIndex = timerTestController.selectedAnswerIndex.value;
 
             Widget _questions() {
+              print("Answers is : $answers");
               return Padding(
                 padding: EdgeInsets.all(15.0),
                 child: Container(
@@ -135,28 +136,32 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: answers.length,
                         itemBuilder: (context, answerIndex) {
+
                           final answerData = answers[answerIndex];
-                          final answerText = timerTestController
-                              .getLocalizedAnswer(answerData);
+
+                          final answerText = timerTestController.getLocalizedAnswer(answerData);
+                          print("Answer Text is: $answerText");
                           final isSelected = selectedAnswerIndex == answerIndex;
+
                           Color containerColor = Colors.grey;
-                          if (isSelected && answerData['correct'] == true) {
-                            containerColor = Colors.green;
-                          } else if (isSelected &&
-                              answerData['correct'] == false) {
-                            containerColor = Colors.red;
-                          }
 
                           return GestureDetector(
                             onTap: selectedAnswerIndex != null
                                 ? null
                                 : () {
-                                    timerTestController.checkAnswer(
-                                        answerIndex, answerData['correct']);
-                                    Future.delayed(Duration(seconds: 1), () {
-                                      timerTestController.nextQuestion();
-                                    });
-                                  },
+                              // Ensure correct_answer is fetched properly as a String
+                              timerTestController.checkAnswer(
+                                answerIndex.toString(),
+                                correctAnswerIndex,
+                              );
+                              Future.delayed(Duration(seconds: 1), () {
+                                timerTestController.nextQuestion();
+                              });
+                              print("Selected Answer is: $answerText");
+                              print("Selected Answer index is: ${correctAnswerIndex}");
+                              print("Correct Answer is: $correctAnswerIndex");
+                            },
+
                             child: Container(
                               margin: EdgeInsets.symmetric(
                                   vertical: 5, horizontal: 16),
@@ -164,7 +169,10 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                                   vertical: 10, horizontal: 15),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color: containerColor,
+                                color: timerTestController.selectedAnswerIndex.value ==
+                              answerIndex.toString()
+                                  ? Colors.blue
+                                  : Colors.grey,
                               ),
                               child: Text(
                                 answerText,
