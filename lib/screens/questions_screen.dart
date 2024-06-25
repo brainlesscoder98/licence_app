@@ -13,10 +13,18 @@ import '../controller/home_controller.dart';
 import '../custom_widgets/c_appbar.dart';
 import '../main.dart';
 
-class QuestionsScreen extends StatelessWidget {
+class QuestionsScreen extends StatefulWidget {
+  @override
+  State<QuestionsScreen> createState() => _QuestionsScreenState();
+}
+
+class _QuestionsScreenState extends State<QuestionsScreen> {
   final QuestionController questionController = Get.put(QuestionController());
+
   final TranslationController translationController = Get.put(TranslationController());
+
   final HomeController homeController = Get.put(HomeController());
+
   Future<void> _refreshData() async {
     await questionController.fetchData(); // Example: fetching data again
   }
@@ -27,10 +35,15 @@ class QuestionsScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Questions",
+        onRefresh: (){
+          questionController.fetchData();
+          print("Api call success");
+        },
         onLanguageSelected: (String value) {
-          print('App Language :: $value');
-          appStorage.write(AppConstants().appLang, value);
-          questionController.onInit();
+          print('App Languages :: $value');
+          appStorage.write(AppConstants().appLang, value.toString());
+          // print("Api call failed");
+
         },
       ),
       body: Container(

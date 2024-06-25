@@ -7,6 +7,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 import '../app_constants/app_constants.dart';
 import '../controller/timer_test_controller.dart';
+import '../custom_widgets/c_appbar.dart';
 import '../main.dart';
 
 class TimerTestScreen extends StatefulWidget {
@@ -23,55 +24,19 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
-          onPressed: () {
-            homeController.onInit();
-            Get.back();
-
-          },
-        ),
-        flexibleSpace: Container(
-          decoration:GlobalDecoration.containerDecoration,
-        ),
-        elevation: 0,
-        actions: [
-          Obx(() {
-            if (homeController.languages.isEmpty) {
-              return SizedBox();
-            }
-            return PopupMenuButton<String>(
-              color: Colors.white,
-              iconColor: Colors.white,
-              onSelected: (String value) {
-                print('App Language :: $value');
-                appStorage.write(AppConstants().appLang, value);
-                timerTestController.onInit();
-              },
-              itemBuilder: (BuildContext context) {
-                return homeController.languages.map((language) {
-                  return PopupMenuItem(
-                    value: language['short_name']!,
-                    child: Text(language['title']!),
-                  );
-                }).toList();
-              },
-            );
-          }),
-        ],
-        title: Obx(() => Text(timerTestController.isCompleted.value == true
-            ? 'Timer-Test Completed'
-            : "Timer-Test Questions",style: GoogleFonts.poppins(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: Colors.white,
-        ),)),
+      appBar:CustomAppBar(
+        title: "Pre-Test",
+        onRefresh: (){
+          timerTestController.fetchData();
+          print("Api call success");
+        },
+        onLanguageSelected: (String value) {
+          print('App Language :: $value');
+          appStorage.write(AppConstants().appLang, value);
+        },
       ),
       body: Container(
-        decoration: GlobalDecoration.containerDecoration,
+        // decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
             if (timerTestController.filteredQuestions.isEmpty) {
@@ -197,6 +162,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
               return Column(
                 children: [
                   Container(
+                    margin: EdgeInsets.only(top: 20),
                       width: AppConstants().mediaSize.width,
                       // height: AppConstants().mediaSize.height * 0.32,
                       child: Stack(
@@ -343,7 +309,7 @@ class _TimerTestScreenState extends State<TimerTestScreen> {
                         ],
                       )),
                   Container(
-                    height: AppConstants().mediaSize.height * 0.525,
+                    height: AppConstants().mediaSize.height * 0.5,
                     child: ListView.builder(
                         shrinkWrap: false,
                         physics: NeverScrollableScrollPhysics(),

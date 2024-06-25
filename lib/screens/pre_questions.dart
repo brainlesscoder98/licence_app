@@ -76,6 +76,10 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
     // ),
       appBar: CustomAppBar(
       title: "Pre-Test",
+        onRefresh: (){
+          preQuestionController.fetchData();
+          print("Api call success");
+        },
       onLanguageSelected: (String value) {
         print('App Language :: $value');
         appStorage.write(AppConstants().appLang, value);

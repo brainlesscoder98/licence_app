@@ -24,6 +24,10 @@ class HandSignScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Hand Sign",
+        onRefresh: (){
+          handSignController.fetchData();
+          print("Api call success");
+        },
         onLanguageSelected: (String value) {
           print('App Language :: $value');
           appStorage.write(AppConstants().appLang, value);

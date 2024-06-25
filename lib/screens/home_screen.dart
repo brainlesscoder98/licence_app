@@ -73,10 +73,10 @@ class HomeScreen extends StatelessWidget {
       child: Container(
         width: containerWidth ?? Get.width * 0.45,
         height: 120,
-        padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color:appPrimaryColor,
+          color: appPrimaryColor,
         ),
         child: Align(
           alignment: Alignment.center,
@@ -84,38 +84,93 @@ class HomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: 50,height: 50,
-                padding: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    color: appPrimaryColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0,2), // changes position of shadow
-                      ),
-                    ],
-                    shape: BoxShape.circle),
-                child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(60)),
-                    child: placeHolder),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: Get.width * 0.3,
+                    height: 90,
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: appPrimaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(2)),
+                      boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 2), // changes position of shadow
+                          ),
+                        ],
+                       ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(2)),
+                        child: placeHolder),
+                  ),
 
+                ],
               ),
               VGap(height: 10),
               Container(
                 width: (containerWidth) ?? Get.width * 0.45,
-                child: Text(
-                  title,
-                  maxLines: 2,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                  textAlign: TextAlign.start,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: appPrimaryColor,
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 2), // changes position of shadow
+                    ),
+                  ],
                 ),
+                child: Center(
+                  child: RichText(
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: title,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                        WidgetSpan(
+                          child: Container(
+                            width: 20,
+                            height: 20,
+                            margin: EdgeInsets.only(left: 20),
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: appPrimaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 2), // changes position of shadow
+                                ),
+                              ],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white,
+                              size: 10,
+                            ),
+                          ),
+                          alignment: PlaceholderAlignment.middle,
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ),
             ],
           ),
@@ -204,13 +259,13 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Builder(
                   builder: (context) => Container(
-                    width: 60,height: 60,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
-                        color: appPrimaryColor,
-                        shape: BoxShape.circle),
+                        color: appPrimaryColor, shape: BoxShape.circle),
                     child: IconButton(
-
-                      icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
+                      icon: Icon(Icons.menu,
+                          color: Colors.white), // Your custom icon
                       onPressed: () {
                         Scaffold.of(context).openDrawer(); // Open the drawer
                       },
@@ -222,10 +277,10 @@ class HomeScreen extends StatelessWidget {
                     return Center(child: SizedBox());
                   }
                   return Container(
-                    width: 60,height: 60,
+                    width: 60,
+                    height: 60,
                     decoration: BoxDecoration(
-                        color: appPrimaryColor,
-                        shape: BoxShape.circle),
+                        color: appPrimaryColor, shape: BoxShape.circle),
                     child: PopupMenuButton<String>(
                       color: Colors.teal,
                       iconColor: Colors.white,
@@ -277,7 +332,6 @@ class HomeScreen extends StatelessWidget {
               onRefresh: _refreshData,
               child: ListView(
                 children: [
-
                   Text(
                     getGreeting(),
                     style: GoogleFonts.poppins(
@@ -289,103 +343,29 @@ class HomeScreen extends StatelessWidget {
                   VGap(height: 20),
                   MainBanner(),
                   VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _itemContainer(
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: homeController.homeItems.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Two items per row
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      childAspectRatio: 1.0, // Aspect ratio for the items
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = homeController.homeItems[index];
+                      return _itemContainer(
                         onTap: () {
-                          Get.to(() => QuestionsScreen());
+                          _navigateToScreen(index);
                         },
-                        bgColor: itemsColor[0],
-                        imageUrl: _getImageUrl(homeController.homeItems[0]),
-                        placeHolder: Image.asset(itemsImages[0], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[0]),
-                      ),
-                      _itemContainer(
-                        onTap: () {
-                          Get.to(() => SignBoardScreen());
-                        },
-                        bgColor: itemsColor[1],
-                        imageUrl: _getImageUrl(homeController.homeItems[1]),
-                        placeHolder: Image.asset(itemsImages[1], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[1]),
-                      ),
-                    ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _itemContainer(
-                          onTap: () {
-                            Get.to(() => HandSignScreen());
-                          },
-                          bgColor: itemsColor[2],
-                          imageUrl: _getImageUrl(homeController.homeItems[2]),
-                          placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover),
-                          title: _getLocalizedTitle(homeController.homeItems[2]),
-                        ),
-                        _itemContainer(
-                          onTap: () {
-                            Get.to(() => RoadSignScreen());
-                          },
-                          bgColor: itemsColor[3],
-                          imageUrl: _getImageUrl(homeController.homeItems[3]),
-                          placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover),
-                          title: _getLocalizedTitle(homeController.homeItems[3]),
-                        ),
-                        ]
-                  ),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      _itemContainer(
-                        onTap: () {
-                          Get.to(() => RtoCodeScreen());
-                        },
-                        bgColor: itemsColor[6],
-                        imageUrl: _getImageUrl(homeController.homeItems[6]),
-                        placeHolder:Image.asset(itemsImages[6], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[6]),
-                      ),
-                      _itemContainer(
-                        onTap: () {
-                          Get.to(() => HowToApplyScreen());
-                        },
-                        bgColor: itemsColor[7],
-                        imageUrl: _getImageUrl(homeController.homeItems[7]),
-                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[7]),
-                      ),
-
-                    ],
-                  ),
-                  VGap(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-
-                      _itemContainer(
-                        onTap: () {
-                          Get.to(() => PreQuestionScreen());
-                        },
-                        bgColor: itemsColor[4],
-                        imageUrl: _getImageUrl(homeController.homeItems[4]),
-                        placeHolder:Image.asset(itemsImages[4], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[4]),
-                      ),
-                      _itemContainer(
-                        onTap: () {
-                          Get.to(() => TimerTestScreen());
-                        },
-                        bgColor: itemsColor[5],
-                        imageUrl: _getImageUrl(homeController.homeItems[5]),
-                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[5]),
-                      ),
-                    ],
+                        bgColor: itemsColor[index],
+                        imageUrl: _getImageUrl(item),
+                        placeHolder:
+                            Image.asset(itemsImages[index], fit: BoxFit.fill),
+                        title: _getLocalizedTitle(item),
+                      );
+                    },
                   ),
                   VGap(height: 20),
                 ],
@@ -396,6 +376,84 @@ class HomeScreen extends StatelessWidget {
       }),
     );
   }
+
+  void _navigateToScreen(int index) {
+    switch (index) {
+      case 0:
+        Get.to(
+              () => QuestionsScreen(),
+          transition: Transition.leftToRightWithFade, // or Transition.leftToRight, Transition.rightToLeft, etc.
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 1:
+        Get.to(
+              () => SignBoardScreen(),
+          transition: Transition.rightToLeftWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 2:
+        Get.to(
+              () => HandSignScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 3:
+        Get.to(
+              () => RoadSignScreen(),
+          transition: Transition.rightToLeftWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 4:
+        Get.to(
+              () => PreQuestionScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 5:
+        Get.to(
+              () => TimerTestScreen(),
+          transition: Transition.rightToLeftWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 6:
+        Get.to(
+              () => RtoCodeScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      case 7:
+        Get.to(
+              () => HowToApplyScreen(),
+          transition: Transition.rightToLeftWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+      default:
+        Get.to(
+              () => QuestionsScreen(),
+          transition: Transition.leftToRightWithFade,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+        break;
+    }
+  }
+
 
   String _getImageUrl(Map<String, String> homeitems) {
     return homeitems['imageUrl']!;

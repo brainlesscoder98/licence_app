@@ -24,6 +24,10 @@ class RoadSignScreen extends StatelessWidget {
       backgroundColor: Colors.black,
         appBar: CustomAppBar(
           title: "Road Sign",
+          onRefresh: (){
+            roadSignController.fetchData();
+            print("Api call success");
+          },
           onLanguageSelected: (String value) {
             print('App Language :: $value');
             appStorage.write(AppConstants().appLang, value);

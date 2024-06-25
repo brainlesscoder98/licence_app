@@ -26,6 +26,10 @@ class SignBoardScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Sign Board",
+        onRefresh: (){
+          signboardController .fetchData();
+          print("Api call success");
+        },
         onLanguageSelected: (String value) {
           print('App Language :: $value');
           appStorage.write(AppConstants().appLang, value);

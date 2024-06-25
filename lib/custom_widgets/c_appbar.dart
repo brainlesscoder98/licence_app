@@ -10,10 +10,12 @@ import '../controller/home_controller.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Function(String) onLanguageSelected;
+  final Function onRefresh;
 
   CustomAppBar({
     required this.title,
     required this.onLanguageSelected,
+    required this.onRefresh
   });
 
   final HomeController homeController = Get.put(HomeController());
@@ -41,7 +43,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
                     icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white), // Your custom icon
                     onPressed: () {
-                      homeController.onInit();Get.back();
+                      homeController.onInit();
+                      Get.back();
                     },
                   ),
                 ),
@@ -69,6 +72,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       print('App Language :: $value');
                       appStorage.write(AppConstants().appLang, value);
                       homeController.onInit();
+                      onRefresh();
                     },
                     itemBuilder: (BuildContext context) {
                       return homeController.languages.map((language) {

@@ -24,6 +24,10 @@ class RtoCodeScreen extends StatelessWidget {
       backgroundColor: Colors.black,
         appBar: CustomAppBar(
           title: "RTO Code",
+          onRefresh: (){
+            rtoCodesController.fetchData();
+            print("Api call success");
+          },
           onLanguageSelected: (String value) {
             print('App Language :: $value');
             appStorage.write(AppConstants().appLang, value);

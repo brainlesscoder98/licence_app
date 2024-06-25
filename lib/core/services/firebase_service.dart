@@ -49,7 +49,7 @@ class FirebaseService {
   Future<List<Map<String, dynamic>>> fetchPreTestQuestions() async {
     try {
       QuerySnapshot snapshot = await _firestore.collection('questions').get();
-      print("Apicalls ::: questions");
+      print("Api calls ::: questions");
 
       return snapshot.docs.map((doc) {
         // Cast the document data to Map<String, dynamic> before converting to Map<String, String>

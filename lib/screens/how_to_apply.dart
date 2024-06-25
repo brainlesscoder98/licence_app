@@ -26,6 +26,10 @@ class HowToApplyScreen extends StatelessWidget {
       backgroundColor: Colors.black,
         appBar: CustomAppBar(
           title: "How to apply",
+          onRefresh: (){
+            howtoApplyController.fetchData();
+            print("Api call success");
+          },
           onLanguageSelected: (String value) {
             print('App Language :: $value');
             appStorage.write(AppConstants().appLang, value);
