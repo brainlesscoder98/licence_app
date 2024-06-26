@@ -31,8 +31,8 @@ class CQuestions extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 10),
         padding: EdgeInsets.symmetric(horizontal: 10,vertical: 15),
         decoration: BoxDecoration(
-          color: appPrimaryColor,
-          // border: Border.all(color: color),
+          // color: appPrimaryColor,
+          border: Border.all(color: color),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(

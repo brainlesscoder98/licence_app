@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:license_master/main.dart';
 import 'package:license_master/screens/hand_sign_screen.dart';
 import 'package:license_master/screens/pre_questions.dart';
 import 'package:license_master/screens/questions_screen.dart';
@@ -15,14 +15,24 @@ import '../controller/translator_controller.dart';
 import '../custom_widgets/c_drawer.dart';
 import '../custom_widgets/c_gap.dart';
 import '../custom_widgets/main_banner.dart';
-import '../main.dart';
 import 'how_to_apply.dart';
 import 'road_sign_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
-      Get.put(TranslationController());
+  Get.put(TranslationController());
+
+  HomeScreen() {
+    _precacheImages();
+  }
+
+  Future<void> _precacheImages() async {
+    for (String image in itemsImages) {
+      await precacheImage(AssetImage(image), Get.context!);
+    }
+  }
+
   String getGreeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -44,6 +54,7 @@ class HomeScreen extends StatelessWidget {
     const Color(0xffd268cc),
     Colors.blueGrey,
   ];
+
   final List<String> itemsImages = [
     'assets/images/questions.jpg',
     'assets/images/sign_board.jpg',
@@ -54,6 +65,7 @@ class HomeScreen extends StatelessWidget {
     'assets/images/rto_code.jpg',
     'assets/images/apply.jpg',
   ];
+
   Future<void> _refreshData() async {
     homeController.onInit(); // Example: fetching data again
   }
@@ -91,22 +103,20 @@ class HomeScreen extends StatelessWidget {
                 width: containerWidth ?? Get.width * 0.28,
                 height: Get.width * 0.3,
                 child: placeHolder,
-
               ),
             ),
             Container(
               width: containerWidth ?? Get.width * 0.28,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color: Colors.black
-                    .withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black.withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                width: (containerWidth) ?? Get.width * 0.28,
+                width: containerWidth ?? Get.width * 0.28,
                 padding: EdgeInsets.symmetric(horizontal: 2, vertical: 10),
                 decoration: BoxDecoration(
                   color: bgColor.withOpacity(0.7),
@@ -168,36 +178,14 @@ class HomeScreen extends StatelessWidget {
               child: SizedBox(
                 width: containerWidth ?? Get.width * 0.45,
                 height: Get.width * 0.3,
-                child:placeHolder
-                // CachedNetworkImage(
-                //   imageUrl: imageUrl,
-                //   cacheKey: imageUrl, // Use URL as cache key
-                //   placeholder: (context, url) => SizedBox(
-                //     width: containerWidth ?? Get.width * 0.45,
-                //     height: Get.width * 0.3,
-                //     child: placeHolder
-                //   ),
-                //   errorWidget: (context, url, error) => Icon(Icons.error),
-                //   fadeOutDuration:
-                //       Duration(milliseconds: 1), // Smooth fade-out
-                //   fadeInDuration: Duration(milliseconds: 200), // Smooth fade-in
-                //   imageBuilder: (context, imageProvider) => Container(
-                //     decoration: BoxDecoration(
-                //       image: DecorationImage(
-                //         image: imageProvider,
-                //         fit: BoxFit.cover, // Adjust fit as needed
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                child: placeHolder,
               ),
             ),
             Container(
               width: containerWidth ?? Get.width * 0.45,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color: Colors.black
-                    .withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black.withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -230,69 +218,54 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   iconTheme: IconThemeData(color: Colors.white),
-      //   backgroundColor: Colors.black,
-      //   automaticallyImplyLeading: false,
-      //   flexibleSpace: Container(
-      //     decoration: GlobalDecoration.containerDecoration,
-      //   ),
-      //   elevation: 0,
-      //   leading: Builder(
-      //     builder: (context) => Container(
-      //       width: 60,height: 60,
-      //       margin: EdgeInsets.symmetric(horizontal: 10),
-      //       decoration: BoxDecoration(
-      //           color: Color(0xff151A1F),
-      //           shape: BoxShape.circle),
-      //       child: IconButton(
-      //
-      //         icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
-      //         onPressed: () {
-      //           Scaffold.of(context).openDrawer(); // Open the drawer
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      //   actions: [
-      //     Obx(() {
-      //       if (homeController.languages.isEmpty) {
-      //         return Center(child: SizedBox());
-      //       }
-      //       return Container(
-      //         width: 60,height: 60,
-      //         margin: EdgeInsets.symmetric(horizontal: 10),
-      //         decoration: BoxDecoration(
-      //             color: Color(0xff151A1F),
-      //             shape: BoxShape.circle),
-      //         child: PopupMenuButton<String>(
-      //           color: Colors.teal,
-      //           iconColor: Colors.white,
-      //           onSelected: (String value) {
-      //             print('App Language :: $value');
-      //             appStorage.write(AppConstants().appLang, value);
-      //             homeController.onInit();
-      //           },
-      //           itemBuilder: (BuildContext context) {
-      //             return homeController.languages.map((language) {
-      //               return PopupMenuItem(
-      //                 value: language['short_name']!,
-      //                 enabled: true,
-      //                 child: Text(
-      //                   language['title']!,
-      //                   style: GoogleFonts.poppins(
-      //                     fontSize: 14,
-      //                     color: Colors.white,
-      //                   ),
-      //                 ),
-      //               );
-      //             }).toList();
-      //           },
-      //         ),
-      //       );
-      //     }),
-      //   ],
-      // ),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: GlobalDecoration.containerDecoration,
+        ),
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
+            onPressed: () {
+              Scaffold.of(context).openDrawer(); // Open the drawer
+            },
+          ),
+        ),
+        actions: [
+          Obx(() {
+            if (homeController.languages.isEmpty) {
+              return Center(child: SizedBox());
+            }
+            return PopupMenuButton<String>(
+              color: Colors.teal,
+              iconColor: Colors.white,
+              onSelected: (String value) {
+                print('App Language :: $value');
+                appStorage.write(AppConstants().appLang, value);
+                homeController.onInit();
+              },
+              itemBuilder: (BuildContext context) {
+                return homeController.languages.map((language) {
+                  return PopupMenuItem(
+                    value: language['short_name']!,
+                    enabled: true,
+                    child: Text(
+                      language['title']!,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                }).toList();
+              },
+            );
+          }),
+        ],
+      ),
       drawer: SideDrawer(),
       backgroundColor: Colors.black,
       body: Obx(() {
@@ -313,67 +286,6 @@ class HomeScreen extends StatelessWidget {
               onRefresh: _refreshData,
               child: ListView(
                 children: [
-                  Container(
-                    width: Get.width,
-                    height: 80,
-                    color: Colors.transparent,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Builder(
-                          builder: (context) => Container(
-                            width: 60,height: 60,
-                            decoration: BoxDecoration(
-                                color: Color(0xff151A1F),
-                                shape: BoxShape.circle),
-                            child: IconButton(
-
-                              icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer(); // Open the drawer
-                              },
-                            ),
-                          ),
-                        ),
-                        Obx(() {
-                          if (homeController.languages.isEmpty) {
-                            return Center(child: SizedBox());
-                          }
-                          return Container(
-                            width: 60,height: 60,
-                            decoration: BoxDecoration(
-                                color: Color(0xff151A1F),
-                                shape: BoxShape.circle),
-                            child: PopupMenuButton<String>(
-                              color: Colors.teal,
-                              iconColor: Colors.white,
-                              onSelected: (String value) {
-                                print('App Language :: $value');
-                                appStorage.write(AppConstants().appLang, value);
-                                homeController.onInit();
-                              },
-                              itemBuilder: (BuildContext context) {
-                                return homeController.languages.map((language) {
-                                  return PopupMenuItem(
-                                    value: language['short_name']!,
-                                    enabled: true,
-                                    child: Text(
-                                      language['title']!,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  );
-                                }).toList();
-                              },
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
                   Text(
                     getGreeting(),
                     style: GoogleFonts.poppins(
@@ -393,31 +305,31 @@ class HomeScreen extends StatelessWidget {
                           Get.to(() => QuestionsScreen());
                         },
                         bgColor: itemsColor[0],
-                        imageUrl: _getImageUrl(homeController.homeItems[0]),
-                        placeHolder: Image.asset(itemsImages[0], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[0]),
+                        imageUrl: itemsImages[0],
+                        placeHolder: Image.asset(itemsImages[0], fit: BoxFit.cover, key: Key('image_0')),
                       ),
                       _itemContainer(
                         onTap: () {
                           Get.to(() => SignBoardScreen());
                         },
                         bgColor: itemsColor[1],
-                        imageUrl: _getImageUrl(homeController.homeItems[1]),
-                        placeHolder: Image.asset(itemsImages[1], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[1]),
+                        imageUrl: itemsImages[1],
+                        placeHolder: Image.asset(itemsImages[1], fit: BoxFit.cover, key: Key('image_1')),
                       ),
                       _itemContainer(
                         onTap: () {
                           Get.to(() => HandSignScreen());
                         },
                         bgColor: itemsColor[2],
-                        imageUrl: _getImageUrl(homeController.homeItems[2]),
-                        placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[2]),
+                        imageUrl: itemsImages[2],
+                        placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover, key: Key('image_2')),
                       ),
                     ],
                   ),
-                  VGap(height: 20),
+                  VGap(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -426,55 +338,55 @@ class HomeScreen extends StatelessWidget {
                           Get.to(() => RoadSignScreen());
                         },
                         bgColor: itemsColor[3],
-                        imageUrl: _getImageUrl(homeController.homeItems[3]),
-                        placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover),
                         title: _getLocalizedTitle(homeController.homeItems[3]),
+                        imageUrl: itemsImages[3],
+                        placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover, key: Key('image_3')),
                       ),
                       _itemContainer(
                         onTap: () {
-                          Get.to(() => RtoCodeScreen());
+                          Get.to(() => PreQuestionScreen());
                         },
-                        bgColor: itemsColor[6],
-                        imageUrl: _getImageUrl(homeController.homeItems[6]),
-                        placeHolder:Image.asset(itemsImages[6], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[6]),
+                        bgColor: itemsColor[4],
+                        title: _getLocalizedTitle(homeController.homeItems[4]),
+                        imageUrl: itemsImages[4],
+                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover, key: Key('image_4')),
                       ),
                       _itemContainer(
                         onTap: () {
-                          Get.to(() => HowToApplyScreen());
+                          Get.to(() => TimerTestScreen());
                         },
-                        bgColor: itemsColor[7],
-                        imageUrl: _getImageUrl(homeController.homeItems[7]),
-                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[7]),
+                        bgColor: itemsColor[5],
+                        title: _getLocalizedTitle(homeController.homeItems[5]),
+                        imageUrl: itemsImages[5],
+                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover, key: Key('image_5')),
                       ),
                     ],
                   ),
-                  VGap(height: 20),
+                  VGap(height: 15),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       _itemMainContainer(
                         onTap: () {
-                          Get.to(() => PreQuestionScreen());
+                          Get.to(() => RtoCodeScreen());
                         },
-                        bgColor: itemsColor[4],
-                        imageUrl: _getImageUrl(homeController.homeItems[4]),
-                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[4]),
+                        bgColor: itemsColor[6],
+                        title: _getLocalizedTitle(homeController.homeItems[6]),
+                        imageUrl: itemsImages[6],
+                        placeHolder: Image.asset(itemsImages[6], fit: BoxFit.cover, key: Key('image_6')),
                       ),
                       _itemMainContainer(
                         onTap: () {
-                          Get.to(() => TimerTestScreen());
+                          Get.to(() => HowToApplyScreen());
                         },
-                        bgColor: itemsColor[5],
-                        imageUrl: _getImageUrl(homeController.homeItems[5]),
-                        placeHolder:Image.asset(itemsImages[5], fit: BoxFit.cover),
-                        title: _getLocalizedTitle(homeController.homeItems[5]),
+                        bgColor: itemsColor[7],
+                        title:_getLocalizedTitle(homeController.homeItems[7]),
+                        imageUrl: itemsImages[7],
+                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover, key: Key('image_7')),
                       ),
                     ],
                   ),
-                  VGap(height: 20),
+                  VGap(height: 15),
                 ],
               ),
             ),

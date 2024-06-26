@@ -27,67 +27,56 @@ class _PreQuestionScreenState extends State<PreQuestionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-    //   appBar:AppBar(
-    //   automaticallyImplyLeading: true,
-    //   backgroundColor: Colors.black,
-    //   leading: IconButton(
-    //     icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
-    //     onPressed: () {
-    //       homeController.onInit();
-    //       Get.back();
-    //
-    //     },
-    //   ),
-    //   flexibleSpace: Container(
-    //     decoration:GlobalDecoration.containerDecoration,
-    //   ),
-    //   elevation: 0,
-    //   actions: [
-    //     Obx(() {
-    //       if (homeController.languages.isEmpty) {
-    //         return SizedBox();
-    //       }
-    //       return PopupMenuButton<String>(
-    //         color: Colors.white,
-    //         iconColor: Colors.white,
-    //         onSelected: (String value) {
-    //           print('App Language :: $value');
-    //           appStorage.write(AppConstants().appLang, value);
-    //           preQuestionController.onInit();
-    //         },
-    //         itemBuilder: (BuildContext context) {
-    //           return homeController.languages.map((language) {
-    //             return PopupMenuItem(
-    //               value: language['short_name']!,
-    //               child: Text(language['title']!),
-    //             );
-    //           }).toList();
-    //         },
-    //       );
-    //     }),
-    //   ],
-    //   title: Obx(() => Text(preQuestionController.isCompleted.value == true
-    //       ? 'Pre-Test Completed'
-    //       : "Pre-Test Questions",style: GoogleFonts.poppins(
-    // //     fontSize: 18,
-    // //     fontWeight: FontWeight.w500,
-    // //     color: Colors.white,
-    // //   ),)),
-    // ),
-      appBar: CustomAppBar(
-      title: "Pre-Test",
-        onRefresh: (){
-          preQuestionController.fetchData();
-          print("Api call success");
+      appBar:AppBar(
+      automaticallyImplyLeading: true,
+      backgroundColor: Colors.black,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+        onPressed: () {
+          homeController.onInit();
+          Get.back();
+
         },
-      onLanguageSelected: (String value) {
-        print('App Language :: $value');
-        appStorage.write(AppConstants().appLang, value);
-        preQuestionController.onInit();
-      },
+      ),
+      flexibleSpace: Container(
+        decoration:GlobalDecoration.containerDecoration,
+      ),
+      elevation: 0,
+      actions: [
+        Obx(() {
+          if (homeController.languages.isEmpty) {
+            return SizedBox();
+          }
+          return PopupMenuButton<String>(
+            color: Colors.white,
+            iconColor: Colors.white,
+            onSelected: (String value) {
+              print('App Language :: $value');
+              appStorage.write(AppConstants().appLang, value);
+              preQuestionController.onInit();
+            },
+            itemBuilder: (BuildContext context) {
+              return homeController.languages.map((language) {
+                return PopupMenuItem(
+                  value: language['short_name']!,
+                  child: Text(language['title']!),
+                );
+              }).toList();
+            },
+          );
+        }),
+      ],
+      title: Obx(() => Text(preQuestionController.isCompleted.value == true
+          ? 'Pre-Test Completed'
+          : "Pre-Test Questions",style: GoogleFonts.poppins(
+        fontSize: 18,
+        fontWeight: FontWeight.w500,
+        color: Colors.white,
+      ),)),
     ),
+
       body: Container(
-        // decoration: GlobalDecoration.containerDecoration,
+        decoration: GlobalDecoration.containerDecoration,
         child: SafeArea(
           child: Obx(() {
             if (preQuestionController.filteredQuestions.isEmpty) {

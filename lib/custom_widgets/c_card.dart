@@ -37,9 +37,9 @@ class CCard extends StatelessWidget {
               margin: EdgeInsets.symmetric(vertical: 20),
               // padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
-                color: appPrimaryColor,
+                // color: appPrimaryColor,
                 // color: color.withOpacity(0.2),
-                // border: Border.all(color: color),
+                border: Border.all(color: color),
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -53,7 +53,7 @@ class CCard extends StatelessWidget {
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white,
-                    // border: Border.all(color: color.withOpacity(0.3)),
+                    border: Border.all(color: color.withOpacity(0.3)),
                     image: DecorationImage(
                         image: NetworkImage(
                       imageUrl,

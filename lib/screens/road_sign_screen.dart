@@ -36,7 +36,7 @@ class RoadSignScreen extends StatelessWidget {
         ),
       body:Container(
         height: AppConstants().mediaSize.height,
-        // decoration: GlobalDecoration.containerDecoration,
+        decoration: GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
         child: Obx((){
           if (roadSignController.roadSigns.isEmpty) {

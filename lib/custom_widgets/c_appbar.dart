@@ -22,78 +22,47 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(80),
-      child: SafeArea(
-        child: Container(
-          width: Get.width,
-          height: 80,
-          color: Colors.transparent,
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                  width: 60,height: 60,
-                  decoration: BoxDecoration(
-                      color: appPrimaryColor,
-                      shape: BoxShape.circle),
-                  child: IconButton(
+    return AppBar(
+      automaticallyImplyLeading: true,
+      backgroundColor: Colors.black,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
+        onPressed: () {
+          homeController.onInit();
+          Get.back();
 
-                    icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white), // Your custom icon
-                    onPressed: () {
-                      homeController.onInit();
-                      Get.back();
-                    },
-                  ),
-                ),
-              Text(
-                title,
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              Obx(() {
-                if (homeController.languages.isEmpty) {
-                  return Center(child: SizedBox());
-                }
-                return Container(
-                  width: 60,height: 60,
-                  decoration: BoxDecoration(
-                      color: appPrimaryColor,
-                      shape: BoxShape.circle),
-                  child: PopupMenuButton<String>(
-                    color: Colors.teal,
-                    iconColor: Colors.white,
-                    onSelected: (String value) {
-                      print('App Language :: $value');
-                      appStorage.write(AppConstants().appLang, value);
-                      homeController.onInit();
-                      onRefresh();
-                    },
-                    itemBuilder: (BuildContext context) {
-                      return homeController.languages.map((language) {
-                        return PopupMenuItem(
-                          value: language['short_name']!,
-                          enabled: true,
-                          child: Text(
-                            language['title']!,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }).toList();
-                    },
-                  ),
+        },
+      ),
+      flexibleSpace: Container(
+        decoration:GlobalDecoration.containerDecoration,
+      ),
+      elevation: 0,
+      actions: [
+        Obx(() {
+          if (homeController.languages.isEmpty) {
+            return SizedBox();
+          }
+          return PopupMenuButton<String>(
+            color: Colors.white,
+            iconColor: Colors.white,
+            onSelected: onLanguageSelected,
+            itemBuilder: (BuildContext context) {
+              return homeController.languages.map((language) {
+                return PopupMenuItem(
+                  value: language['short_name']!,
+                  child: Text(language['title']!),
                 );
-              }),
-            ],
-          ),
+              }).toList();
+            },
+          );
+        }),
+      ],
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: Colors.white,
         ),
       ),
     );

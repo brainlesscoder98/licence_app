@@ -42,13 +42,14 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         onLanguageSelected: (String value) {
           print('App Languages :: $value');
           appStorage.write(AppConstants().appLang, value.toString());
+          questionController.onInit();
           // print("Api call failed");
 
         },
       ),
       body: Container(
         height: AppConstants().mediaSize.height,
-        // decoration: GlobalDecoration.containerDecoration,
+        decoration: GlobalDecoration.containerDecoration,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Obx(() {
           if (questionController.questions.isEmpty) {

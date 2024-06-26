@@ -21,7 +21,7 @@ import '../main.dart';
 import 'how_to_apply.dart';
 import 'road_sign_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreens extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
       Get.put(TranslationController());
@@ -182,135 +182,68 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   iconTheme: IconThemeData(color: Colors.white),
-      //   backgroundColor: Colors.black,
-      //   automaticallyImplyLeading: false,
-      //   flexibleSpace: Container(
-      //     decoration: GlobalDecoration.containerDecoration,
-      //   ),
-      //   elevation: 0,
-      //   leading: Builder(
-      //     builder: (context) => Container(
-      //       width: 60,height: 60,
-      //       margin: EdgeInsets.symmetric(horizontal: 10),
-      //       decoration: BoxDecoration(
-      //           color: appPrimaryColor,
-      //           shape: BoxShape.circle),
-      //       child: IconButton(
-      //
-      //         icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
-      //         onPressed: () {
-      //           Scaffold.of(context).openDrawer(); // Open the drawer
-      //         },
-      //       ),
-      //     ),
-      //   ),
-      //   actions: [
-      //     Obx(() {
-      //       if (homeController.languages.isEmpty) {
-      //         return Center(child: SizedBox());
-      //       }
-      //       return Container(
-      //         width: 60,height: 60,
-      //         margin: EdgeInsets.symmetric(horizontal: 10),
-      //         decoration: BoxDecoration(
-      //             color: appPrimaryColor,
-      //             shape: BoxShape.circle),
-      //         child: PopupMenuButton<String>(
-      //           color: Colors.teal,
-      //           iconColor: Colors.white,
-      //           onSelected: (String value) {
-      //             print('App Language :: $value');
-      //             appStorage.write(AppConstants().appLang, value);
-      //             homeController.onInit();
-      //           },
-      //           itemBuilder: (BuildContext context) {
-      //             return homeController.languages.map((language) {
-      //               return PopupMenuItem(
-      //                 value: language['short_name']!,
-      //                 enabled: true,
-      //                 child: Text(
-      //                   language['title']!,
-      //                   style: GoogleFonts.poppins(
-      //                     fontSize: 14,
-      //                     color: Colors.white,
-      //                   ),
-      //                 ),
-      //               );
-      //             }).toList();
-      //           },
-      //         ),
-      //       );
-      //     }),
-      //   ],
-      // ),
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: SafeArea(
-          child: Container(
-            width: Get.width,
-            height: 80,
-            color: Colors.transparent,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: GlobalDecoration.containerDecoration,
+        ),
+        elevation: 0,
+        leading: Builder(
+          builder: (context) => Container(
+            width: 60,height: 60,
             margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Builder(
-                  builder: (context) => Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: appPrimaryColor, shape: BoxShape.circle),
-                    child: IconButton(
-                      icon: Icon(Icons.menu,
-                          color: Colors.white), // Your custom icon
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer(); // Open the drawer
-                      },
-                    ),
-                  ),
-                ),
-                Obx(() {
-                  if (homeController.languages.isEmpty) {
-                    return Center(child: SizedBox());
-                  }
-                  return Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        color: appPrimaryColor, shape: BoxShape.circle),
-                    child: PopupMenuButton<String>(
-                      color: Colors.teal,
-                      iconColor: Colors.white,
-                      onSelected: (String value) {
-                        print('App Language :: $value');
-                        appStorage.write(AppConstants().appLang, value);
-                        homeController.onInit();
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return homeController.languages.map((language) {
-                          return PopupMenuItem(
-                            value: language['short_name']!,
-                            enabled: true,
-                            child: Text(
-                              language['title']!,
-                              style: GoogleFonts.poppins(
-                                fontSize: 14,
-                                color: Colors.white,
-                              ),
-                            ),
-                          );
-                        }).toList();
-                      },
-                    ),
-                  );
-                }),
-              ],
+            decoration: BoxDecoration(
+                color: appPrimaryColor,
+                shape: BoxShape.circle),
+            child: IconButton(
+
+              icon: Icon(Icons.menu, color: Colors.white), // Your custom icon
+              onPressed: () {
+                Scaffold.of(context).openDrawer(); // Open the drawer
+              },
             ),
           ),
         ),
+        actions: [
+          Obx(() {
+            if (homeController.languages.isEmpty) {
+              return Center(child: SizedBox());
+            }
+            return Container(
+              width: 60,height: 60,
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                  color: appPrimaryColor,
+                  shape: BoxShape.circle),
+              child: PopupMenuButton<String>(
+                color: Colors.teal,
+                iconColor: Colors.white,
+                onSelected: (String value) {
+                  print('App Language :: $value');
+                  appStorage.write(AppConstants().appLang, value);
+                  homeController.onInit();
+                },
+                itemBuilder: (BuildContext context) {
+                  return homeController.languages.map((language) {
+                    return PopupMenuItem(
+                      value: language['short_name']!,
+                      enabled: true,
+                      child: Text(
+                        language['title']!,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }).toList();
+                },
+              ),
+            );
+          }),
+        ],
       ),
       drawer: SideDrawer(),
       backgroundColor: Colors.black,

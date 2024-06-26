@@ -32,9 +32,9 @@ class CTable extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 5),
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            color: appPrimaryColor,
+            // color: appPrimaryColor,
             // color: color.withOpacity(0.2),
-            // border: Border.all(color: color,),
+            border: Border.all(color: color,),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Row(
