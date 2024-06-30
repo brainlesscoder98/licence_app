@@ -2,18 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
-class QuestionsBulkUploadPage extends StatefulWidget {
+class QuestionsBulkUploadPage extends StatelessWidget {
   @override
-  _QuestionsBulkUploadPageState createState() => _QuestionsBulkUploadPageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Firestore Bulk Upload')),
+      body: GridView.count(
+        crossAxisCount: 2,
+        children: [
+          BulkUploadItem(
+            title: 'Questions Upload',
+            allowedExtensions: ['xlsx'],
+          ),
+          BulkUploadItem(
+            title: 'Signboard Upload',
+            allowedExtensions: ['xlsx'],
+          ),
+          BulkUploadItem(
+            title: 'Hand Sign Upload',
+            allowedExtensions: ['xlsx'],
+          ),
+          BulkUploadItem(
+            title: 'Road Sign Upload',
+            allowedExtensions: ['xlsx'],
+          ),
+          BulkUploadItem(
+            title: 'RTO Codes Upload',
+            allowedExtensions: ['xlsx'],
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
+class BulkUploadItem extends StatefulWidget {
+  final String title;
+  final List<String> allowedExtensions;
+
+  const BulkUploadItem({
+    Key? key,
+    required this.title,
+    required this.allowedExtensions,
+  }) : super(key: key);
+
+  @override
+  _BulkUploadItemState createState() => _BulkUploadItemState();
+}
+
+class _BulkUploadItemState extends State<BulkUploadItem> {
   File? selectedFile;
   bool isUploading = false;
   double uploadProgress = 0.0;
+  bool uploadCompleted = false;
+  DateTime? lastUpdateTime;
 
   Future<void> requestStoragePermission() async {
     var status = await Permission.storage.status;
@@ -26,6 +72,7 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
     setState(() {
       isUploading = true;
       uploadProgress = 0.0;
+      uploadCompleted = false;
     });
 
     try {
@@ -130,7 +177,7 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
             };
 
             // Upload questionData to Firestore
-            await FirebaseFirestore.instance.collection('questions').add(questionData);
+            await FirebaseFirestore.instance.collection('testquestions').add(questionData);
 
             // Update progress
             processedRows++;
@@ -141,6 +188,10 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
         }
       }
       print("Data uploaded successfully");
+      setState(() {
+        uploadCompleted = true;
+        lastUpdateTime = DateTime.now();
+      });
     } catch (e) {
       print("Error during bulk upload: $e");
     } finally {
@@ -155,7 +206,7 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['xlsx'],
+      allowedExtensions: widget.allowedExtensions,
     );
 
     if (result != null) {
@@ -167,47 +218,90 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
     }
   }
 
+  void replaceFile() {
+    setState(() {
+      selectedFile = null;
+      uploadCompleted = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Firestore Bulk Upload')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            selectedFile != null
-                ? Text('Selected File: ${selectedFile!.path.split('/').last}')
-                : Text('No file selected'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: pickFile,
-              child: Text('Pick Excel File'),
-            ),
-            SizedBox(height: 20),
-            selectedFile != null
-                ? ElevatedButton(
-              onPressed: isUploading
-                  ? null
-                  : () {
-                if (selectedFile != null) {
-                  bulkUploadData(selectedFile!);
-                }
-              },
-              child: Text(isUploading ? 'Uploading...' : 'Upload File'),
-            )
-                : Container(),
-            SizedBox(height: 20),
-            isUploading
-                ? Column(
+    return Card(
+      elevation: 5,
+      margin: EdgeInsets.all(10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          ElevatedButton(
+            onPressed: () {
+              if (selectedFile != null && !isUploading) {
+                bulkUploadData(selectedFile!);
+              }
+            },
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                CircularProgressIndicator(value: uploadProgress),
-                SizedBox(height: 10),
-                Text('Upload Progress: ${(uploadProgress * 100).toStringAsFixed(2)}%'),
+                Text(
+                  isUploading ? 'Uploading...' : 'Upload File',
+                  style: TextStyle(color: Colors.white),
+                ),
+                if (isUploading)
+                  Positioned.fill(
+                    child: LinearProgressIndicator(
+                      value: uploadProgress,
+                      backgroundColor: Colors.white,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    ),
+                  ),
               ],
-            )
-                : Container(),
-          ],
-        ),
+            ),
+          ),
+          SizedBox(height: 10),
+          selectedFile != null
+              ? Column(
+            children: [
+              SizedBox(height: 10),
+              isUploading
+                  ? Column(
+                children: [
+                  CircularProgressIndicator(value: uploadProgress),
+                  SizedBox(height: 10),
+                  Text(
+                    'Upload Progress: ${(uploadProgress * 100).toStringAsFixed(2)}%',
+                  ),
+                ],
+              )
+                  : uploadCompleted
+                  ? Column(
+                children: [
+                  Icon(Icons.check, color: Colors.green, size: 30),
+                  SizedBox(height: 10),
+                  Text(
+                    'Upload completed on ${DateFormat('dd/MM/yyyy HH:mm').format(lastUpdateTime!)}',
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              )
+                  : Container(),
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: isUploading ? null : replaceFile,
+                child: Text('Replace File'),
+              ),
+            ],
+          )
+              : ElevatedButton(
+            onPressed: pickFile,
+            child: Text('Pick Excel File'),
+          ),
+        ],
       ),
     );
   }
