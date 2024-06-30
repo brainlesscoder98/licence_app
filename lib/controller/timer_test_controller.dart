@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:get/get.dart';
 import 'package:license_master/main.dart';
 import '../app_constants/app_constants.dart';
@@ -23,13 +25,21 @@ class TimerTestController extends GetxController {
     super.onInit();
     fetchData();
   }
-
   Future<void> fetchData() async {
     var data = await _firebaseService.fetchPreTestQuestions();
-    timerTest.value = data;
-    filteredQuestions.value = data.where((q) => q['question_type'] == "2").toList();
-    filteredAnswers.value = data.where((q) => q['question_type'] == "2").toList();
+
+    // Randomly select 20 questions
+    final random = Random();
+    if (data.length > 20) {
+      data.shuffle(random);
+      timerTest.value = data.sublist(0, 20);
+    } else {
+      timerTest.value = data;
+    }
+
+    filteredQuestions.value = timerTest;
     filteredQuestionsCount.value = filteredQuestions.length;
+
     startTimer();
   }
 
@@ -49,7 +59,6 @@ class TimerTestController extends GetxController {
   void checkAnswer(String? selectedAnswerIndex, String? correctAnswerIndex) {
     this.selectedAnswerIndex.value = selectedAnswerIndex;
 
-    // Check if both selectedAnswerIndex and correctAnswerIndex are not null
     if (selectedAnswerIndex != null && correctAnswerIndex != null) {
       if (selectedAnswerIndex == correctAnswerIndex) {
         correctAnswersCount++;
@@ -65,7 +74,6 @@ class TimerTestController extends GetxController {
 
     timer?.cancel();
   }
-
 
   void nextQuestion() {
     if (currentQuestionIndex.value < filteredQuestions.length - 1) {
@@ -89,8 +97,7 @@ class TimerTestController extends GetxController {
 
   String getResultMessage() {
     double correctPercentage = (correctAnswersCount.value / filteredQuestions.length) * 100;
-    return correctPercentage >= 60 ? 'Pass' : 'Fail';
-
+    return correctPercentage >= 50 ? 'Pass' : 'Fail';
   }
 
   String getLocalizedQuestion(Map<String, dynamic> questionData) {

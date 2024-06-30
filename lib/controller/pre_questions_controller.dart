@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:get/get.dart';
 import 'package:license_master/main.dart';
 import '../app_constants/app_constants.dart';
@@ -23,8 +24,25 @@ class PreQuestionController extends GetxController {
   Future<void> fetchData() async {
     var data = await _firebaseService.fetchPreTestQuestions();
     pretest.value = data;
-    filteredQuestions.value = data.where((q) => q['question_type'] == "1").toList();
+
+    // Select 20 random questions
+    filteredQuestions.value = getRandomQuestions(data, 20);
     filteredQuestionsCount.value = filteredQuestions.length;
+  }
+
+  List<Map<String, dynamic>> getRandomQuestions(List<Map<String, dynamic>> questions, int count) {
+    final random = Random();
+    final randomQuestions = <Map<String, dynamic>>[];
+    final selectedIndices = <int>{};
+
+    while (selectedIndices.length < count && selectedIndices.length < questions.length) {
+      final index = random.nextInt(questions.length);
+      if (!selectedIndices.contains(index)) {
+        selectedIndices.add(index);
+        randomQuestions.add(questions[index]);
+      }
+    }
+    return randomQuestions;
   }
 
   void checkAnswer(String? selectedAnswerIndex, String? correctAnswerIndex) {
@@ -45,7 +63,6 @@ class PreQuestionController extends GetxController {
     }
   }
 
-
   void nextQuestion() {
     if (currentQuestionIndex.value < filteredQuestions.length - 1) {
       currentQuestionIndex++;
@@ -61,6 +78,7 @@ class PreQuestionController extends GetxController {
     wrongAnswersCount.value = 0;
     selectedAnswerIndex.value = null;
     isCompleted.value = false;
+    fetchData(); // Fetch new questions when the quiz is reset
   }
 
   String getResultMessage() {

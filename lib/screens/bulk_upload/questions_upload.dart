@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class QuestionsBulkUploadPage extends StatefulWidget {
   @override
@@ -13,6 +14,13 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
   File? selectedFile;
   bool isUploading = false;
   double uploadProgress = 0.0;
+
+  Future<void> requestStoragePermission() async {
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+  }
 
   void bulkUploadData(File file) async {
     setState(() {
@@ -143,6 +151,8 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
   }
 
   void pickFile() async {
+    await requestStoragePermission();
+
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['xlsx'],
