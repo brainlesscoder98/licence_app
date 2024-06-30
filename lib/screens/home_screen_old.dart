@@ -344,21 +344,21 @@ class HomeScreen extends StatelessWidget {
                       ),
                       _itemContainer(
                         onTap: () {
-                          Get.to(() => PreQuestionScreen());
+                          Get.to(() => RtoCodeScreen());
                         },
-                        bgColor: itemsColor[4],
-                        title: _getLocalizedTitle(homeController.homeItems[4]),
-                        imageUrl: itemsImages[4],
-                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover, key: Key('image_4')),
+                        bgColor: itemsColor[6],
+                        title: _getLocalizedTitle(homeController.homeItems[6]),
+                        imageUrl: itemsImages[6],
+                        placeHolder: Image.asset(itemsImages[6], fit: BoxFit.cover, key: Key('image_6')),
                       ),
                       _itemContainer(
                         onTap: () {
-                          Get.to(() => TimerTestScreen());
+                          Get.to(() => HowToApplyScreen());
                         },
-                        bgColor: itemsColor[5],
-                        title: _getLocalizedTitle(homeController.homeItems[5]),
-                        imageUrl: itemsImages[5],
-                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover, key: Key('image_5')),
+                        bgColor: itemsColor[7],
+                        title:_getLocalizedTitle(homeController.homeItems[7]),
+                        imageUrl: itemsImages[7],
+                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover, key: Key('image_7')),
                       ),
                     ],
                   ),
@@ -368,22 +368,23 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       _itemMainContainer(
                         onTap: () {
-                          Get.to(() => RtoCodeScreen());
+                          Get.to(() => PreQuestionScreen());
                         },
-                        bgColor: itemsColor[6],
-                        title: _getLocalizedTitle(homeController.homeItems[6]),
-                        imageUrl: itemsImages[6],
-                        placeHolder: Image.asset(itemsImages[6], fit: BoxFit.cover, key: Key('image_6')),
+                        bgColor: itemsColor[4],
+                        title: _getLocalizedTitle(homeController.homeItems[4]),
+                        imageUrl: itemsImages[4],
+                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover, key: Key('image_4')),
                       ),
                       _itemMainContainer(
                         onTap: () {
-                          Get.to(() => HowToApplyScreen());
+                          Get.to(() => TimerTestScreen());
                         },
-                        bgColor: itemsColor[7],
-                        title:_getLocalizedTitle(homeController.homeItems[7]),
-                        imageUrl: itemsImages[7],
-                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover, key: Key('image_7')),
+                        bgColor: itemsColor[5],
+                        title: _getLocalizedTitle(homeController.homeItems[5]),
+                        imageUrl: itemsImages[5],
+                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover, key: Key('image_5')),
                       ),
+
                     ],
                   ),
                   VGap(height: 15),
