@@ -9,6 +9,7 @@ import 'package:license_master/screens/rto_code_screen.dart';
 import 'package:license_master/screens/sign_board_screen.dart';
 import 'package:license_master/screens/timer_test_screen.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../app_constants/app_constants.dart';
 import '../controller/home_controller.dart';
 import '../controller/translator_controller.dart';
@@ -22,16 +23,6 @@ class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
   Get.put(TranslationController());
-
-  HomeScreen() {
-    _precacheImages();
-  }
-
-  Future<void> _precacheImages() async {
-    for (String image in itemsImages) {
-      await precacheImage(AssetImage(image), Get.context!);
-    }
-  }
 
   String getGreeting() {
     var hour = DateTime.now().hour;
@@ -56,14 +47,14 @@ class HomeScreen extends StatelessWidget {
   ];
 
   final List<String> itemsImages = [
-    'assets/images/questions.jpg',
-    'assets/images/sign_board.jpg',
-    'assets/images/hand_gesture.jpg',
-    'assets/images/road.jpg',
-    'assets/images/pre_test.jpg',
-    'assets/images/timer.jpg',
-    'assets/images/rto_code.jpg',
-    'assets/images/apply.jpg',
+    'assets/images/1.jpg',
+    'assets/images/2.jpg',
+    'assets/images/3.jpg',
+    'assets/images/4.jpg',
+    'assets/images/7.jpg',
+    'assets/images/8.jpg',
+    'assets/images/5.jpg',
+    'assets/images/6.jpg',
   ];
 
   Future<void> _refreshData() async {
@@ -72,7 +63,6 @@ class HomeScreen extends StatelessWidget {
 
   Widget _itemContainer({
     required String title,
-    required String imageUrl,
     required Widget placeHolder,
     required Color bgColor,
     required VoidCallback onTap,
@@ -126,15 +116,18 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   alignment: WrapAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      maxLines: 2,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                    Skeletonizer(
+                      enabled: homeController.isLoading.value,
+                      child: Text(
+                        title,
+                        maxLines: 2,
+                        style: GoogleFonts.poppins(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -198,14 +191,17 @@ class HomeScreen extends StatelessWidget {
                   color: bgColor.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                child: Skeletonizer(
+                  enabled: homeController.isLoading.value,
+                  child: Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -269,15 +265,15 @@ class HomeScreen extends StatelessWidget {
       drawer: SideDrawer(),
       backgroundColor: Colors.black,
       body: Obx(() {
-        if (homeController.homeItems.isEmpty) {
-          return Center(
-            child: LoadingAnimationWidget.flickr(
-              size: 50,
-              leftDotColor: Colors.blue,
-              rightDotColor: Colors.red,
-            ),
-          );
-        }
+        // if (homeController.homeItems.isEmpty) {
+        //   return Center(
+        //     child: LoadingAnimationWidget.flickr(
+        //       size: 50,
+        //       leftDotColor: Colors.blue,
+        //       rightDotColor: Colors.red,
+        //     ),
+        //   );
+        // }
         return Center(
           child: Container(
             decoration: GlobalDecoration.containerDecoration,
@@ -306,8 +302,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[0],
                         title: _getLocalizedTitle(homeController.homeItems[0]),
-                        imageUrl: itemsImages[0],
-                        placeHolder: Image.asset(itemsImages[0], fit: BoxFit.cover, key: Key('image_0')),
+
+                        placeHolder: Image.asset("assets/images/1.jpg", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -315,8 +311,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[1],
                         title: _getLocalizedTitle(homeController.homeItems[1]),
-                        imageUrl: itemsImages[1],
-                        placeHolder: Image.asset(itemsImages[1], fit: BoxFit.cover, key: Key('image_1')),
+
+                        placeHolder: Image.asset("assets/images/2.jpg", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -324,8 +320,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[2],
                         title: _getLocalizedTitle(homeController.homeItems[2]),
-                        imageUrl: itemsImages[2],
-                        placeHolder: Image.asset(itemsImages[2], fit: BoxFit.cover, key: Key('image_2')),
+
+                        placeHolder: Image.asset("assets/images/3.jpg", fit: BoxFit.cover, key: Key('image_2')),
                       ),
                     ],
                   ),
@@ -339,8 +335,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[3],
                         title: _getLocalizedTitle(homeController.homeItems[3]),
-                        imageUrl: itemsImages[3],
-                        placeHolder: Image.asset(itemsImages[3], fit: BoxFit.cover, key: Key('image_3')),
+
+                        placeHolder: Image.asset("assets/images/4.jpg", fit: BoxFit.cover, key: Key('image_3')),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -348,8 +344,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[6],
                         title: _getLocalizedTitle(homeController.homeItems[6]),
-                        imageUrl: itemsImages[6],
-                        placeHolder: Image.asset(itemsImages[6], fit: BoxFit.cover, key: Key('image_6')),
+
+                        placeHolder: Image.asset("assets/images/7.jpg", fit: BoxFit.cover, key: Key('image_6')),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -357,8 +353,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[7],
                         title:_getLocalizedTitle(homeController.homeItems[7]),
-                        imageUrl: itemsImages[7],
-                        placeHolder: Image.asset(itemsImages[7], fit: BoxFit.cover, key: Key('image_7')),
+
+                        placeHolder: Image.asset("assets/images/8.jpg", fit: BoxFit.cover, key: Key('image_7')),
                       ),
                     ],
                   ),
@@ -373,7 +369,7 @@ class HomeScreen extends StatelessWidget {
                         bgColor: itemsColor[4],
                         title: _getLocalizedTitle(homeController.homeItems[4]),
                         imageUrl: itemsImages[4],
-                        placeHolder: Image.asset(itemsImages[4], fit: BoxFit.cover, key: Key('image_4')),
+                        placeHolder: Image.asset("assets/images/5.jpg", fit: BoxFit.cover, key: Key('image_4')),
                       ),
                       _itemMainContainer(
                         onTap: () {
@@ -382,7 +378,7 @@ class HomeScreen extends StatelessWidget {
                         bgColor: itemsColor[5],
                         title: _getLocalizedTitle(homeController.homeItems[5]),
                         imageUrl: itemsImages[5],
-                        placeHolder: Image.asset(itemsImages[5], fit: BoxFit.cover, key: Key('image_5')),
+                        placeHolder: Image.asset("assets/images/6.jpg", fit: BoxFit.cover, key: Key('image_5')),
                       ),
 
                     ],

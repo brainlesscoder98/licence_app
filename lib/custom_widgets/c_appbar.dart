@@ -28,7 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: IconButton(
         icon: Icon(Icons.arrow_back_ios_new_outlined, color: Colors.white),
         onPressed: () {
-          homeController.onInit();
+          // homeController.update();
           Get.back();
 
         },

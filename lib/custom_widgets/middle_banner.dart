@@ -40,7 +40,7 @@
 //                     child: CachedNetworkImage(
 //                       imageUrl: url['imageUrl'].toString(),
 //                       placeholder: (context, url) => Image.asset(
-//                         'assets/images/sign_board.jpg', // Replace with your placeholder image path
+//                         'assets/images/2.jpg', // Replace with your placeholder image path
 //                         fit: BoxFit.cover,
 //                       ),
 //                       errorWidget: (context, url, error) => Icon(Icons.error),

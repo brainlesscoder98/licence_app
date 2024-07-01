@@ -47,14 +47,14 @@ class HomeScreens extends StatelessWidget {
     Colors.blueGrey,
   ];
   final List<String> itemsImages = [
-    'assets/images/questions.jpg',
-    'assets/images/sign_board.jpg',
-    'assets/images/hand_gesture.jpg',
-    'assets/images/road.jpg',
-    'assets/images/pre_test.jpg',
-    'assets/images/timer.jpg',
-    'assets/images/rto_code.jpg',
-    'assets/images/apply.jpg',
+    'assets/images/1.jpg',
+    'assets/images/2.jpg',
+    'assets/images/3.jpg',
+    'assets/images/4.jpg',
+    'assets/images/7.jpg',
+    'assets/images/8.jpg',
+    'assets/images/5.jpg',
+    'assets/images/6.jpg',
   ];
   Future<void> _refreshData() async {
     homeController.onInit(); // Example: fetching data again
