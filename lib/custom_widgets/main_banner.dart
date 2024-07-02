@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:license_master/controller/banner_controller.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class MainBanner extends StatefulWidget {
   @override
@@ -21,48 +22,51 @@ class _MainBannerState extends State<MainBanner> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
-            child: CarouselSlider(
-              options: CarouselOptions(
-                height: 150.0,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enableInfiniteScroll: true,
-                viewportFraction: 1,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
-              items: bannerController.mainBanner.map((url) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width,
+            child: Skeletonizer(
+              enabled: bannerController.isLoading.value,
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 150.0,
+                  autoPlay:bannerController.isLoading.value==true?false: true,
+                  enlargeCenterPage: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enableInfiniteScroll: true,
+                  viewportFraction: 1,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                ),
+                items: bannerController.mainBanner.map((url) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
 
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: CachedNetworkImage(
-                          imageUrl: url['imageUrl'].toString(),
-                          placeholder: (context, url) => Image.network(
-                            'https://firebasestorage.googleapis.com/v0/b/kerala-psc-papers.appspot.com/o/banners%2Fpexels-kelly-1179532-2876511.jpg?alt=media&token=eabcabf2-f01f-4db9-949d-dbc5c00045f3',
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: CachedNetworkImage(
+                            imageUrl: url['imageUrl'].toString(),
+                            placeholder: (context, url) => Image.network(
+                              'https://firebasestorage.googleapis.com/v0/b/kerala-psc-papers.appspot.com/o/banners%2Fpexels-kelly-1179532-2876511.jpg?alt=media&token=eabcabf2-f01f-4db9-949d-dbc5c00045f3',
+                              fit: BoxFit.cover,
+                            ),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
                             fit: BoxFit.cover,
                           ),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                          fit: BoxFit.cover,
                         ),
-                      ),
-                    );
-                  },
-                );
-              }).toList(),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
             ),
           ),
           SizedBox(height: 10),

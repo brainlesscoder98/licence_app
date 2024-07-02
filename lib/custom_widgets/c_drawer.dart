@@ -198,65 +198,105 @@ class SideDrawer extends StatelessWidget {
                       onTap: () async {
                         switch (itemIndex) {
                           case '1':
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                              "Alert",
-                              "This feature will be available in future updates",
-                            );
-                            // Get.to(() => LoginAuthPage());
+                            Get.to(() => LoginAuthPage());
                             break;
                           case '2':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                              "Alert",
-                              "Share Link link will only available once the app is live in Play-store / Appstore !!",
-                            );
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "Share Link will only be available once the app is live in Play-store / Appstore !!",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             break;
-
                           case '3':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "The Language screen link is currently unavailable.",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             Get.to(() => LanguageScreen());
                             break;
                           case '4':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                              "Alert",
-                              "The update link will only available once the app is live in Play-store / Appstore !!",
-                            );
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "The update link will only be available once the app is live in Play-store / Appstore !!",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             break;
                           case '5':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "This link is currently unavailable.",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             break;
                           case '6':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
-                            Get.snackbar(
-                              backgroundColor: Colors.red,
-                              colorText: Colors.white,
-                              "Alert",
-                              "The Rate and Review link will only available once the app is live in Play-store / Appstore !!",
-                            );
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "The Rate and Review link will only be available once the app is live in Play-store / Appstore !!",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             break;
                           case '7':
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "This link is currently unavailable.",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             Get.to(() => AboutusScreen());
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
                             break;
                           case '8':
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
-                            print(itemLink.toString());
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "This link is currently unavailable.",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             break;
                           case '9':
-                          // if (appStorage.read(AppConstants().isLoggedIn)?.trim() == "1") {
-                          //
-                          //   ;
-                          // } else {
-                          //   return SizedBox();
-                          // }
-                            if (itemLink.isNotEmpty) await _launchURL(itemLink);
+                            if (itemLink.isNotEmpty) {
+                              await _launchURL(itemLink);
+                            } else {
+                              Get.snackbar(
+                                "Alert",
+                                "This link is currently unavailable.",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                             appStorage.write(AppConstants().isLoggedIn, "0");
                             Get.offAll(() => HomeScreen());
                             break;

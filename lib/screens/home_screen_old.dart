@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/main.dart';
@@ -22,7 +23,7 @@ import 'road_sign_screen.dart';
 class HomeScreen extends StatelessWidget {
   final HomeController homeController = Get.put(HomeController());
   final TranslationController translationController =
-  Get.put(TranslationController());
+      Get.put(TranslationController());
 
   String getGreeting() {
     var hour = DateTime.now().hour;
@@ -99,7 +100,8 @@ class HomeScreen extends StatelessWidget {
               width: containerWidth ?? Get.width * 0.28,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -141,7 +143,6 @@ class HomeScreen extends StatelessWidget {
 
   Widget _itemMainContainer({
     required String title,
-    required String imageUrl,
     required Color bgColor,
     required VoidCallback onTap,
     double? containerWidth,
@@ -178,7 +179,8 @@ class HomeScreen extends StatelessWidget {
               width: containerWidth ?? Get.width * 0.45,
               height: Get.width * 0.3,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4), // Adjust the opacity as needed
+                color: Colors.black
+                    .withOpacity(0.4), // Adjust the opacity as needed
                 borderRadius: BorderRadius.circular(10),
               ),
             ),
@@ -302,8 +304,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[0],
                         title: _getLocalizedTitle(homeController.homeItems[0]),
-
-                        placeHolder: Image.asset("assets/images/1.jpg", fit: BoxFit.cover),
+                        placeHolder:
+                            Image.asset("assets/svg/1.png", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -311,8 +313,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[1],
                         title: _getLocalizedTitle(homeController.homeItems[1]),
-
-                        placeHolder: Image.asset("assets/images/2.jpg", fit: BoxFit.cover),
+                        placeHolder:
+                            Image.asset("assets/svg/2.png", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -320,8 +322,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[2],
                         title: _getLocalizedTitle(homeController.homeItems[2]),
-
-                        placeHolder: Image.asset("assets/images/3.jpg", fit: BoxFit.cover, key: Key('image_2')),
+                        placeHolder:
+                            Image.asset("assets/svg/3.png", fit: BoxFit.cover),
                       ),
                     ],
                   ),
@@ -335,8 +337,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[3],
                         title: _getLocalizedTitle(homeController.homeItems[3]),
-
-                        placeHolder: Image.asset("assets/images/4.jpg", fit: BoxFit.cover, key: Key('image_3')),
+                        placeHolder:
+                            Image.asset("assets/svg/4.png", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
@@ -344,17 +346,17 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[6],
                         title: _getLocalizedTitle(homeController.homeItems[6]),
-
-                        placeHolder: Image.asset("assets/images/7.jpg", fit: BoxFit.cover, key: Key('image_6')),
+                        placeHolder:
+                            Image.asset("assets/svg/5.png", fit: BoxFit.cover),
                       ),
                       _itemContainer(
                         onTap: () {
                           Get.to(() => HowToApplyScreen());
                         },
                         bgColor: itemsColor[7],
-                        title:_getLocalizedTitle(homeController.homeItems[7]),
-
-                        placeHolder: Image.asset("assets/images/8.jpg", fit: BoxFit.cover, key: Key('image_7')),
+                        title: _getLocalizedTitle(homeController.homeItems[7]),
+                        placeHolder:
+                            Image.asset("assets/svg/6.png", fit: BoxFit.cover),
                       ),
                     ],
                   ),
@@ -368,8 +370,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[4],
                         title: _getLocalizedTitle(homeController.homeItems[4]),
-                        imageUrl: itemsImages[4],
-                        placeHolder: Image.asset("assets/images/5.jpg", fit: BoxFit.cover, key: Key('image_4')),
+                        placeHolder:
+                            Image.asset("assets/svg/7.png", fit: BoxFit.cover),
                       ),
                       _itemMainContainer(
                         onTap: () {
@@ -377,10 +379,9 @@ class HomeScreen extends StatelessWidget {
                         },
                         bgColor: itemsColor[5],
                         title: _getLocalizedTitle(homeController.homeItems[5]),
-                        imageUrl: itemsImages[5],
-                        placeHolder: Image.asset("assets/images/6.jpg", fit: BoxFit.cover, key: Key('image_5')),
+                        placeHolder:
+                            Image.asset("assets/svg/8.png", fit: BoxFit.cover),
                       ),
-
                     ],
                   ),
                   VGap(height: 15),
