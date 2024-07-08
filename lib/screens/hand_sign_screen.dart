@@ -24,6 +24,7 @@ class HandSignScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       appBar: CustomAppBar(
         title: "Hand Sign",
+
         onRefresh: (){
           handSignController.fetchData();
           print("Api call success");

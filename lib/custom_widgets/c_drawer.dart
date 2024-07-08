@@ -135,7 +135,8 @@ class SideDrawer extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      _showAdminAccessDialog(); // Show dialog on logo tap
+                      Get.to(() => QuestionsBulkUploadPage());
+                      // _showAdminAccessDialog(); // Show dialog on logo tap
                     },
                     child: Container(
                       width: 70,
