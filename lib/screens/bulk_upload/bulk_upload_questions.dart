@@ -2,29 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:license_master/controller/bulk_upload_controller/question_upload_controller.dart';
 import '../../controller/bulk_upload_controller/bulk_upload_controller.dart';
 import '../../custom_widgets/c_elevated_button.dart';
 
-class CollapsibleBulkUploadItem extends StatefulWidget {
+class QuestionsBulkUploadItem extends StatefulWidget {
   final String title;
   final List<String> allowedExtensions;
-  final BulkUploadItemController controller;
-  final VoidCallback onPressed;
 
-  const CollapsibleBulkUploadItem({
+  const QuestionsBulkUploadItem({
     Key? key,
     required this.title,
     required this.allowedExtensions,
-    required this.controller,
-    required this.onPressed,
   }) : super(key: key);
 
   @override
-  State<CollapsibleBulkUploadItem> createState() =>
-      _CollapsibleBulkUploadItemState();
+  State<QuestionsBulkUploadItem> createState() =>
+      _QuestionsBulkUploadItemState();
 }
 
-class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
+class _QuestionsBulkUploadItemState extends State<QuestionsBulkUploadItem> {
+  final controller = QuestionsUploadController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -47,7 +45,7 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                 ),
               ),
           Text(
-            "Last Updated on - ${widget.controller.storedTime ?? ''}",
+            "Last Updated on - ${controller.storedTime ?? ''}",
             style: GoogleFonts.poppins(
               fontSize: 10,
               fontWeight: FontWeight.w500,
@@ -74,12 +72,12 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                     child: Padding(
                       padding: EdgeInsets.all(20),
                       child: Obx(() {
-                        if (widget.controller.selectedFile.value == null) {
+                        if (controller.selectedFile.value == null) {
                           return CustomElevatedButton(
                             text: 'Choose File',
                             width: Get.width * 0.5,
                             onPressed: () =>
-                                widget.controller.pickFile(widget.allowedExtensions),
+                               controller.pickFile(widget.allowedExtensions),
                           );
                         } else {
                           return Column(
@@ -92,7 +90,7 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                                   ),
                                   children: <InlineSpan>[
                                     TextSpan(
-                                      text: widget.controller.uploadCompleted.value
+                                      text: controller.uploadCompleted.value
                                           ? 'Upload Successful: '
                                           : 'Selected File: ',
                                       style: GoogleFonts.poppins(
@@ -103,7 +101,7 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                                     ),
                                     TextSpan(
                                       text:
-                                      "${widget.controller.selectedFile.value!.path.split('/').last}  ",
+                                      "${controller.selectedFile.value!.path.split('/').last}  ",
                                       style: GoogleFonts.poppins(
                                         fontSize: 15,
                                         fontWeight: FontWeight.w500,
@@ -112,7 +110,7 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                                     ),
                                     WidgetSpan(
                                       alignment: PlaceholderAlignment.middle,
-                                      child: widget.controller.uploadCompleted.value
+                                      child: controller.uploadCompleted.value
                                           ? Icon(
                                         Icons.check,
                                         color: Colors.green,
@@ -125,35 +123,34 @@ class _CollapsibleBulkUploadItemState extends State<CollapsibleBulkUploadItem> {
                                           color: Colors.redAccent,
                                         ),
                                         onPressed:
-                                        widget.controller.replaceFile,
+                                        controller.replaceFile,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               SizedBox(height: 10),
-                              widget.controller.uploadCompleted.value
+                              controller.uploadCompleted.value
                                   ? SizedBox()
                                   : Obx(() => LoadingElevatedButton(
                                 text: 'Upload File',
-                                onPressed: widget.onPressed,
-                                // onPressed: () {
-                                //   if (!widget.controller.isUploading.value) {
-                                //     widget.controller.bulkUploadRTOCodes(
-                                //         widget.controller.selectedFile.value!);
-                                //   }
-                                // },
-                                isLoading: widget.controller.isUploading.value,
+                                onPressed: () {
+                                  if (!controller.isUploading.value) {
+                                    controller.bulkUploadQuestions(
+                                        controller.selectedFile.value!);
+                                  }
+                                },
+                                isLoading: controller.isUploading.value,
                                 progress:
-                                widget.controller.uploadProgress.value,
+                                controller.uploadProgress.value,
                               )),
-                              if (widget.controller.uploadCompleted.value)
+                              if (controller.uploadCompleted.value)
                                 Column(
                                   children: [
                                     SizedBox(height: 10),
                                     CustomElevatedButton(
                                         text: 'Upload More',
-                                        onPressed: widget.controller.replaceFile),
+                                        onPressed: controller.replaceFile),
                                   ],
                                 ),
                             ],

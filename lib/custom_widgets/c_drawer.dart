@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/custom_widgets/c_gap.dart';
 import 'package:license_master/screens/about_us.dart';
 import 'package:license_master/screens/auth/login_auth.dart';
-import 'package:license_master/screens/bulk_upload/questions_upload.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../app_constants/app_constants.dart';
 import '../controller/home_controller.dart';
@@ -83,7 +83,7 @@ class SideDrawer extends StatelessWidget {
               if (phoneNumberController.text.trim() == '6238839396' &&
                   otpController.text.trim() == '102030') {
                 Get.back(); // Close dialog
-                Get.to(() => QuestionsBulkUploadPage());
+                Get.to(() => BulkUploadPage());
               } else {
                 Get.snackbar(
                   "Error",
@@ -135,7 +135,7 @@ class SideDrawer extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.to(() => QuestionsBulkUploadPage());
+                      Get.to(() => BulkUploadPage());
                       // _showAdminAccessDialog(); // Show dialog on logo tap
                     },
                     child: Container(

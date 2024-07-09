@@ -3,17 +3,32 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:license_master/app_constants/app_constants.dart';
 import 'package:license_master/controller/bulk_upload_controller/bulk_upload_controller.dart';
+import 'package:license_master/controller/bulk_upload_controller/question_upload_controller.dart';
+import 'package:license_master/controller/bulk_upload_controller/rtocodes_upload_controller.dart';
+import 'package:license_master/controller/bulk_upload_controller/signboard_upload_controller.dart';
+import 'package:license_master/controller/handsign_controller.dart';
+import 'package:license_master/controller/roadsign_controller.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload_handsign.dart';
 import 'package:license_master/screens/bulk_upload/bulk_upload_item.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload_questions.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload_roadsign.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload_rtocodes.dart';
+import 'package:license_master/screens/bulk_upload/bulk_upload_signboard.dart';
 
-class QuestionsBulkUploadPage extends StatefulWidget {
+class BulkUploadPage extends StatefulWidget {
   @override
-  State<QuestionsBulkUploadPage> createState() => _QuestionsBulkUploadPageState();
+  State<BulkUploadPage> createState() => _BulkUploadPageState();
 }
 
-class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
+class _BulkUploadPageState extends State<BulkUploadPage> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(BulkUploadItemController());
+    final controllerQuestions = Get.put(QuestionsUploadController());
+    final controllerSignBoard = Get.put(SignBoardUploadController());
+    final controllerHandSign = Get.put(HandSignController());
+    final controllerRoadSign = Get.put(RoadSignController());
+    final controllerRtoCodes = Get.put(RtoCodesUploadController());
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -42,31 +57,25 @@ class _QuestionsBulkUploadPageState extends State<QuestionsBulkUploadPage> {
         decoration: GlobalDecoration.containerDecoration,
         child: ListView(
           children: [
-            CollapsibleBulkUploadItem(
+            QuestionsBulkUploadItem(
               title: 'Questions Upload',
               allowedExtensions: ['xlsx'],
-              controller: controller,
             ),
-            CollapsibleBulkUploadItem(
+            SignboardBulkUploadItem(
               title: 'Signboard Upload',
               allowedExtensions: ['xlsx'],
-              controller: controller,
             ),
-            CollapsibleBulkUploadItem(
+            HandSignBulkUploadItem(
               title: 'Hand Sign Upload',
               allowedExtensions: ['xlsx'],
-              controller: controller,
             ),
-            CollapsibleBulkUploadItem(
+            RoadSignBulkUploadItem(
               title: 'Road Sign Upload',
               allowedExtensions: ['xlsx'],
-              controller: controller,
             ),
-            CollapsibleBulkUploadItem(
+            RtoCodesBulkUploadItem(
               title: 'RTO Codes Upload',
               allowedExtensions: ['xlsx'],
-              controller: controller,
-
             ),
           ],
         ),
